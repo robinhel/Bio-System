@@ -1,11 +1,11 @@
-Ignore the database being run
-since SQLite might change it during runtime
-+ sessions will be stored in it in some examples
-if the live.db is missing the backend will create it
-from template.db
+#Ignore the database being run
+#since SQLite might change it during runtime
+#+ sessions will be stored in it in some examples
+#if the live.db is missing the backend will create it
+#from template.db
 backend/databases/live.sqlite3
 
-Logs
+#Logs
 logs
 .log
 npm-debug.log
@@ -19,7 +19,7 @@ dist
 dist-ssr
 .local
 
-Editor directories and files
+#Editor directories and files
 .vscode/
 !.vscode/extensions.json
 .idea
