@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider }
 import '../sass/index.scss';
 import routes from './routes';
 import App from './App';
+import startPage from './pages/StartPage';
 
 // Create a router using settings/content from 'routes.tsx'
 const router = createBrowserRouter([
