@@ -8,6 +8,8 @@ import startPage from './pages/StartPage.tsx';
 import AboutUsPage from './pages/AboutUsPage.tsx';
 import BookingPage from './pages/BookingPage.tsx';
 import MovieDetails from './pages/MovieDetails.tsx';
+import LoginPage from './pages/Login.tsx';
+import RegisterPage from './pages/Register.tsx';
 
 
 export default [
@@ -16,6 +18,8 @@ export default [
   AboutUsPage,
   NotFoundPage,
   BookingPage,
+  LoginPage,
+  RegisterPage,
 ]
   // map the route property of each page component to a Route
   .map(x => (({ element: createElement(x), ...x.route }) as Route))
