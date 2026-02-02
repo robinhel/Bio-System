@@ -11,6 +11,7 @@ public static class Acl
             UnpackRules(SQLQuery("SELECT * FROM acl ORDER BY allow"));
             await Task.Delay(60000);
         }
+        
     }
 
     public static void UnpackRules(Arr allRules)
