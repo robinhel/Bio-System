@@ -1,0 +1,36 @@
+// Auth / Login / Register
+.auth-page {
+    min-height: 70vh;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(180deg, #410000 0%, #010820 100%);
+    font-family: "Noto Sans", sans-serif;
+}
+
+.auth-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 1 rem;
+}
+
+.auth-label {
+    display: block;
+    margin-bottom: -110px;
+    color: #ffffff;
+}
+
+.auth-btn {
+    color: #ffffff;
+    background-color: #0052aa;
+    padding: 5px 100px 5px 100px;
+    cursor: pointer;
+}
+
+.auth-link {
+    display: flex; // Aktiverar flexbox
+    justify-content: center; // Centrerar horisontellt
+    color: #ffffff;
+    margin-top: 20px;
+
+}
