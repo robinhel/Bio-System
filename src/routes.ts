@@ -4,10 +4,18 @@ import { createElement } from 'react';
 // page components
 
 import NotFoundPage from './pages/NotFoundPage.tsx';
+import startPage from './pages/StartPage.tsx';
+import AboutUsPage from './pages/AboutUsPage.tsx';
+import BookingPage from './pages/BookingPage.tsx';
+import MovieDetails from './pages/MovieDetails.tsx';
 
 
 export default [
+  startPage,
+  MovieDetails,
+  AboutUsPage,
   NotFoundPage,
+  BookingPage,
 ]
   // map the route property of each page component to a Route
   .map(x => (({ element: createElement(x), ...x.route }) as Route))
