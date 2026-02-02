@@ -5,16 +5,17 @@ RegisterPage.route = {
 export default function RegisterPage() {
     return <>
         <div className="auth-page">
-            <h1 >Skapa Konto</h1>
-            <p>E-post (användarnamn)</p>
+            <h1 className="auth-title">Skapa Konto</h1>
+            <p className="auth-label">E-post (användarnamn)</p>
             <input
                 type="text"
             />
-            <p>Lösenord</p>
+            <p className="auth-label">Lösenord</p>
             <input
                 type="password"
-            /><br />
-            <button>Skapa Konto</button>
+            />
+            
+            <button className="auth-btn">Skapa Konto</button>
         </div>
 
 

@@ -3,84 +3,34 @@
     min-height: 70vh;
     display: grid;
     place-items: center;
-    padding: 3rem 1.5rem;
-    background: linear-gradient(180deg, #f6f8ff 0%, #eef2ff 100%);
+    background: linear-gradient(180deg, #410000 0%, #010820 100%);
     font-family: "Noto Sans", sans-serif;
 }
 
-.auth-card {
-    width: min(420px, 100%);
-    background: #fff;
-    border-radius: 16px;
-    padding: 2rem;
-    box-shadow: 0 20px 60px rgba(46, 64, 101, 0.18);
-    border: 1px solid #e6e8f2;
-}
-
 .auth-title {
-    margin: 0 0 1rem;
-    font-family: "Chewy", cursive;
-    font-size: 2rem;
-    color: #24324a;
-}
-
-.auth-field {
-    display: grid;
-    gap: 0.35rem;
-    margin: 0 0 1rem;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 1 rem;
 }
 
 .auth-label {
-    font-size: 0.9rem;
-    color: #4a5874;
-}
-
-.auth-input {
-    height: 44px;
-    border: 1px solid #cfd6e6;
-    border-radius: 10px;
-    padding: 0 0.9rem;
-    font-size: 1rem;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.auth-input:focus {
-    outline: none;
-    border-color: #7aa2ff;
-    box-shadow: 0 0 0 3px rgba(122, 162, 255, 0.25);
-}
-
-.auth-actions {
-    display: grid;
-    gap: 0.75rem;
-    margin-top: 0.5rem;
+    display: block;
+    margin-bottom: -110px;
+    color: #ffffff;
 }
 
 .auth-btn {
-    height: 44px;
-    border: none;
-    border-radius: 12px;
-    background: #4c6fff;
-    color: #fff;
-    font-size: 1rem;
-    font-weight: 600;
+    color: #ffffff;
+    background-color: #0052aa;
+    padding: 5px 100px 5px 100px;
     cursor: pointer;
-    transition: transform 0.1s ease, box-shadow 0.2s ease;
-}
-
-.auth-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 10px 24px rgba(76, 111, 255, 0.3);
 }
 
 .auth-link {
-    display: inline-block;
-    text-align: center;
-    font-size: 0.95rem;
-    color: #4c6fff;
-    text-decoration: none;
-}
+    display: flex; // Aktiverar flexbox
+    justify-content: center; // Centrerar horisontellt
+    color: #ffffff;
+    margin-top: 20px;
 
-.auth-link:hover {
-    text-decoration: underline;
 }
