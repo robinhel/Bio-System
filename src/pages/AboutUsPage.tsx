@@ -8,10 +8,10 @@ export default function AboutUsPage() {
     return(
         <div className="container">
             <h1>Om Bio Borgen!</h1>
-            <img src="/images/Biograf.jpg" alt="Picture of a cinema" />
             <p className="header">
-                Välkommen till Bio Borgen – din lokala portal till filmens magiska värld.
+                Välkommen till Bio Borgen – din lokala bio salong.
             </p>
+            
             <section className="section1">
                 <h2>Vår historia!</h2>
                 <p>
@@ -47,6 +47,11 @@ export default function AboutUsPage() {
             <footer className="section3">
                 <p><em>Vi ses i mörket! </em></p>
             </footer>
+            <div>
+                <img className="img" src="/images/Biograf.jpg" alt="Picture of a cinema" />
+                <img className="img" src="/images/Absolute.jpg" alt="Absolute Cinema"/>
+            </div>
+            
         </div>
         
         );
