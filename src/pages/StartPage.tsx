@@ -16,9 +16,9 @@ interface Movie
 
 
 StartPage.route = {
-    path: '/',         // Ändrat från '*' till '/'
-    menuLabel: 'Hem',  // Lägg till detta om du vill att den ska synas i menyn
-    index: 1           // Bestämmer ordningen i menyn
+    path: '/',         
+    menuLabel: 'Hem',  
+    index: 1           
 };
 
 export default function StartPage() {
