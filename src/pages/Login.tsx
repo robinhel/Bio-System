@@ -21,7 +21,7 @@ export default function LoginPage() {
             <button>Logga In</button>
         </div>
 
-        <Link to="/register-page">
+        <Link className="auth-link" to="/register-page">
             <button>Klicka här för att registrera ett nytt konto</button>
         </Link>
     </>;
