@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+
 MovieDetails.route = {
     path: "/movie-details/:id",
     index: 2,
@@ -40,7 +41,7 @@ export default function MovieDetails() {
 
     return (
         <>
-            <div className="movie-details">
+            <div className="movie-details-page">
                 <h1>{movie.Title}</h1>
                 <h1></h1>
 
@@ -49,7 +50,6 @@ export default function MovieDetails() {
                         <img
                             src={movie.Cover}
                             alt={`Cover for ${movie.Title}`}
-                            style={{ maxWidth: "300px" }}
                         />
                     )}
                 </div>
