@@ -39,3 +39,41 @@
   transition: color 0.2s;
   height: 30px;
 }
+
+.time-box {
+
+  display: flex;
+  padding: 25px;
+
+  gap: 10px;
+
+}
+
+.time-box a {
+  flex: 0 0 10px;
+  height: 100px;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  padding: 25px;
+  color: white;
+  background: linear-gradient(to top right, rgb(42, 65, 46) 10%, rgb(22, 132, 49) 100%);
+  text-decoration: none;
+  margin: 10px;
+  box-sizing: border-box;
+  border-radius: 15px;
+
+  &:hover {
+    box-shadow: 0 0 30px rgba(23, 119, 4, 0.475);
+  }
+
+  &.unavailable {
+
+    background: linear-gradient(to top right, #651f1f 10%, rgb(212, 27, 27) 100%);
+
+    &:hover {
+      box-shadow: 0 0 30px rgb(119, 4, 4);
+    }
+  }
+}
