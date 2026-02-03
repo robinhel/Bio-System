@@ -55,19 +55,25 @@ export default function MovieDetails() {
                 </div>
 
                 <div className="movie-description">
-                    <h2>Description</h2>
+                    <h2>Beskrivning</h2>
                     <p>{movie.Description}</p>
                 </div>
 
                 <div className="movie-details">
-                    <h2>Details</h2>
+                    <h2>Detaljer</h2>
                     <p>Genre: {movie.Genre}</p>
-                    <p>Age rating: {movie.AgeRating}</p>
+                    <p>Åldersgräns: {movie.AgeRating}</p>
                 </div>
-                <div className="time-box">
-                    <Link to="/about">Available</Link>
 
-
+                <div className="time-slots">
+                    <div className="time-box">
+                        <Link to="/booking-page">Tillgänglig <br />10:00-12:00</Link>
+                        <Link to='*' className="unavailable">Fullbokad <br />12:00-14:00</Link>
+                        <Link to="/booking-page">Tillgänglig <br />14:00-16:00</Link>
+                        <Link to="/booking-page">Tillgänglig <br />16:00-18:00</Link>
+                        <Link to='*' className="unavailable">Fullbokad <br />18:00-20:00</Link>
+                        <Link to='*' className="unavailable">Fullbokad <br />20:00-22:00</Link>
+                    </div>
                 </div>
             </div>
         </>
