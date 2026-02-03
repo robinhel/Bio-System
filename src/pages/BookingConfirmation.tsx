@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 BookingConfirmation.route = {
     path: "/bookingconfirmation-page",
     menuLabel: 'booking confirmation',
-    index: 9,
+    index: 8,
 };
 
 export default function BookingConfirmation() {
