@@ -51,7 +51,8 @@ export default function StartPage() {
             {filteredMovies.map(movie => (
              <Link to={`/movie-details/${movie.id}`} key={movie.id} className='movie-card'>
                 <img src={movie.Cover} alt={movie.Title} />
-                <h3 id="movie-title">{movie.Title}</h3>
+                    <h3 className="movie-title">{movie.Title}</h3>
+                    <p className="movie-genre">{movie.Genre}</p>
              </Link>   
             ))}
         </div>
