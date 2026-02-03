@@ -14,7 +14,7 @@ main {
   }
 
   img:not(img[src*="products"]) {
-    object-position: top left;
+    object-position: center;
   }
 
 
@@ -49,3 +49,4 @@ main {
 body {
   background-image: url("/images/bg.jpg");
 }
+

@@ -1,0 +1,38 @@
+.booking-page
+{
+    h1{
+        text-align: center;
+    }
+}
+
+.booking-poster{
+    width: 25%;
+    aspect-ratio: 2/3;
+    object-fit: cover;
+    border-radius: 20px;
+    transition: transform 0.3s ease;
+    margin-left: 1000px;
+}
+
+.poster-text
+{
+    
+    p{
+        margin-top: 15px;
+        margin-left: 1000px;
+        width: 300px;
+    }
+}
+
+.formlabel
+{
+    
+    margin-left:1000px;
+    width: 200px;
+    .date-picker
+    {
+        opacity: 45%;
+        margin-bottom: 30px;
+    }
+   
+}
