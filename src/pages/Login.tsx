@@ -15,7 +15,7 @@ export default function LoginPage() {
             <input type="text" />
 
             <p className="auth-label">Lösenord</p>
-            <input type="password" />
+            <input type="password" /><br />
 
             <button className="auth-btn">Logga In</button>
         </div>

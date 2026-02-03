@@ -16,9 +16,9 @@ interface Movie
 
 
 StartPage.route = {
-    path: '/',         // Ändrat från '*' till '/'
-    menuLabel: 'Hem',  // Lägg till detta om du vill att den ska synas i menyn
-    index: 1           // Bestämmer ordningen i menyn
+    path: '/',         
+    menuLabel: 'Hem',  
+    index: 1           
 };
 
 export default function StartPage() {
@@ -38,22 +38,21 @@ export default function StartPage() {
 
     return <>
     <div className="start-page">
-        <h1>BIO BORGEN</h1>
+        <h1 id="textabovesearchbar">Vilken film vill du se?</h1>
         <InputGroup className="mb-3">
             <Form.Control
-                placeholder="Sök efter en film..."
-                value={searchTerm}
+                    placeholder="Sök efter en film..."
+                
+                    value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 />
-            <Button variant="outline-secondary" id="button-addon2">
-                SÖK
-            </Button>
         </InputGroup>
         <div className="movies-grid">
             {filteredMovies.map(movie => (
              <Link to={`/movie-details/${movie.id}`} key={movie.id} className='movie-card'>
                 <img src={movie.Cover} alt={movie.Title} />
-                <h3>{movie.Title}</h3>
+                    <h3 className="movie-title">{movie.Title}</h3>
+                    <p className="movie-genre">{movie.Genre}</p>
              </Link>   
             ))}
         </div>
