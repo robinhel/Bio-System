@@ -45,9 +45,19 @@ export default function MovieDetails() {
                 <h1>{movie.Title}</h1>
                 <h1></h1>
 
-                <div className="movie-cover">
+                <div className="movie-box">
+                    <div className="movie-trailer">
+                        <iframe
+                            src="https://www.youtube.com/embed/Ma1x7ikpid8"
+                            title="Movie trailer"
+
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                        />
+                    </div>
+
                     {movie.Cover && (
-                        <img
+                        <img className="movie-cover"
                             src={movie.Cover}
                             alt={`Cover for ${movie.Title}`}
                         />
