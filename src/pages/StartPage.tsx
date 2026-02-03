@@ -38,7 +38,7 @@ export default function StartPage() {
 
     return <>
     <div className="start-page">
-        <h1 id="textabovesearchbar">Vilken film vill du se?</h1>
+            <h1 id="textabovesearchbar">Vilken film vill du se?</h1>
         <InputGroup className="mb-3">
             <Form.Control
                     placeholder="Sök efter en film..."
