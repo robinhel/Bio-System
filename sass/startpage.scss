@@ -6,6 +6,11 @@
     padding: 20px;;
 }
 
+#textabovesearchbar
+{
+    text-align: center;
+}
+
 .movie-card{
     text-decoration: none;
     color:rgb(245, 245, 245);
@@ -16,6 +21,13 @@
         font-size: 20px;
     }
     
+}
+
+#textabovesearchbar
+{
+    margin-bottom: 5px;
+    text-shadow: 1px 1px 2px rgb(82, 82, 82);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .movie-card img{
@@ -32,3 +44,33 @@
         transform: scale(1.03);
         }
         
+.start-page {
+
+    // Behållaren för sökfältet
+    .mb-3 {
+        max-width: 600px;
+        margin: 0 auto 3rem auto;
+        opacity: 50%;
+    }
+
+    .mb-3:hover
+    {
+        opacity: 70%;
+        border-radius: 10px;
+        #movie-title{
+            color: red;
+        }
+    }
+
+    // Själva sökfältet/input-rutan
+    .form-control {
+        background-color: rgb(55, 55, 55); // Ändrar bakgrundsfärgen
+        color: rgb(255, 255, 255); // Ändrar färgen på texten man skriver
+        border-radius: 10px;
+
+        // För att ändra färgen på "placeholder"-texten
+        &::placeholder {
+            color: rgba(216, 215, 215, 0.7);
+        }
+    }
+}
