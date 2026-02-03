@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 
 MovieDetails.route = {
@@ -17,7 +17,7 @@ type Movie = {
 };
 
 export default function MovieDetails() {
-    const { id } = useParams<{ id: string }>();
+    const { id } = useParams<{ id: string; }>();
     const [movie, setMovie] = useState<Movie | null>(null);
     const [error, setError] = useState<string | null>(null);
 
@@ -63,6 +63,11 @@ export default function MovieDetails() {
                     <h2>Details</h2>
                     <p>Genre: {movie.Genre}</p>
                     <p>Age rating: {movie.AgeRating}</p>
+                </div>
+                <div className="time-box">
+                    <Link to="/about">Available</Link>
+
+
                 </div>
             </div>
         </>

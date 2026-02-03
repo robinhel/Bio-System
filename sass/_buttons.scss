@@ -39,3 +39,11 @@
   transition: color 0.2s;
   height: 30px;
 }
+
+.time-box {
+  outline: 3px solid red;
+  display: inline-block;
+  padding: 25px;
+  background-color: adjust-hue($color: #8f8f8f, $degrees: 0);
+  text-decoration: none;
+}
