@@ -12,10 +12,10 @@ export default function LoginPage() {
             <h1 className="auth-title">Logga In</h1>
 
             <p className="auth-label">E-post (användarnamn)</p>
-            <input type="text" />
+            <input type="text" name="email" required />
 
             <p className="auth-label">Lösenord</p>
-            <input type="password" /><br />
+            <input type="password" name="password" required /><br />
 
             <button className="auth-btn">Logga In</button>
         </div>
