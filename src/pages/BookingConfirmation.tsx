@@ -34,7 +34,7 @@ useEffect(() => {
 
   return (
     <div className="confirmation">
-      <h2 className ="bb">Boknings Bekräftelse</h2>
+      <h2 className ="bb">Bokningsbekräftelse</h2>
       <div className="avacon">
         <img className ="ava" src="/images/avatar.webp" alt="Picture of avatar" />
         <h3 className="kvitto">Information om bokning</h3>
