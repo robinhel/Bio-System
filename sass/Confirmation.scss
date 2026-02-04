@@ -1,26 +1,29 @@
+// Stylea hela paketet
 .c-section {
-  position: relative; 
-  width: 600px;
-  max-width: 95%;
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap; 
-  justify-content: space-between; 
-  background: #1a1a1a; 
-  padding: 20px;
-  border-radius: 20px;
+  position: relative; // Gör så vi kan placera grejer inuti boxen
+  width: 600px; // Bredden på boxen
+  max-width: 95%; // Ser till att boxen krymper på mindre skärmar
+  margin: 0 auto; // Centrerar boxen
+  display: flex; // Flexbox för att innehåll kan ligga bredvid varandra
+  flex-wrap: wrap; // Gör så elementen hoppar ner på nästa rad vid t.ex mindre skärmar
+  justify-content: space-between; // Gör space mellan info och biljett symbolen
+  background: #1a1a1a; // Bakrundsfärg på hela bordern
+  padding: 20px; // Luft
+  border-radius: 20px; // Runt avslut
 }
 
+// Bilden
 .ava {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 15px;
-  margin-bottom: 20px;
+  width: 100%; // Bilden tar upp hela bredden i boxen
+  height: 200px; // Bildens höjd
+  object-fit: cover; // Fyller hela rutan utan att bli utdragen, klipps om de behövs
+  border-radius: 15px; // rundar
+  margin-bottom: 20px; //skapar mellan rum under bid och text
 }
 
+// QR koden (bootstrap)
 .qr-code {
-  position: absolute;
+  position: absolute; // Lyfter "ut" qr koden så man kan placera den var som helst ovanpå bilden
   top: 20px;
   right: 30px;
   width: 80px;
@@ -30,33 +33,39 @@
   border-radius: 5px;
 }
 
+// All information
 .b-info p {
   margin: 5px 0;
   font-size: 0.9rem;
 }
 
+// Hela paketet för ticket
 .tick {
-  display: flex;
-  flex-direction: column;
-  align-items: center; 
-  justify-content: center;
-  border-left: 2px dashed #444; 
+  display: flex; // Aktiverar flexbox på högersida av biljetten
+  flex-direction: column; // Staplar biljett och ikon på varandra
+  align-items: center; // Centrerar allt
+  justify-content: center; // Vertikalt centrering
+  border-left: 2px dashed #444;  // färg
   padding-left: 20px;
   margin-left: 20px;
 }
 
+// Endast biljett texten
 .biljett {
   font-size: 1.2rem;
   color: white;
   margin: 0 0 10px 0;
 }
+//Bootstrap ticket symbolen
 .icon {
   color: #f3ce13;
 }
+// Antal personer
 .antal{
   border-top: 2px dashed #444;
   font-size: small;
 }
+// Totala summan
 .totalsumma{
   font-size: medium;
 }
