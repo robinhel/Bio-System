@@ -28,7 +28,6 @@
     aspect-ratio: 2/3;
     object-fit: cover;
     border-radius: 20px;
-    transition: transform 0.3s ease;
     flex-shrink: 0;
 }
 
@@ -37,4 +36,30 @@
     justify-items: center;
     background: linear-gradient(to bottom, rgb(47, 46, 46) 10%, rgb(0, 0, 0) 100%);
     border-radius: 15px;
+}
+
+.details-container {
+    gap: 10px;
+    display: flex;
+    //outline: 3px solid red;
+}
+
+.movie-details {
+    //outline: 3px solid red;
+    width: 20vw;
+    text-align: center;
+
+}
+
+.movie-description {
+    //outline: 3px solid red;
+    display: block;
+
+    max-width: 100%;
+    height: auto;
+
+    h2 {
+        //text-align: center;
+        margin-bottom: 10px;
+    }
 }

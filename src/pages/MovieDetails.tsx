@@ -63,19 +63,21 @@ export default function MovieDetails() {
                         />
                     )}
                 </div>
+                <div className="details-container">
+                    <div className="movie-description">
+                        <h2>Beskrivning</h2>
+                        <p>{movie.Description}</p>
+                    </div>
 
-                <div className="movie-description">
-                    <h2>Beskrivning</h2>
-                    <p>{movie.Description}</p>
+                    <div className="movie-details">
+                        <h2>Detaljer</h2>
+                        <p>Genre: {movie.Genre}</p>
+                        <p>Åldersgräns: {movie.AgeRating}</p>
+                    </div>
                 </div>
-
-                <div className="movie-details">
-                    <h2>Detaljer</h2>
-                    <p>Genre: {movie.Genre}</p>
-                    <p>Åldersgräns: {movie.AgeRating}</p>
-                </div>
-
                 <div className="time-slots">
+
+
                     <div className="time-box">
                         <Link to="/booking-page">Tillgänglig <br />10:00-12:00</Link>
                         <Link to='*' className="unavailable">Fullbokad <br />12:00-14:00</Link>
@@ -89,3 +91,6 @@ export default function MovieDetails() {
         </>
     );
 }
+// ha en sortera datum på rad som är defualt inget, när man väljer datum
+// datum kommer tider för just den dagen i samma box
+
