@@ -24,7 +24,8 @@ export default [
   LoginPage,
   RegisterPage,
   CancelBookingPage,
-  ProfilePage
+  ProfilePage,
+  BookingConfirmation
 ]
   // map the route property of each page component to a Route
   .map(x => (({ element: createElement(x), ...x.route }) as Route))
