@@ -6,46 +6,46 @@
   flex-direction: column;
   align-items: center; 
   padding-bottom: 50px; 
-  border: 1px  solid white;
   margin-left: 100px;
 }
-// Endast bilden
-.ava {
-  width: 600px; 
-  max-width: 90%; 
-  height: 300px; 
-  object-fit: cover; 
-  border-radius: 20px;
-  margin: 20px 0; 
+ // Endast bilden
+ .ava {
+   width: 600px; 
+   max-width: 90%; 
+   height: 300px; 
+   object-fit: cover; 
+   border-radius: 20px;
+   margin: 20px 0;
+ } 
     
-}
-// Endast "Information om bokning"
-.kvitto {
-  position: absolute; 
-  top: 32%;
-  left: 34%;
-  transform: translate(-50%, -50%);
-  color: white;
-  margin: 0;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8); 
-  font-size: 1rem;
-  white-space: nowrap; 
-}
-// Alla LI taggar
-.prick{
-  position: absolute;
-  top: 42%;
-  left: 33%;
-  transform: translate(-50%, -50%);
-  color: white;
-  margin: 0;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8); 
-  font-size: 1rem;
-  white-space: nowrap; 
-}
-// Boknings bekräftelse texten
-.bb{
-  font-size: 2rem;
-  text-decoration: underline;
-}
+// }
+// // Endast "Information om bokning"
+// .kvitto {
+//   position: absolute; 
+//   top: 32%;
+//   left: 34%;
+//   transform: translate(-50%, -50%);
+//   color: white;
+//   margin: 0;
+//   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8); 
+//   font-size: 1rem;
+//   white-space: nowrap; 
+// }
+// // Alla LI taggar
+// .prick{
+//   position: absolute;
+//   top: 42%;
+//   left: 33%;
+//   transform: translate(-50%, -50%);
+//   color: white;
+//   margin: 0;
+//   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8); 
+//   font-size: 1rem;
+//   white-space: nowrap; 
+// }
+// // Boknings bekräftelse texten
+// .bb{
+//   font-size: 2rem;
+//   text-decoration: underline;
+// }
 
