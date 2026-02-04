@@ -1,19 +1,40 @@
 .movie-details-page {
-    display: block;
+    display: grid;
+}
+
+.movie-box {
+    display: flex;
+    height: 50vh;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    padding: 10px;
+    justify-content: flex-end;
+    //outline: 3px solid white;
+}
+
+.movie-trailer {
+    flex: 1;
+    min-width: o;
+}
+
+.movie-trailer iframe {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
 }
 
 .movie-cover {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 50px;
-    padding: 20px;
-}
-
-.movie-cover img {
-    width: 100%;
+    width: 25vh;
     aspect-ratio: 2/3;
     object-fit: cover;
     border-radius: 20px;
     transition: transform 0.3s ease;
+    flex-shrink: 0;
+}
 
+.time-slots {
+    outline: 5px solid rgb(41, 40, 40);
+    justify-items: center;
+    background: linear-gradient(to bottom, rgb(47, 46, 46) 10%, rgb(0, 0, 0) 100%);
+    border-radius: 15px;
 }
