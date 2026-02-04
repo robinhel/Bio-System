@@ -33,7 +33,6 @@ useEffect(() => {
   );
 
   return (
-    <div className="confirmation">
       <div className="c-section">
         <img className="ava" src="/images/avatar.webp" alt="Avatar cover" />
         <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" fill="currentColor" className="qr-code" viewBox="0 0 16 16">
@@ -59,9 +58,7 @@ useEffect(() => {
           <p className="antal"> <strong>2 x Vuxna </strong>- 105 sek </p>
           <p className="totalsumma"><strong>Totalt: 210 sek</strong></p>
         </div>
-
       </div>
-    </div>
   )
 
  }
