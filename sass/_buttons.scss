@@ -71,6 +71,7 @@
   &.unavailable {
 
     background: linear-gradient(to top right, #651f1f 10%, rgb(212, 27, 27) 100%);
+    cursor: not-allowed;
 
     &:hover {
       box-shadow: 0 0 30px rgb(119, 4, 4);
