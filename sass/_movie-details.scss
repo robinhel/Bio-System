@@ -1,5 +1,6 @@
 .movie-details-page {
     display: grid;
+    max-width: 1000px;
 }
 
 .movie-box {
@@ -28,7 +29,6 @@
     aspect-ratio: 2/3;
     object-fit: cover;
     border-radius: 20px;
-    transition: transform 0.3s ease;
     flex-shrink: 0;
 }
 
@@ -37,4 +37,5 @@
     justify-items: center;
     background: linear-gradient(to bottom, rgb(47, 46, 46) 10%, rgb(0, 0, 0) 100%);
     border-radius: 15px;
+    overflow: hidden;
 }

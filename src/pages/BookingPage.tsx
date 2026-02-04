@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Form } from 'react-bootstrap';
+import Alert from 'react-bootstrap/Alert';
+import Button from 'react-bootstrap/Button';
+
 
 BookingPage.route = {
     path: '/booking-page',
@@ -24,6 +27,7 @@ export default function BookingPage() {
 
     const [movie, setMovie] = useState<Movie | null>(null);
     const [selectedDate, setSelectedDate] = useState("");
+    const [show, setShow] = useState(true);
     
     useEffect(() => {
         fetch('/api/Movies')
@@ -40,6 +44,7 @@ export default function BookingPage() {
         <>
             <div className="booking-page">
             <h1>Bokning för {movie?.Title}</h1>
+            <div className="bookingdetail">
             <div className="formlabel">
                 <Form.Label> Ändra Datum </Form.Label>
                 <Form.Control
@@ -55,6 +60,23 @@ export default function BookingPage() {
             <p>Salong: Borgen Lilla</p>
             <p>Åldersgräns : {movie?.AgeRating}</p>
             </div>
+            </div>
+                <div className="bookinginformation">
+                    <Alert show={show} variant="success">
+                    <Alert.Heading>Din bokningsinformation</Alert.Heading>
+                    <hr />
+                     <p>🎟️ 1 vuxen, 1 barn</p>
+                     <p>📍 Rad 67, Plats 13-14</p>
+                     <p>275kr</p>    
+                    <hr />
+                    <div className="d-flex justify-content-end">
+                    <Button onClick={() => setShow(false)} variant="outline-success">
+                        Stäng mig
+                    </Button>
+                    </div>
+                </Alert>
+                {!show && <Button onClick={() => setShow(true)}>Öppna mig</Button>}
+                </div>
             </div>
         </>
     );

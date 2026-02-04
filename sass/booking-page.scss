@@ -36,3 +36,57 @@
     }
    
 }
+
+.bookinginformation
+{
+    p{
+        color: rgb(0, 0, 0);
+    }
+    
+}
+.bookinginformation .alert-success {
+    background-color: #fafafa; // Ljusröd bakgrund
+    border-color: rgb(0, 0, 0);         // Röd ram
+    color: rgb(0, 0, 0);            // Mörkröd text
+}
+
+@media (max-width: 768px) {
+    
+    .booking-page
+    {
+       align-items: center;
+       display: flex;
+       flex-direction: column;
+       width: 100%;
+    }
+    .booking-poster
+    {
+        margin-left: 0%;
+        align-items: center;
+        width: 200px;
+    }
+    .poster-text
+    {
+        align-items: center;
+        text-align: center;
+                margin-left: 0%;
+                p { 
+            margin-left: 0; 
+            width: 100%; 
+        }
+
+    }
+    .bookinginformation
+    {
+        align-items: center;
+                margin-left: 0%;
+
+    }
+    .formlabel
+    {
+        margin-left: 0%;
+    }
+
+
+
+}
