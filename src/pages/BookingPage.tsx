@@ -4,7 +4,7 @@ import { Form } from 'react-bootstrap';
 
 BookingPage.route = {
     path: '/booking-page',
-    menuLabel: 'Boknings sida',
+    menuLabel: 'Bokningssida',
     index: 5,
 };
 
