@@ -1,21 +1,62 @@
+.c-section {
+  position: relative; 
+  width: 600px;
+  max-width: 95%;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap; 
+  justify-content: space-between; 
+  background: #1a1a1a; 
+  padding: 20px;
+  border-radius: 20px;
+}
 
-// Hela div classen confirmation med allt innuti
-.confirmation {
-  width: 80%;
+.ava {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+
+.qr-code {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  width: 80px;
+  height: 80px;
+  fill: white;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.b-info p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+}
+
+.tick {
   display: flex;
   flex-direction: column;
   align-items: center; 
-  padding-bottom: 50px; 
-  margin-left: 100px;
+  justify-content: center;
+  border-left: 2px dashed #444; 
+  padding-left: 20px;
+  margin-left: 20px;
 }
- // Endast bilden
- .ava {
-   width: 600px; 
-   max-width: 90%; 
-   height: 300px; 
-   object-fit: cover; 
-   border-radius: 20px;
-   margin: 20px 0;
- } 
-    
 
+.biljett {
+  font-size: 1.2rem;
+  color: white;
+  margin: 0 0 10px 0;
+}
+.icon {
+  color: #f3ce13;
+}
+.antal{
+  border-top: 2px dashed #444;
+  font-size: small;
+}
+.totalsumma{
+  font-size: medium;
+}
