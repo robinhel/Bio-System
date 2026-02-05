@@ -93,29 +93,3 @@
     border-radius: 15px;
     overflow: hidden;
 }
-
-.details-container {
-    gap: 10px;
-    display: flex;
-    //outline: 3px solid red;
-}
-
-.movie-details {
-    //outline: 3px solid red;
-    width: 20vw;
-    text-align: center;
-
-}
-
-.movie-description {
-    //outline: 3px solid red;
-    display: block;
-
-    max-width: 100%;
-    height: auto;
-
-    h2 {
-        //text-align: center;
-        margin-bottom: 10px;
-    }
-}
