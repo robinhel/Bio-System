@@ -7,7 +7,7 @@ MovieDetails.route = {
     index: 2,
 };
 
-type Movie = {
+interface Movie {
     id: number;
     Title: string;
     Description: string;
@@ -63,29 +63,36 @@ export default function MovieDetails() {
                         />
                     )}
                 </div>
+                <div className="details-container">
+                    <div className="movie-description">
+                        <h2>Beskrivning</h2>
+                        <p>{movie.Description}</p>
+                    </div>
 
-                <div className="movie-description">
-                    <h2>Beskrivning</h2>
-                    <p>{movie.Description}</p>
+                    <div className="movie-details">
+                        <h2>Detaljer</h2>
+                        <div className="details-container-p">
+                            <p>Genre: {movie.Genre}</p>
+                            <p>Åldersgräns: {movie.AgeRating}</p>
+                        </div>
+                    </div>
                 </div>
-
-                <div className="movie-details">
-                    <h2>Detaljer</h2>
-                    <p>Genre: {movie.Genre}</p>
-                    <p>Åldersgräns: {movie.AgeRating}</p>
-                </div>
-
                 <div className="time-slots">
                     <div className="time-box">
                         <Link to="/booking-page">Tillgänglig <br />10:00-12:00</Link>
-                        <Link to='*' className="unavailable">Fullbokad <br />12:00-14:00</Link>
+                        <Link to="/booking-page" className="unavailable">Fullbokad <br />12:00-14:00</Link>
                         <Link to="/booking-page">Tillgänglig <br />14:00-16:00</Link>
                         <Link to="/booking-page">Tillgänglig <br />16:00-18:00</Link>
-                        <Link to='*' className="unavailable">Fullbokad <br />18:00-20:00</Link>
-                        <Link to='*' className="unavailable">Fullbokad <br />20:00-22:00</Link>
+                        <Link to="/booking-page" className="unavailable">Fullbokad <br />18:00-20:00</Link>
+                        <Link to="/booking-page" className="unavailable">Fullbokad <br />20:00-22:00</Link>
+                        <Link to="/booking-page" className="unavailable">Fullbokad <br />20:00-22:00</Link>
+                        <Link to="/booking-page" className="unavailable">Fullbokad <br />20:00-22:00</Link>
                     </div>
                 </div>
             </div>
         </>
     );
 }
+// ha en sortera datum på rad som är defualt inget, när man väljer datum
+// datum kommer tider för just den dagen i samma box
+

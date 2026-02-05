@@ -15,7 +15,7 @@
 
 .movie-trailer {
     flex: 1;
-    min-width: o;
+    min-width: 0;
 }
 
 .movie-trailer iframe {
@@ -31,6 +31,60 @@
     border-radius: 20px;
     flex-shrink: 0;
 }
+
+//mobiler
+@media (max-width: 768px) {
+
+    .movie-cover {
+        display: none;
+    }
+
+    .movie-box {
+        //outline: 3px solid white;
+        height: fit-content;
+    }
+
+    .movie-trailer {
+        height: 240px;
+    }
+
+    .details-container {
+        border-radius: 20px;
+        padding: 3px;
+        display: flex;
+        flex-direction: column;
+        grid-template-columns: repeat;
+        gap: 20px;
+        //outline: 3px solid white;
+        margin-bottom: 10px;
+        height: auto;
+        align-items: center;
+    }
+
+    .movie-description {
+        width: 100%;
+
+        h2 {
+            text-align: center;
+        }
+    }
+
+    .details-container-p {
+
+        display: flex;
+        width: fit-content;
+        gap: 10px;
+        //outline: 3px solid white;
+    }
+
+    .movie-details {
+
+        text-align: center;
+        width: 100%;
+    }
+}
+
+
 
 .time-slots {
     outline: 5px solid rgb(41, 40, 40);

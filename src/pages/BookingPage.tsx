@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/Button';
 
 BookingPage.route = {
     path: '/booking-page',
-    menuLabel: 'Booking Page',
+    menuLabel: 'Bokningssida',
     index: 5,
 };
 
