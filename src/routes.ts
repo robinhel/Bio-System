@@ -11,11 +11,12 @@ import MovieDetails from './pages/MovieDetails.tsx';
 import LoginPage from './pages/Login.tsx';
 import RegisterPage from './pages/Register.tsx';
 import CancelBookingPage from './pages/CancelBooking.tsx';
-import ProfilePage from './pages/ProfilePage.tsx';
 import BookingConfirmation from './pages/BookingConfirmation.tsx';
+import ContactPage from './pages/contact.tsx';
 
 
 export default [
+  ContactPage,
   startPage,
   MovieDetails,
   AboutUsPage,
@@ -24,7 +25,6 @@ export default [
   LoginPage,
   RegisterPage,
   CancelBookingPage,
-  ProfilePage,
   BookingConfirmation
 ]
   // map the route property of each page component to a Route
