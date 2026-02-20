@@ -3,7 +3,6 @@ import Header from "./partials/Header";
 import Main from './partials/Main';
 import Footer from './partials/Footer';
 import BootstrapBreakpoints from './parts/BootstrapBreakpoints';
-
 // turn off when not needed for debugging
 const showBootstrapBreakpoints = true;
 

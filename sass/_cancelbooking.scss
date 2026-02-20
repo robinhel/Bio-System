@@ -1,0 +1,54 @@
+.cancelbooking {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+}
+
+.cancelbooking-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.cancelbooking-label {
+    margin-bottom: 1rem;
+}
+
+.cancelbooking-input {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.cancelbooking-btn {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1.5rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.cancelbooking-btn:hover {
+    background-color: #0056b3;
+}
+
+#list {
+    list-style: none;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(180deg, #410000 0%, #010820 100%);
+    border: 1px solid #000000;
+    border-radius: 10px;
+
+}
+
+#list p {
+    margin: 0.5rem 0;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #bdd0e3;
+}

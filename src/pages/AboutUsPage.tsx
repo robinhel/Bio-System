@@ -1,6 +1,6 @@
 AboutUsPage.route = {
     path: '/about-us',
-    menuLabel: 'About us',
+    menuLabel: 'Om oss',
     index: 3,
 };
 
@@ -47,7 +47,7 @@ export default function AboutUsPage() {
             <footer className="section3">
                 <p><em>Vi ses i mörket! </em></p>
             </footer>
-            <div>
+            <div className ="biobild">
                 <img className="img" src="/images/Biograf.jpg" alt="Picture of a cinema" />
                 <img className="img" src="/images/Absolute.jpg" alt="Absolute Cinema"/>
             </div>
