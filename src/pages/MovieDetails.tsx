@@ -14,6 +14,7 @@ interface Movie {
     Genre: string;
     Cover: string;
     AgeRating: number;
+    trailer: string;
 };
 
 export default function MovieDetails() {
@@ -48,9 +49,8 @@ export default function MovieDetails() {
                 <div className="movie-box">
                     <div className="movie-trailer">
                         <iframe
-                            src="https://www.youtube.com/embed/Ma1x7ikpid8"
+                            src={`https://www.youtube.com/embed/${movie.trailer}`}
                             title="Movie trailer"
-
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
                         />
