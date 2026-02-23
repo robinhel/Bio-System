@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 LoginPage.route = {
     path: '/login-page',
@@ -7,21 +8,52 @@ LoginPage.route = {
 };
 
 export default function LoginPage() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+
+    async function handleLogin(e: React.FormEvent) {
+        e.preventDefault();
+
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ email, password }),
+        });
+
+        if (response.ok) {
+            navigate('/');
+        }
+    }
+
     return <>
         <div className="auth-page">
-            <h1 className="auth-title">Logga In</h1>
+            <form onSubmit={handleLogin}>
+                <h1 className="auth-title">Logga In</h1>
 
-            <p className="auth-label">E-post (användarnamn)</p>
-            <input type="text" name="email" required />
+                <p className="auth-label">E-post</p>
+                <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
 
-            <p className="auth-label">Lösenord</p>
-            <input type="password" name="password" required /><br />
+                <p className="auth-label">Lösenord</p>
+                <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
 
-            <button className="auth-btn">Logga In</button>
+                <button type="submit" className="auth-btn">Logga In</button>
+            </form>
         </div>
 
         <Link className="auth-link" to="/register-page">
-            <button className="auth-btn">Klicka här för att registrera ett nytt konto</button>
+            <button className="auth-btn">Skapa konto</button>
         </Link>
     </>;
 }
