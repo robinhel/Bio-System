@@ -22,8 +22,8 @@ export default function BookingConfirmation() {
 
   const [movies, setMovies] = useState<Movie[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-
-useEffect(() => {
+  
+  useEffect(() => {
   fetch('/api/Movies')
     .then(res => res.json())
     .then(data => setMovies(data));
