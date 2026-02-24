@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "BvVy06tpg/c=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\HP\\repos\\Bio-system-New\\Bio-system\\backend\\Backend.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\HP\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
+    "C:\\Users\\HP\\.nuget\\packages\\dyndata\\1.0.5\\dyndata.1.0.5.nupkg.sha512",
+    "C:\\Users\\HP\\.nuget\\packages\\fracturedjson\\4.0.0\\fracturedjson.4.0.0.nupkg.sha512",
+    "C:\\Users\\HP\\.nuget\\packages\\mysqlconnector\\2.5.0\\mysqlconnector.2.5.0.nupkg.sha512",
+    "C:\\Users\\HP\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

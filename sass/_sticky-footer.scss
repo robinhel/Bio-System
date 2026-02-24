@@ -1,10 +1,97 @@
-// Sticky footer
 #root {
+  min-height: 150vh;
   display: flex;
-  min-height: 100vh;
   flex-direction: column;
+}
 
-  main {
-    flex: 1;
-  }
+main {
+  flex: 1;
+}
+.site-footer {
+  background: radial-gradient(circle at top, #410000 0%, #010820 100%);
+  color: white;
+  padding: 120px 0 10px 0; 
+  border-top: 2px solid #e50914;
+}
+
+
+.footer-right-wrapper {
+  display: flex;
+  justify-content: flex-end;   
+  gap: 20px;                   
+  flex-wrap: wrap;             
+}
+.footer-section {
+  margin-bottom: 8px;
+}
+.footer-section:first-child {
+  align-items: start;
+}
+.footer-socials:first-child {
+  align-items: center;
+}
+.social-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center; /* <-- viktigt */
+}
+
+.footer-section {
+  margin-bottom: 30px; /* mindre än 30px */
+}
+
+
+
+
+.footer-title {
+  margin-bottom: 6px;
+  font-size: 20px;
+  letter-spacing: 0.5px;
+}
+
+.social-stack,
+.nav-stack {
+  gap: 5px; 
+}
+
+.social-stack ion-icon {
+  font-size: 22px;
+  color: white;
+  transition: 0.2s ease
+}
+
+.social-stack ion-icon:hover {
+  transform: scale(1.15);
+  color: #e50914;
+}
+
+.nav-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nav-stack a {
+  color: white;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.nav-stack a:hover {
+  color: #e50914;
+}
+
+.H-line {
+  border: none;
+  height: 1px;
+  background-color: rgba(255, 4, 4, 0.2);
+  margin: 20px 0;
+  pointer-events: none;
+}
+
+.copyright {
+  text-align: center;
+  padding: 8px 0 12px 0;
+  font-size: 13px;
 }
