@@ -25,7 +25,7 @@ export default function StartPage() {
     const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
-        fetch('/api/Movies')
+        fetch('/api/movies')
             .then(res => res.json())
             .then(data => setMovies(data))
             .catch(error => console.error('Fel vid hämtning av filmer:', error))
