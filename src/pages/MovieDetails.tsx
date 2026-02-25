@@ -6,7 +6,13 @@ MovieDetails.route = {
     path: "/movie-details/:id",
     index: 2,
 };
-
+interface Screenings {
+    id: number;
+    movieId: number;
+    theaterId: number;
+    s   tartTime: string;
+endTime: string;
+}
 interface Movie {
     id: number;
     Title: string;
@@ -20,12 +26,13 @@ interface Movie {
 export default function MovieDetails() {
     const { id } = useParams<{ id: string; }>();
     const [movie, setMovie] = useState<Movie | null>(null);
+    const [screenings, setScreenings] = useState<Screenings[]>([]);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         if (!id) return;
 
-        fetch(`/api/Movies/${id}`)
+        fetch(`/api/movies/${id}`)
             .then((res) => {
                 if (!res.ok) throw new Error("Kunde inte hämta film");
                 return res.json();
@@ -37,9 +44,20 @@ export default function MovieDetails() {
             .catch((err) => setError(err.message));
     }, [id]);
 
+    useEffect(() => {
+        if (!id) return;
+
+        fetch(`/api/screenings?movieId=${id}`)
+            .then(res => res.json())
+            .then(data => {
+                console.log("SCREENINGS DATA:", data);
+                setScreenings(data);
+            })
+            .catch(err => console.log(err));
+    }, [id]);
+
     if (error) return <p>{error}</p>;
     if (!movie) return <p>Laddar...</p>;
-
     return (
         <>
             <div className="movie-details-page">
@@ -79,14 +97,32 @@ export default function MovieDetails() {
                 </div>
                 <div className="time-slots">
                     <div className="time-box">
-                        <Link to="/booking-page">Tillgänglig <br />10:00-12:00</Link>
-                        <Link to="/booking-page" className="unavailable">Fullbokad <br />12:00-14:00</Link>
-                        <Link to="/booking-page">Tillgänglig <br />14:00-16:00</Link>
-                        <Link to="/booking-page">Tillgänglig <br />16:00-18:00</Link>
-                        <Link to="/booking-page" className="unavailable">Fullbokad <br />18:00-20:00</Link>
-                        <Link to="/booking-page" className="unavailable">Fullbokad <br />20:00-22:00</Link>
-                        <Link to="/booking-page" className="unavailable">Fullbokad <br />20:00-22:00</Link>
-                        <Link to="/booking-page" className="unavailable">Fullbokad <br />20:00-22:00</Link>
+                        {screenings
+                            .map(screening => {
+                                if (movie.id != screening.movieId) {
+                                    console.log(movie.id)
+                                }
+                                else {
+                                    const start = new Date(screening.startTime);
+                                    const end = new Date(screening.endTime);
+
+                                    const timeSpan =
+                                        start.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) +
+                                        " - " +
+                                        end.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+                                    return (
+                                        <Link
+                                            key={screening.id}
+                                            to={`/booking-page/${screening.id}`}
+                                            className="time-slot"
+                                        >
+                                            {timeSpan}
+                                        </Link>
+                                    );
+                                }
+                            })}
+
                     </div>
                 </div>
             </div>
