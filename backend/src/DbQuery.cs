@@ -162,11 +162,11 @@ public static class DbQuery
                 INSERT INTO acl (userRoles, method, allow, route, `match`, comment) VALUES
                 ('visitor', 'POST', 'allow', '/api/auth/register', 'true', 'Registrering öppen för alla'),
                 ('visitor', 'POST', 'allow', '/api/auth/login', 'true', 'Login öppen för alla'),
-                ('visitor', 'GET', 'allow', '/api/movies', 'false', 'Visa filmer för alla'),
-                ('visitor', 'GET', 'allow', '/api/screenings', 'false', 'Visa visningar för alla'),
-                ('user, admin', 'GET', 'allow', '/api/bookings', 'false', 'Användare kan se bokningar'),
-                ('user, admin', 'POST', 'allow', '/api/bookings', 'false', 'Användare kan boka'),
-                ('admin', '*', 'allow', '/api', 'false', 'Admin får göra allt i API')
+                ('visitor', 'GET', 'allow', '/api/movies', 'true', 'Visa filmer för alla'),
+                ('visitor', 'GET', 'allow', '/api/screenings', 'true', 'Visa visningar för alla'),
+                ('user, admin', 'GET', 'allow', '/api/bookings', 'true', 'Användare kan se bokningar'),
+                ('user, admin', 'POST', 'allow', '/api/bookings', 'true', 'Användare kan boka'),
+                ('admin', '*', 'allow', '/api', 'true', 'Admin får göra allt i API')
             ";
             command.CommandText = aclData;
             command.ExecuteNonQuery();
