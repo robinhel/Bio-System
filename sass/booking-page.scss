@@ -70,29 +70,118 @@
     p {
         color: rgb(0, 0, 0);
     }
-    margin-top: 12%;
+    margin-top: 5%;
 }
 
 .bookinginformation .alert-success {
-    background-color: #fafafa; // Ljusröd bakgrund
-    border-color: rgb(0, 0, 0); // Röd ram
-    color: rgb(0, 0, 0); // Mörkröd text
+    background-color: #fafafa;
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgb(44, 34, 34);
 }
 
-.nicklas {
+.confirm-booking {
     button {
         width: 100%;
-        background-color: rgb(10, 75, 10);
+        background-color: rgb(194, 17, 17);
         opacity: 85%;
+        color: #fafafa;
+        border-radius: 15px;
 
         &:hover {
-            background-color: rgb(10, 61, 10);
+            background-color: rgb(228, 20, 20);
+            color:#ffffff;
         }
+
     }
 
 
 }
 
+// CHOOSE TICKETS
+.ticket-selector
+{
+    background-color: rgba(255, 255, 255, 0.048);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    margin-top: 30px;
+    padding: 6px 20px;
+    border-radius: 20px;
+    
+    .resetButton
+    {
+        margin-right: 0px;
+        padding: 10px 5px;
+        display: flex;
+        justify-content: flex-end;
+        
+        button
+        {
+            background-color: rgba(214, 214, 214, 0.815);
+            color: black;
+            width: 130px;
+            &:hover
+            {
+                background-color: rgb(255, 255, 255);
+            }
+            &:active
+            {
+                background-color: rgba(255, 255, 255, 0.904);
+                color: black;
+            }
+        }
+    }
+}
+
+
+.category {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+}
+
+
+.ticketamount {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.ticketamount button{
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+
+.ticketamount button i {
+    font-size: 23px;      
+    color: #ffffff;        
+}
+.ticketamount button:hover {
+    transform: scale(1.08); 
+}
+.ticketamount button:hover i{
+    color: rgb(88, 165, 228)
+}
+.ticketamount p{
+    margin: 0;
+    line-height: 1;
+}
+
+
+
+
+
+
+
+// MOBILE VIEW
 @media (max-width: 768px) {
     
     .bookingdetail{
