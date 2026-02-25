@@ -43,43 +43,97 @@ public static class DbQuery
     private static void CreateTablesIfNotExist(MySqlConnection db)
     {
         var createTablesSql = @"
-            CREATE TABLE IF NOT EXISTS sessions (
-                id VARCHAR(255) PRIMARY KEY NOT NULL,
-                created DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
-                modified DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
-                data JSON
-            );
+CREATE TABLE IF NOT EXISTS sessions (
+            id VARCHAR(255) PRIMARY KEY NOT NULL,
+            created DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+            modified DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+            data JSON
+        );
 
-            CREATE TABLE IF NOT EXISTS acl (
-                id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                userRoles VARCHAR(255) NOT NULL,
-                method VARCHAR(50) NOT NULL DEFAULT 'GET',
-                allow ENUM('allow', 'disallow') NOT NULL DEFAULT 'allow',
-                route VARCHAR(255) NOT NULL,
-                `match` ENUM('true', 'false') NOT NULL DEFAULT 'true',
-                comment VARCHAR(500) NOT NULL DEFAULT '',
-                UNIQUE KEY unique_acl (userRoles, method, route)
-            );
+        CREATE TABLE IF NOT EXISTS acl (
+            id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+            userRoles VARCHAR(255) NOT NULL,
+            method VARCHAR(50) NOT NULL DEFAULT 'GET',
+            allow ENUM('allow', 'disallow') NOT NULL DEFAULT 'allow',
+            route VARCHAR(255) NOT NULL,
+            `match` ENUM('true', 'false') NOT NULL DEFAULT 'true',
+            comment VARCHAR(500) NOT NULL DEFAULT '',
+            UNIQUE KEY unique_acl (userRoles, method, route)
+        );
 
-            CREATE TABLE IF NOT EXISTS users (
-                id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                created DATE DEFAULT (CURDATE()) NOT NULL,
-                email VARCHAR(255) NOT NULL UNIQUE,
-                firstName VARCHAR(255) NOT NULL,
-                lastName VARCHAR(255) NOT NULL,
-                role VARCHAR(50) NOT NULL DEFAULT 'user',
-                password VARCHAR(255) NOT NULL
-            );
+        CREATE TABLE IF NOT EXISTS users (
+            id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+            created DATE DEFAULT (CURDATE()) NOT NULL,
+            email VARCHAR(255) NOT NULL UNIQUE,
+            password VARCHAR(255) NOT NULL,
+            firstName VARCHAR(100) NOT NULL,
+            lastName VARCHAR(100) NOT NULL,
+            role VARCHAR(50) NOT NULL DEFAULT 'user'
+        );
 
-            CREATE TABLE IF NOT EXISTS products (
-                id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                name VARCHAR(255) NOT NULL,
-                description TEXT NOT NULL,
-                quantity VARCHAR(50) NOT NULL,
-                `price$` DECIMAL(10,2) NOT NULL,
-                slug VARCHAR(255) NOT NULL,
-                categories JSON NOT NULL
-            );
+        CREATE TABLE IF NOT EXISTS theaters (
+            id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+            name VARCHAR(100) NOT NULL,
+            totalSeats INT NOT NULL
+        );
+
+        CREATE TABLE IF NOT EXISTS movies (
+            id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+            title VARCHAR(255) NOT NULL,
+            description TEXT NOT NULL,
+            genre VARCHAR(100) NOT NULL,
+            ageRating INT NOT NULL,
+            imageUrl VARCHAR(500) NOT NULL DEFAULT '',
+            youtubeTrailer VARCHAR(100) NOT NULL DEFAULT ''
+        );
+
+        CREATE TABLE IF NOT EXISTS screenings (
+            id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+            movieId INT NOT NULL,
+            theaterId INT NOT NULL,
+            startTime DATETIME NOT NULL,
+            endTime DATETIME NOT NULL,
+            KEY movieId (movieId),
+            KEY theaterId (theaterId),
+            CONSTRAINT screenings_ibfk_1 FOREIGN KEY (movieId) REFERENCES movies(id),
+            CONSTRAINT screenings_ibfk_2 FOREIGN KEY (theaterId) REFERENCES theaters(id)
+        );
+
+        CREATE TABLE IF NOT EXISTS seats (
+            id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+            theaterId INT NOT NULL,
+            rowNumber INT NOT NULL,
+            seatNumber INT NOT NULL,
+            KEY theaterId (theaterId),
+            CONSTRAINT seats_ibfk_1 FOREIGN KEY (theaterId) REFERENCES theaters(id),
+            UNIQUE KEY unique_seat (theaterId, rowNumber, seatNumber)
+        );
+
+        CREATE TABLE IF NOT EXISTS bookings (
+            id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+            userId INT NOT NULL,
+            screeningId INT NOT NULL,
+            bookingNumber VARCHAR(20) NOT NULL,
+            totalPrice DECIMAL(10,2) NOT NULL,
+            UNIQUE KEY bookingNumber (bookingNumber),
+            KEY userId (userId),
+            KEY screeningId (screeningId),
+            CONSTRAINT bookings_ibfk_1 FOREIGN KEY (userId) REFERENCES users(id),
+            CONSTRAINT bookings_ibfk_2 FOREIGN KEY (screeningId) REFERENCES screenings(id)
+        );
+
+        CREATE TABLE IF NOT EXISTS bookingSeats (
+            id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+            bookingId INT NOT NULL,
+            seatId INT NOT NULL,
+            ticketType ENUM('adult', 'child', 'senior') NOT NULL,
+            price DECIMAL(10,2) NOT NULL,
+            KEY bookingId (bookingId),
+            KEY seatId (seatId),
+            CONSTRAINT bookingSeats_ibfk_1 FOREIGN KEY (bookingId) REFERENCES bookings(id),
+            CONSTRAINT bookingSeats_ibfk_2 FOREIGN KEY (seatId) REFERENCES seats(id),
+            UNIQUE KEY unique_booking_seat (bookingId, seatId)
+        );
         ";
 
         // Execute each statement separately
@@ -106,65 +160,148 @@ public static class DbQuery
         {
             var aclData = @"
                 INSERT INTO acl (userRoles, method, allow, route, `match`, comment) VALUES
-                ('visitor, user', 'GET', 'disallow', '/secret.html', 'true', 'No access to /secret.html for visitors and normal users'),
-                ('visitor,user, admin', 'GET', 'allow', '/api', 'false', 'Allow access to all routes not starting with /api'),
-                ('visitor', 'POST', 'allow', '/api/users', 'true', 'Allow registration as new user for visitors'),
-                ('visitor, user,admin', '*', 'allow', '/api/login', 'true', 'Allow access to all login routes'),
-                ('admin', '*', 'allow', '/api/users', 'true', 'Allow admins to see and edit users'),
-                ('admin', '*', 'allow', '/api/sessions', 'true', 'Allow admins to see and edit sessions'),
-                ('admin', '*', 'allow', '/api/acl', 'true', 'Allow admins to see and edit acl rules'),
-                ('visitor,user,admin', 'GET', 'allow', '/api/products', 'true', 'Allow all user roles to read products');
+                ('visitor', 'POST', 'allow', '/api/auth/register', 'true', 'Registrering öppen för alla'),
+                ('visitor', 'POST', 'allow', '/api/auth/login', 'true', 'Login öppen för alla'),
+                ('visitor', 'GET', 'allow', '/api/movies', 'true', 'Visa filmer för alla'),
+                ('visitor', 'GET', 'allow', '/api/screenings', 'true', 'Visa visningar för alla'),
+                ('user, admin', 'GET', 'allow', '/api/bookings', 'true', 'Användare kan se bokningar'),
+                ('user, admin', 'POST', 'allow', '/api/bookings', 'true', 'Användare kan boka'),
+                ('admin', '*', 'allow', '/api', 'true', 'Admin får göra allt i API')
             ";
             command.CommandText = aclData;
             command.ExecuteNonQuery();
         }
 
-        // Seed users
+        // Seed Users
         command.CommandText = "SELECT COUNT(*) FROM users";
         if (Convert.ToInt32(command.ExecuteScalar()) == 0)
         {
             var usersData = @"
-                INSERT INTO users (created, email, firstName, lastName, role, password) VALUES
-                ('2024-04-02', 'thomas@nodehill.com', 'Thomas', 'Frank', 'admin', '$2a$13$IahRVtN2pxc1Ne1NzJUPpOQO5JCtDZvXpSF.IF8uW85S6VoZKCwZq'),
-                ('2024-04-02', 'olle@nodehill.com', 'Olle', 'Olofsson', 'user', '$2a$13$O2Gs3FME3oA1DAzwE0FkOuMAOOAgRyuvNQq937.cl7D.xq0IjgzN.'),
-                ('2024-04-02', 'maria@nodehill.com', 'Maria', 'Mårtensson', 'user', '$2a$13$p4sqCN3V3C1wQXspq4eN0eYwK51ypw7NPL6b6O4lMAOyATJtKqjHS');
+                INSERT INTO users (email, password, firstName, lastName, role) VALUES
+                ('admin@bio.se', '$13$Cq/ULrmQ8SluiSw4vFAGKe6Xd25G2yw6t0LYww4mnuRxSl0sE70J6', 'Anna', 'Andersson', 'admin'),
+                ('user@bio.se', '$13$Cq/ULrmQ8SluiSw4vFAGKe6Xd25G2yw6t0LYww4mnuRxSl0sE70J6', 'Bengt', 'Bengtsson', 'user'),
+                ('kalle@mail.se', '$13$Cq/ULrmQ8SluiSw4vFAGKe6Xd25G2yw6t0LYww4mnuRxSl0sE70J6', 'Kalle', 'Karlsson', 'user'),
+                ('lisa@mail.se', '$13$Cq/ULrmQ8SluiSw4vFAGKe6Xd25G2yw6t0LYww4mnuRxSl0sE70J6', 'Lisa', 'Larsson', 'user')
             ";
             command.CommandText = usersData;
             command.ExecuteNonQuery();
         }
 
-        // Seed products
-        command.CommandText = "SELECT COUNT(*) FROM products";
+        // Seed Theaters
+        command.CommandText = "SELECT COUNT(*) FROM theaters";
         if (Convert.ToInt32(command.ExecuteScalar()) == 0)
         {
-            var productsData = new List<string>
+            var theatersData = @"
+                INSERT INTO theaters (name, totalSeats) VALUES
+                ('Stora Salongen', 81),
+                ('Lilla Salongen', 55)
+            ";
+            command.CommandText = theatersData;
+            command.ExecuteNonQuery();
+        }
+
+        // Seed Movies
+        command.CommandText = "SELECT COUNT(*) FROM movies";
+        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+        {
+            var moviesData = @"
+                INSERT INTO movies (title, description, genre, ageRating, imageUrl, youtubeTrailer) VALUES
+                ('Avatar: Fire and Ash', 'Resan fortsätter på Pandora där Jake Sully och Neytiri ställs inför ett nytt hot från Asfolket, en aggressiv Na-vi-stam som lever i vulkaniska miljöer.', 'Sci-Fi/Action', 11, 'https://upload.wikimedia.org/wikipedia/en/9/95/Avatar_Fire_and_Ash_poster.jpeg', 'nb_fFj_0rq8'),
+                ('Superman', 'Stålmannen försöker förena sitt utomjordiska arv med sin mänskliga uppväxt som Clark Kent. En nystart för DC:s filmuniversum regisserad av James Gunn.', 'Action/Sci-Fi', 11, 'https://m.media-amazon.com/images/M/MV5BOGMwZGJiM2EtMzEwZC00YTYzLWIxNzYtMmJmZWNlZjgxZTMwXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg', 'Ox8ZLF6cGM0'),
+                ('Zootopia 2', 'Judy Hopps och Nick Wilde är tillbaka för att lösa ett nytt mysterium i den myllrande djurmetropolen Zootopia.', 'Animerat/Familj', 7, 'https://m.media-amazon.com/images/M/MV5BYjg1Mjc3MjQtMTZjNy00YWVlLWFhMWEtMWI3ZTgxYjJmNmRlXkEyXkFqcGc@._V1_.jpg', 'BjkIOU5PhyQ'),
+                ('A Minecraft Movie', 'En udda grupp äventyrare dras in i den blockiga världen Overworld och måste lära sig att tämja naturen för att rädda den från onda krafter.', 'Äventyr/Familj', 7, 'https://upload.wikimedia.org/wikipedia/en/thumb/6/66/A_Minecraft_Movie_poster.jpg/250px-A_Minecraft_Movie_poster.jpg', '8B1EtVPBSMw'),
+                ('Jurassic World Rebirth', 'En ny era av dinosaurier börjar när mänskligheten kämpar för att samexistera med förhistoriska varelser på en global skala.', 'Action/Thriller', 11, 'https://m.media-amazon.com/images/M/MV5BNjg2NTcwYWQtYzk4NS00MTJhLWEzZjItMzIxNjk3YzlkYzU0XkEyXkFqcGc@._V1_.jpg', '6m1eOoUoVao'),
+                ('Avengers: Doomsday', 'Hjältarna i Marvel-universumet ställs inför sin hittills största utmaning när den mystiske och mäktige Doctor Doom dyker upp.', 'Action/Sci-Fi', 11, 'https://upload.wikimedia.org/wikipedia/en/e/ee/Avengers_Doomsday_poster.jpg', 'zit4DTsP9Mw'),
+                ('The Mandalorian & Grogu', 'Prisjägaren Din Djarin och hans följeslagare Grogu ger sig ut på ett nytt storslaget äventyr i Star Wars-galaxen.', 'Sci-Fi/Äventyr', 11, 'https://image.tmdb.org/t/p/original/qSWiY6KAvkapXJWeyNrmDGYWQwr.jpg', '_pa1KLXuW0Y'),
+                ('Tron: Ares', 'Ett sofistikerat datorprogram vid namn Ares skickas från den digitala världen in i den verkliga världen på ett farligt uppdrag.', 'Sci-Fi/Action', 11, 'https://lumiere-a.akamaihd.net/v1/images/image_255af947.jpeg?region=0,0,540,810', 'YShVEXb7-ic'),
+                ('Mortal Kombat II', 'Turneringen fortsätter när nya kämpar från Outworld och Earthrealm möts i en blodig kamp om universums framtid.', 'Action/Fantasy', 15, 'https://m.media-amazon.com/images/M/MV5BNGZjZGUxYjMtNDBmYi00N2JmLTk5OTEtNDQzNDliMWMzZWUyXkEyXkFqcGc@._V1_.jpg', 'ZdC5mFHPldg'),
+                ('Frankenstein', 'En modern tolkning av Mary Shelleys klassiska berättelse där den briljante men besatte vetenskapsmannen Victor Frankenstein väcker liv i en varelse skapad av död materia, med förödande konsekvenser.', 'Horror/Sci-Fi/Drama', 15, 'https://lancerfeed.press/wp-content/uploads/2025/11/img_5991_8.webp', '8aulMPhE12g')
+                ";
+            command.CommandText = moviesData;
+            command.ExecuteNonQuery();
+        }
+
+        // Seed Screenings
+        command.CommandText = "SELECT COUNT(*) FROM screenings";
+        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+        {
+            var screeningsData = @"
+                INSERT INTO screenings (movieId, theaterId, startTime, endTime) VALUES
+                (1, 1, '2026-03-01 19:00:00', '2026-03-01 21:30:00'),
+                (1, 2, '2026-03-01 21:00:00', '2026-03-01 23:30:00'),
+                (2, 1, '2026-03-02 18:00:00', '2026-03-02 20:30:00'),
+                (3, 2, '2026-03-02 19:30:00', '2026-03-02 22:00:00'),
+                (4, 1, '2026-03-03 20:00:00', '2026-03-03 22:30:00'),
+                (5, 2, '2026-03-03 15:00:00', '2026-03-03 17:00:00'),
+                (6, 1, '2026-03-04 18:30:00', '2026-03-04 21:00:00'),
+                (7, 2, '2026-03-05 19:00:00', '2026-03-05 21:30:00'),
+                (8, 1, '2026-03-06 20:00:00', '2026-03-06 22:15:00'),
+                (9, 2, '2026-03-07 19:30:00', '2026-03-07 21:45:00'),
+                (10, 1, '2026-03-08 21:00:00', '2026-03-08 23:15:00')
+            ";
+            command.CommandText = screeningsData;
+            command.ExecuteNonQuery();
+        }
+
+        // Seed Seats
+        command.CommandText = "SELECT COUNT(*) FROM seats";
+        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+        {
+            // Stora Salongen: olika antal säten per rad (totalt 81)
+            int[] storaSalongenSeats = { 8, 9, 10, 10, 10, 10, 12, 12 };
+            for (int row = 0; row < storaSalongenSeats.Length; row++)
             {
-                @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
-                ('Croissant', 'Buttery, flaky French-style croissant baked fresh daily with premium European butter. Perfect for breakfast with jam, afternoon coffee, or as the base for elegant sandwiches.\nGolden layers that melt in your mouth with authentic French pastry techniques.', '1 large', 0.99, 'croissant', '[""Bread & rice""]')",
-                @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
-                ('Gherkins', 'Crisp, tangy gherkin pickles packed in traditional brine with dill and spices. These small pickles add perfect acidity to sandwiches, charcuterie boards, and salads.\nA classic European-style pickle with authentic flavor that brightens any meal.', 'A can of 10', 4.5, 'gherkins', '[""Vegetables"",""Canned food""]')",
-                @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
-                ('Bay Leaves', 'Aromatic dried bay leaves from the Mediterranean, essential for soups, stews, and braised dishes. These whole leaves release their subtle, woodsy flavor slowly during cooking.\nRemove before serving for the perfect herbal note in your favorite recipes.', '1 bundle', 3.45, 'bay-leaves', '[""Vegetables"",""Spices""]')",
-                @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
-                ('Tomatoes', 'Fresh, vine-ripened tomatoes bursting with sweet, balanced flavor. Perfect for salads, sandwiches, or cooking.\nThese tomatoes have been allowed to ripen naturally on the vine for maximum taste and vibrant red color.', '1 lb', 2.5, 'tomatoes-on-the-vine', '[""Vegetables""]')",
-                @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
-                ('Basmati Rice', 'Premium long-grain basmati rice with a distinctive nutty aroma and fluffy texture. Aged for optimal flavor, this rice cooks to perfection with separate, non-sticky grains.\nIdeal for Indian dishes, pilafs, and everyday meals where quality matters.', '4 lb', 6.99, 'basmati-rice', '[""Bread & rice""]')",
-                @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
-                ('Green Olives', 'Plump, buttery green olives cured in traditional Mediterranean style. These olives have a mild, fruity flavor with a satisfying firm texture.\nPerfect for antipasto platters, salads, or enjoying straight from the can.', '1 lb, canned', 9.75, 'green-olives', '[""Canned food""]')",
-                @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
-                ('Parsley', 'Fresh, vibrant flat-leaf parsley with bright, clean flavor. Essential for Mediterranean cooking, garnishing, and adding fresh herb notes to any dish.\nThis aromatic herb brightens sauces, soups, and grain dishes beautifully.', '1 bundle', 2.75, 'parsley', '[""Vegetables"",""Spices""]')",
-                @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
-                ('Artichoke', 'Fresh, globe artichoke with tender heart and meaty leaves. Steam, grill, or stuff for an elegant side dish.\nThis versatile vegetable offers a subtle, nutty flavor and satisfying texture when properly prepared.', '1', 1.75, 'artichoke', '[""Vegetables""]')",
-                @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
-                ('Focaccia', 'Rustic Italian focaccia bread with herbs and olive oil, baked to golden perfection. Soft, airy interior with a slightly crispy crust.\nPerfect for sandwiches, dipping in olive oil, or serving alongside Mediterranean meals.', '1 large', 4.3, 'focaccia', '[""Bread & rice""]')",
-                @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
-                ('Rosemary', 'Fresh rosemary plant in a convenient pot for your kitchen windowsill. This aromatic herb adds pine-like fragrance to roasted meats, potatoes, and bread.\nSnip fresh sprigs as needed for cooking or cocktail garnishes.', '1 pot', 3.6, 'rosemary', '[""Vegetables"",""Spices""]')"
-            };
-            foreach (var sql in productsData)
-            {
-                command.CommandText = sql;
-                command.ExecuteNonQuery();
+                for (int seat = 1; seat <= storaSalongenSeats[row]; seat++)
+                {
+                    command.CommandText = $"INSERT INTO seats (theaterId, rowNumber, seatNumber) VALUES (1, {row + 1}, {seat})";
+                    command.ExecuteNonQuery();
+                }
             }
+
+            // Lilla Salongen: olika antal säten per rad (totalt 55)
+            int[] lillaSalongenSeats = { 6, 8, 9, 10, 10, 12 };
+            for (int row = 0; row < lillaSalongenSeats.Length; row++)
+            {
+                for (int seat = 1; seat <= lillaSalongenSeats[row]; seat++)
+                {
+                    command.CommandText = $"INSERT INTO seats (theaterId, rowNumber, seatNumber) VALUES (2, {row + 1}, {seat})";
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        // Seed Bookings
+        command.CommandText = "SELECT COUNT(*) FROM bookings";
+        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+        {
+            var bookingsData = @"
+                INSERT INTO bookings (userId, screeningId, bookingNumber, totalPrice) VALUES
+                (2, 1, 'BOOK-001', 280.00),
+                (3, 2, 'BOOK-002', 220.00),
+                (4, 3, 'BOOK-003', 280.00),
+                (2, 5, 'BOOK-004', 200.00)
+            ";
+            command.CommandText = bookingsData;
+            command.ExecuteNonQuery();
+        }
+
+        // Seed BookingSeats
+        command.CommandText = "SELECT COUNT(*) FROM bookingSeats";
+        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+        {
+            var bookingSeatsData = @"
+                INSERT INTO bookingSeats (bookingId, seatId, ticketType, price) VALUES
+                (1, 10, 'adult', 140.00),
+                (1, 11, 'adult', 140.00),
+                (2, 85, 'adult', 140.00),
+                (2, 86, 'child', 80.00),
+                (3, 20, 'adult', 140.00),
+                (3, 21, 'adult', 140.00),
+                (4, 30, 'senior', 120.00),
+                (4, 31, 'child', 80.00)
+            ";
+            command.CommandText = bookingSeatsData;
+            command.ExecuteNonQuery();
         }
     }
 
@@ -274,3 +411,4 @@ public static class DbQuery
         return SQLQuery(sql, parameters, context)[0];
     }
 }
+

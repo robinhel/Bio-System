@@ -15,7 +15,7 @@ export default function LoginPage() {
     async function handleLogin(e: React.FormEvent) {
         e.preventDefault();
 
-        const response = await fetch('/api/auth/login', {
+        const response = await fetch('/api/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
@@ -46,7 +46,7 @@ export default function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                />
+                /><br />
 
                 <button type="submit" className="auth-btn">Logga In</button>
             </form>

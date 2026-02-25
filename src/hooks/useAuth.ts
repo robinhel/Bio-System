@@ -8,7 +8,7 @@ export function useAuth() {
 
     const [user, setUser] = useState<User | null>(null);
     useEffect(() => {
-        fetch('/api/auth/user', { credentials: 'include' })
+        fetch('/api/login', { credentials: 'include' })
             .then(res => res.ok ? res.json() : null)  // null om ej inloggad
             .then(data => setUser(data))
     }, [])
