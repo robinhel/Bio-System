@@ -43,7 +43,7 @@ public static class DbQuery
     private static void CreateTablesIfNotExist(MySqlConnection db)
     {
         var createTablesSql = @"
-CREATE TABLE IF NOT EXISTS sessions (
+        CREATE TABLE IF NOT EXISTS sessions (
             id VARCHAR(255) PRIMARY KEY NOT NULL,
             created DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
             modified DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -79,12 +79,12 @@ CREATE TABLE IF NOT EXISTS sessions (
 
         CREATE TABLE IF NOT EXISTS movies (
             id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-            title VARCHAR(255) NOT NULL,
-            description TEXT NOT NULL,
-            genre VARCHAR(100) NOT NULL,
-            ageRating INT NOT NULL,
-            imageUrl VARCHAR(500) NOT NULL DEFAULT '',
-            youtubeTrailer VARCHAR(100) NOT NULL DEFAULT ''
+            Title VARCHAR(255) NOT NULL,
+            Description TEXT NOT NULL,
+            Genre VARCHAR(100) NOT NULL,
+            AgeRating INT NOT NULL,
+            Cover VARCHAR(500) NOT NULL DEFAULT '',
+            trailer VARCHAR(100) NOT NULL DEFAULT ''
         );
 
         CREATE TABLE IF NOT EXISTS screenings (
@@ -162,11 +162,11 @@ CREATE TABLE IF NOT EXISTS sessions (
                 INSERT INTO acl (userRoles, method, allow, route, `match`, comment) VALUES
                 ('visitor', 'POST', 'allow', '/api/auth/register', 'true', 'Registrering öppen för alla'),
                 ('visitor', 'POST', 'allow', '/api/auth/login', 'true', 'Login öppen för alla'),
-                ('visitor', 'GET', 'allow', '/api/movies', 'true', 'Visa filmer för alla'),
-                ('visitor', 'GET', 'allow', '/api/screenings', 'true', 'Visa visningar för alla'),
-                ('user, admin', 'GET', 'allow', '/api/bookings', 'true', 'Användare kan se bokningar'),
-                ('user, admin', 'POST', 'allow', '/api/bookings', 'true', 'Användare kan boka'),
-                ('admin', '*', 'allow', '/api', 'true', 'Admin får göra allt i API')
+                ('visitor', 'GET', 'allow', '/api/movies', 'false', 'Visa filmer för alla'),
+                ('visitor', 'GET', 'allow', '/api/screenings', 'false', 'Visa visningar för alla'),
+                ('user, admin', 'GET', 'allow', '/api/bookings', 'false', 'Användare kan se bokningar'),
+                ('user, admin', 'POST', 'allow', '/api/bookings', 'false', 'Användare kan boka'),
+                ('admin', '*', 'allow', '/api', 'false', 'Admin får göra allt i API')
             ";
             command.CommandText = aclData;
             command.ExecuteNonQuery();
@@ -205,7 +205,7 @@ CREATE TABLE IF NOT EXISTS sessions (
         if (Convert.ToInt32(command.ExecuteScalar()) == 0)
         {
             var moviesData = @"
-                INSERT INTO movies (title, description, genre, ageRating, imageUrl, youtubeTrailer) VALUES
+                INSERT INTO movies (Title, Description, Genre, AgeRating, Cover, trailer) VALUES
                 ('Avatar: Fire and Ash', 'Resan fortsätter på Pandora där Jake Sully och Neytiri ställs inför ett nytt hot från Asfolket, en aggressiv Na-vi-stam som lever i vulkaniska miljöer.', 'Sci-Fi/Action', 11, 'https://upload.wikimedia.org/wikipedia/en/9/95/Avatar_Fire_and_Ash_poster.jpeg', 'nb_fFj_0rq8'),
                 ('Superman', 'Stålmannen försöker förena sitt utomjordiska arv med sin mänskliga uppväxt som Clark Kent. En nystart för DC:s filmuniversum regisserad av James Gunn.', 'Action/Sci-Fi', 11, 'https://m.media-amazon.com/images/M/MV5BOGMwZGJiM2EtMzEwZC00YTYzLWIxNzYtMmJmZWNlZjgxZTMwXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg', 'Ox8ZLF6cGM0'),
                 ('Zootopia 2', 'Judy Hopps och Nick Wilde är tillbaka för att lösa ett nytt mysterium i den myllrande djurmetropolen Zootopia.', 'Animerat/Familj', 7, 'https://m.media-amazon.com/images/M/MV5BYjg1Mjc3MjQtMTZjNy00YWVlLWFhMWEtMWI3ZTgxYjJmNmRlXkEyXkFqcGc@._V1_.jpg', 'BjkIOU5PhyQ'),
