@@ -166,7 +166,9 @@ public static class DbQuery
                 ('visitor', 'GET', 'allow', '/api/screenings', 'true', 'Visa visningar för alla'),
                 ('user, admin', 'GET', 'allow', '/api/bookings', 'true', 'Användare kan se bokningar'),
                 ('user, admin', 'POST', 'allow', '/api/bookings', 'true', 'Användare kan boka'),
-                ('admin', '*', 'allow', '/api', 'true', 'Admin får göra allt i API')
+                ('admin', '*', 'allow', '/api', 'true', 'Admin får göra allt i API'),
+                ('visitor', 'POST', 'allow', '/api/login', 'true', 'Login öppen för alla'),
+                ('visitor', 'POST', 'allow', '/api/register', 'true', 'Registrering öppen för alla');
             ";
             command.CommandText = aclData;
             command.ExecuteNonQuery();
@@ -215,7 +217,7 @@ public static class DbQuery
                 ('The Mandalorian & Grogu', 'Prisjägaren Din Djarin och hans följeslagare Grogu ger sig ut på ett nytt storslaget äventyr i Star Wars-galaxen.', 'Sci-Fi/Äventyr', 11, 'https://image.tmdb.org/t/p/original/qSWiY6KAvkapXJWeyNrmDGYWQwr.jpg', '_pa1KLXuW0Y'),
                 ('Tron: Ares', 'Ett sofistikerat datorprogram vid namn Ares skickas från den digitala världen in i den verkliga världen på ett farligt uppdrag.', 'Sci-Fi/Action', 11, 'https://lumiere-a.akamaihd.net/v1/images/image_255af947.jpeg?region=0,0,540,810', 'YShVEXb7-ic'),
                 ('Mortal Kombat II', 'Turneringen fortsätter när nya kämpar från Outworld och Earthrealm möts i en blodig kamp om universums framtid.', 'Action/Fantasy', 15, 'https://m.media-amazon.com/images/M/MV5BNGZjZGUxYjMtNDBmYi00N2JmLTk5OTEtNDQzNDliMWMzZWUyXkEyXkFqcGc@._V1_.jpg', 'ZdC5mFHPldg'),
-                ('Frankenstein', 'En modern tolkning av Mary Shelleys klassiska berättelse där den briljante men besatte vetenskapsmannen Victor Frankenstein väcker liv i en varelse skapad av död materia, med förödande konsekvenser.', 'Horror/Sci-Fi/Drama', 15, 'https://lancerfeed.press/wp-content/uploads/2025/11/img_5991_8.webp', '8aulMPhE12g')
+                ('Frankenstein', 'En modern tolkning av Mary Shelleys klassiska berättelse där den briljante men besatte vetenskapsmannen Victor Frankenstein väcker liv i en varelse skapad av död materia, med förödande konsekvenser.', 'Horror/Sci-Fi/Drama', 15, 'https://lancerfeed.press/wp-content/uploads/2025/11/img_5991_8.webp', '8aulMPhE12g'),
                 ";
             command.CommandText = moviesData;
             command.ExecuteNonQuery();
