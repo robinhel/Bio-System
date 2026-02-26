@@ -1,3 +1,6 @@
+/* ==========================================================================
+   GENERAL & LAYOUT
+   ========================================================================== */
 .booking-page {
     h1 {
         text-align: center;
@@ -8,77 +11,238 @@
     margin-top: 7%;
     display: flex;
     border-radius: 15px;
-    
     background-color: rgb(26, 24, 24);
+    padding: 65px 120px;
+    min-height: 500px; 
     position: relative;
-    
-    .booking-poster
-    {
-        margin-left: 15%;
+    justify-content: space-between;
+    .booking-poster {
+        margin-left: 30%;
         width: 100%;
     }
-    .seats-pic
-    {
-        width: 150%;
-        margin-left: 10%;
-    }
-  
+
     .formlabel {
-    
-        margin: 10px;
+        display: flex;
         flex-direction: column;
-        position: absolute;
-    
         width: 200px;
-    
+
         .date-picker {
             opacity: 80%;
             margin-bottom: 30px;
         }
-    
     }
 }
 
 .booking-poster {
-    width: 25%;
+    width: 250px;
     height: auto;
     aspect-ratio: 2/3;
     object-fit: cover;
     border-radius: 20px;
     transition: transform 0.3s ease;
-
-        }
+}
 
 .poster-text {
-
     p {
         margin-top: 15px;
         width: 300px;
     }
-
-}
-
-.seats-pic {
-    aspect-ratio: 3/2;
-    
-
-    border-radius: 15px;
 }
 
 
-.bookinginformation {
-    p {
-        color: rgb(0, 0, 0);
+/* ==========================================================================
+   SEATS (SALONG)
+   ========================================================================== */
+// Huvudbehållaren för hela salongen
+.theater-layout {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+
+    // Själva bioduken
+    .theater-screen {
+        display: flex;
+        flex-direction: row;
+        width: 75%;
+        /* height: 170px; */
+        background: rgb(255, 255, 255);
+        margin-bottom: 80px;
+        box-shadow: 0 4px 15px rgba(255, 255, 255, 0.4); 
+        border-radius: 10% 10% 0 0;
+        text-align: center;
+        font-size: 12px;
+        padding-top: 10px;
+
+        p{
+            margin-top: 20px;
+            font-size: 1.08rem;
+        }
     }
-    margin-top: 5%;
 }
 
-.bookinginformation .alert-success {
+// Rutnätet som håller alla stolsrader
+.seating-grid {
+    display: flex;
+    flex-direction: column; 
+    gap: 17px;            
+    align-items: center;
+    flex-direction: column;
+    
+}
+
+// En enskild rad med stolar
+.seat-row {
+    display: flex;
+    flex-direction: row;  
+    gap: 9px;             
+    justify-content: center;
+}
+
+// Utseendet på en enskild stol (knappen)
+.seats {
+    width: 50px;
+    height: 50px;
+    background-color: #f9f6f7;
+    border-radius: 4px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;       
+    color: rgba(255, 255, 255, 0);
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+
+.Visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+    transition: transform 0.2s ease;
+}
+
+// STYLING NÄR MAN KLICKAR (Valt säte)
+.seats {
+
+    span {
+        .check-icon, .remove-icon {
+            display: none;
+        }
+    }
+
+    /* NÄR SÄTET ÄR VALT */
+    &:has(input:checked) {
+        background-color: #4ade80;
+        
+        .check-icon {
+            display: block; 
+            color: white;
+        }
+
+        /* NÄR MAN HOVERAR ÖVER EN REDAN VALD RUTA */
+        &:hover {
+            background-color: #d32424;
+            
+            .check-icon {
+                display: none;
+            }
+            .remove-icon {
+                display: block;
+                color: white;
+            }
+        }
+    }
+}
+
+.seats:hover {
+    background-color: #d1d1d1; 
+    transform: scale(1.08);
+    box-shadow: 0 4px 15px rgba(121, 121, 121, 0.4); 
+}
+
+.custom-icon {
+    font-size: 2rem;
+    color: #4ade80;
+}
+
+/* ==========================================================================
+   CHOOSE TICKETS (BILJETTVÄLJARE)
+   ========================================================================== */
+.ticket-selector {
+    background-color: rgba(255, 255, 255, 0.048);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    margin-top: 30px;
+    padding: 6px 20px;
+    border-radius: 20px;
+
+    .resetButton {
+        margin-right: 0px;
+        padding: 10px 5px;
+        display: flex;
+        justify-content: flex-end;
+
+        button {
+            background-color: rgba(214, 214, 214, 0.815);
+            color: black;
+            width: 130px;
+
+            &:hover { background-color: rgb(255, 255, 255); }
+            &:active { background-color: rgba(255, 255, 255, 0.904); color: black; }
+        }
+    }
+}
+
+.category {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ticketamount {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+
+    button {
+        background: none;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s ease;
+
+        i { font-size: 23px; color: #ffffff; }
+        &:hover { transform: scale(1.08); }
+        &:hover i { color: rgb(88, 165, 228); }
+    }
+
+    p { margin: 0; line-height: 1; }
+}
+
+/* ==========================================================================
+   BOOKING INFO & CONFIRM 
+   ========================================================================== */
+.bookinginformation {
+    p { color: rgb(0, 0, 0); }
+    margin-top: 2%;
+
+}
+
+.alert-success {
     background-color: #fafafa;
-    border-radius: 10px;
+    border-radius: 13px;
     box-shadow: 0 8px 32px rgb(44, 34, 34);
 }
-
 .confirm-booking {
     button {
         width: 100%;
@@ -89,128 +253,58 @@
 
         &:hover {
             background-color: rgb(228, 20, 20);
-            color:#ffffff;
+            color: #ffffff;
         }
-
     }
-
-
 }
 
-// CHOOSE TICKETS
-.ticket-selector
-{
-    background-color: rgba(255, 255, 255, 0.048);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-    margin-top: 30px;
-    padding: 6px 20px;
-    border-radius: 20px;
-    
-    .resetButton
+/* ==========================================================================
+   BILJETTER PÅ MAILEN BOX
+   ========================================================================== */
+    .entermail
     {
-        margin-right: 0px;
-        padding: 10px 5px;
-        display: flex;
-        justify-content: flex-end;
-        
-        button
+    
+        margin-top: 2%;
+        #biljettinfo
         {
-            background-color: rgba(214, 214, 214, 0.815);
-            color: black;
-            width: 130px;
-            &:hover
-            {
-                background-color: rgb(255, 255, 255);
-            }
-            &:active
-            {
-                background-color: rgba(255, 255, 255, 0.904);
-                color: black;
-            }
+            color: grey;
+
+        }
+
+        .biljettermail{
+            margin-left: 0.4%;
+        }
+
+        .inputmail{
+            background-color: rgb(240, 240, 240);
+            border-color: 1px rgb(121, 121, 121);
         }
     }
-}
-
-
-.category {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 13px 5px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-
-}
-
-
-.ticketamount {
-    display: flex;
-    align-items: center;
-    gap: 25px;
-}
-
-.ticketamount button{
-    background: none;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.2s ease;
-}
-
-
-.ticketamount button i {
-    font-size: 23px;      
-    color: #ffffff;        
-}
-.ticketamount button:hover {
-    transform: scale(1.08); 
-}
-.ticketamount button:hover i{
-    color: rgb(88, 165, 228)
-}
-.ticketamount p{
-    margin: 0;
-    line-height: 1;
-}
 
 
 
 
-
-
-
-// MOBILE VIEW
+/* ==========================================================================
+   MOBILE VIEW
+   ========================================================================== */
 @media (max-width: 768px) {
-    
-    .bookingdetail{
+    .bookingdetail {
         position: relative;
-            .seats-pic
-    {
-        width: 80%;
-        position: relative;
-    }
-    .booking-poster
-    {
-        margin-left: 83%; 
-    }
-    .formlabel{
-        z-index: 10;
-        width: 10%;
-        #date{
-            display: none;
+        .seats-pic { width: 80%; position: relative; }
+        .booking-poster { margin-left: 83%; }
+        .formlabel {
+            z-index: 10;
+            width: 10%;
+            #date { display: none; }
+        }
+        .booking-page {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
         }
     }
 
-    .booking-page {
-        align-items: center;
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        
-    }
-    }
     .booking-poster {
         border-radius: 0px;
         margin-left: 0%;
@@ -220,34 +314,13 @@
         z-index: 10;
     }
 
-/*     .seats-pic
-    {
-        width: 80%;
-        position: relative;
-    } */
-
     .poster-text {
         align-items: center;
         text-align: center;
         margin-left: 0%;
-
-        p {
-            margin-left: 0;
-            width: 100%;
-        }
-
+        p { margin-left: 0; width: 100%; }
     }
 
-    .bookinginformation {
-        align-items: center;
-        margin-left: 0%;
-
-    }
-
-    .formlabel {
-        margin-left: 0%;
-    }
-
-
-
+    .bookinginformation { align-items: center; margin-left: 0%; }
+    .formlabel { margin-left: 0%; }
 }
