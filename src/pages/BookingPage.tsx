@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Form } from 'react-bootstrap';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
@@ -25,7 +25,6 @@ interface Movie {
 
 
 export default function BookingPage() {
-
     const [movie, setMovie] = useState<Movie | null>(null);
     const [selectedDate, setSelectedDate] = useState("");
     const [show, setShow] = useState(true);
@@ -33,6 +32,8 @@ export default function BookingPage() {
     const [pensioner, setPensioner] = useState(0);
     const [kid, setKid] = useState(0);
     const totalPrice = (adult * 140) + (pensioner * 100) + (kid * 60);
+
+    
 
     const addAdult = () => setAdult(adult + 1);
 
@@ -159,7 +160,7 @@ export default function BookingPage() {
                     <Link to="/bookingconfirmation-page">
                         <Button variant="Primary" size="lg">
                             Bekräfta bokning
-                        </Button>
+                        </Button> 
                     </Link>
                 </div>
             </div>
