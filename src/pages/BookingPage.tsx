@@ -35,7 +35,11 @@ export default function BookingPage() {
     const { screeningId } = useParams<{ screeningId: string }>();
 
     const [movie, setMovie] = useState<Movie | null>(null);
-    const [selectedDate, setSelectedDate] = useState("");
+    const [selectedDate, setSelectedDate] = useState<string | null>(null);
+
+    const [screenings, setScreenings] = useState<Screening[]>([]);
+    const [screening, setScreening] = useState<Screening | null>(null);
+
     const [show, setShow] = useState(true);
     const [adult, setAdult] = useState(1);
     const [pensioner, setPensioner] = useState(0);
@@ -43,6 +47,9 @@ export default function BookingPage() {
     const totalPrice = (adult * 140) + (pensioner * 100) + (kid * 60);
 
     const addAdult = () => setAdult(adult + 1);
+    const dates = [...new Set(
+        screenings.map(s => s.startTime.split("T")[0])
+    )];
 
     const subAdult = () => {
         if (adult > 0) {
@@ -72,23 +79,21 @@ export default function BookingPage() {
     };
 
     useEffect(() => {
-        if (!screeningId) return;
+    if (!screeningId) return;
 
-        fetch(`/api/screenings/${screeningId}`)
-            .then(res => res.json())
-            
-            .then(screeningData => {
-                console.log(screeningData)
-                setSelectedDate(screeningData.startTime.split('T')[0]);
-
-                fetch(`/api/movies/${screeningData.movieId}`)
-                    .then(res => res.json())
-                    .then(movieData => {
-                        console.log(movieData)
-                        setMovie(movieData); 
-                    });
-            });
-    }, [screeningId]);
+    fetch(`/api/screenings/${screeningId}`)
+        .then(res => res.json())
+        .then(screeningData => {
+            console.log("Hämtad screening:", screeningData);
+            setScreening(screeningData); 
+            setSelectedDate(screeningData.startTime.split('T')[0]);
+            fetch(`/api/movies/${screeningData.movieId}`)
+                .then(res => res.json())
+                .then(movieData => {
+                    setMovie(movieData);
+                });
+        });
+}, [screeningId]);
 
     const seatsPerRow = [8, 9, 10, 10, 10, 10, 12, 12];
 
@@ -146,15 +151,51 @@ export default function BookingPage() {
                     <img src={movie?.Cover} alt={movie?.Title} className="booking-poster" />
                 </div>
 
-                <div className="formlabel">
-                    <Form.Label id="date"> Ändra Datum </Form.Label>
-                    <Form.Control
-                        type="date"
-                        className="date-picker"
-                        value={selectedDate}
-                        onChange={(e) => setSelectedDate(e.target.value)}
-                    />
-                </div>
+                {<div className="time-box">
+
+                   
+                    <div className="date-row">
+                        {dates.map(date => (
+                            <button
+                                key={date}
+                                className={`date-button ${selectedDate === date ? "active" : ""}`}
+                                onClick={() => setSelectedDate(date)}
+                            >
+                                {date}
+                            </button>
+                        ))}
+                    </div>
+
+                   
+                    {selectedDate && (
+                        <div className="times">
+                            {screenings.map(s => {
+
+                                const dateKey = s.startTime.split("T")[0];
+                                if (dateKey !== selectedDate) return null;
+
+                                const start = new Date(s.startTime);
+                                const time = start.toLocaleTimeString([], {
+                                    hour: "2-digit",
+                                    minute: "2-digit"
+                                });
+
+                                return (
+                                    <button
+                                        key={s.id}
+                                        className={`time-slot ${screening?.id === s.id ? "active" : ""}`}
+                                        onClick={() => {
+                                            setScreening(s);
+                                            setSelectedSeats([]);
+                                        }}
+                                    >
+                                        {time}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    )}
+                </div>}
 
                 <div className="ticket-selector">
                     <h1>Välj biljetter</h1>
@@ -225,7 +266,18 @@ export default function BookingPage() {
                         </div>
                         <p>📍 {selectedSeats.length > 0 ? ` Valda platser: ${selectedSeats.join(", ")} ` : "Inga valda platser."}</p>
                         <p> {totalPrice > 0 && `💵 ${totalPrice}kr`} (betalning sker på plats) </p>
-                        <p>📅 {selectedDate}</p>
+
+{screening && (
+    <>
+        <p>📅 {screening.startTime.split("T")[0]}</p>
+        <p>
+            🕒 {new Date(screening.startTime).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit"
+            })}
+        </p>
+    </>
+)}
                         <hr />
                         <div className="d-flex justify-content-end">
 
