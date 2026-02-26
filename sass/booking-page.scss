@@ -231,19 +231,19 @@
 }
 
 /* ==========================================================================
-   BOOKING INFO & CONFIRM (SAMMANFATTNING)
+   BOOKING INFO & CONFIRM 
    ========================================================================== */
 .bookinginformation {
     p { color: rgb(0, 0, 0); }
-    margin-top: 5%;
+    margin-top: 2%;
 
-    .alert-success {
-        background-color: #fafafa;
-        border-radius: 10px;
-        box-shadow: 0 8px 32px rgb(44, 34, 34);
-    }
 }
 
+.alert-success {
+    background-color: #fafafa;
+    border-radius: 13px;
+    box-shadow: 0 8px 32px rgb(44, 34, 34);
+}
 .confirm-booking {
     button {
         width: 100%;
@@ -258,6 +258,32 @@
         }
     }
 }
+
+/* ==========================================================================
+   BILJETTER PÅ MAILEN BOX
+   ========================================================================== */
+    .entermail
+    {
+    
+        margin-top: 2%;
+        #biljettinfo
+        {
+            color: grey;
+
+        }
+
+        .biljettermail{
+            margin-left: 0.4%;
+        }
+
+        .inputmail{
+            background-color: rgb(240, 240, 240);
+            border-color: 1px rgb(121, 121, 121);
+        }
+    }
+
+
+
 
 /* ==========================================================================
    MOBILE VIEW

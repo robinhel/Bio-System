@@ -30,7 +30,7 @@ export default function BookingPage() {
     const [movie, setMovie] = useState<Movie | null>(null);
     const [selectedDate, setSelectedDate] = useState("");
     const [show, setShow] = useState(true);
-    const [adult, setAdult] = useState(0);
+    const [adult, setAdult] = useState(1);
     const [pensioner, setPensioner] = useState(0);
     const [kid, setKid] = useState(0);
     const totalPrice = (adult * 140) + (pensioner * 100) + (kid * 60);
@@ -58,16 +58,17 @@ export default function BookingPage() {
     }
 
     const resetTickets = () => {
-        setAdult(0);
+        setAdult(1);
         setKid(0);
         setPensioner(0);
+        setSelectedSeats([]);
     };
 
 
 
 
     useEffect(() => {
-        fetch('/api/Movies')
+        fetch('/api/movies')
             .then(res => res.json())
             .then(data => {
                 const firstMovie = data[0];
@@ -78,9 +79,20 @@ export default function BookingPage() {
 
     const seatsPerRow = [8, 9, 10, 10, 10, 10, 12, 12];
 
-    // Skapa en state för att hålla koll på valda säten (använd string[] för "Rad-Stol")
     const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
     const totalTickets = adult + pensioner + kid;
+
+    const handleSeatClick = (seatId: string) => {
+        if (selectedSeats.includes(seatId)) {
+            setSelectedSeats(selectedSeats.filter(id => id !== seatId))
+        }
+        else if (selectedSeats.length < totalTickets) {
+            setSelectedSeats([...selectedSeats, seatId]);
+        }
+        else {
+            alert(`Du har endast valt ${totalTickets} biljett. Lägg till fler biljetter för att boka fler platser. `)
+        }
+    } 
 
 
 
@@ -91,87 +103,56 @@ export default function BookingPage() {
             <div className="booking-page">
                 <h1>Bokning för {movie?.Title}</h1>
                 <div className="bookingdetail">
-                        <div className="theater-layout">
-                        {/* Visar texten "SKÄRMEN" längst upp i salongen */}
-                        <div className="theater-screen">
-                           
-                            <p>SKÄRMEN</p>
-                            </div>
+                    <div className="theater-layout">
                         
-                        {/* Yttre form-tagg (du kan ta bort en av dessa då du har dubbla nu) */}
-                        <form className="seating-grid">
-                            
-                            {/* 1. YTTRE LOOP: Går igenom listan 'seatsPerRow' (t.ex. [8, 9, 10...]) */}
-                            {/* Varje siffra i listan skapar en ny rad (numSeats) på ett visst radnummer (rowIndex) */}
-                            {seatsPerRow.map((numSeats, rowIndex) => (
-                                
-                                /* Skapar en div för varje rad så att stolarna hamnar på rätt linje */
-                                <div key={`row-${rowIndex}`} className="seat-row">
-                                
-                                {/* 2. INRE LOOP: Skapar rätt antal stolar för just den här raden */}
-                                {/* Array.from skapar en tillfällig lista med längden 'numSeats' så att vi kan loopa fram stolarna */}
-                                {Array.from({ length: numSeats }).map((_, seatIndex) => {
-                                    
-                                    /* Skapar ett unikt ID för varje stol, t.ex. 'R1-S1' (Rad 1, Stol 1) */
-                                    /* Vi lägger till +1 eftersom datorn börjar räkna på 0, men vi vill se rad 1 */
-                                    const seatId = `R${rowIndex + 1}-S${seatIndex + 1}`;
-
-                                    return (
-                                    /* Labeln fungerar som den klickbara ytan för varje stol */
-                                    <label key={seatId} className="seats">
-                                        
-                                        {/* Den osynliga checkboxen som håller koll på om stolen är vald eller ej */}
-                                        <input
-                                        name="seats"
-                                        type="checkbox"
-                                        value={seatId}
-                                        className="Visually-hidden" // Döljer standardrutan så vi bara ser din design
-                                        checked={selectedSeats.includes(seatId)} // Kollar om seatid på den valda platsen finns med i vår lista
-                                        
-                                        />
-                                        
-                                        {/* 3. STOLNUMRET: Visar siffran 1, 2, 3 osv. inuti varje stolruta */}
-                                        <span>{/* {seatIndex + 1} */}
-                                        {/* <i className="bi bi-person-check-fill fs-5"></i> */}
-                                        
-                                        <i className="bi bi-person-check check-icon fs-4"></i> {/* // gröna rutor hover */}
-
-                                        <i className="bi bi-person-fill-x remove-icon fs-4"></i> {/* // röda rutor hover */}
-                                        </span>
-                                    </label>
-                                    );
-                                })}
-                                </div>
-                            ))}
-                            </form>
+                        <div className="theater-screen">
+                            <p>SKÄRMEN</p>
                         </div>
 
+                        <form className="seating-grid">
 
-                        {/* <form>
-                            <label className="seats">
-                                <input name="seats" type="radio" className="Visually-hidden" disabled />
-                            </label>
-                            <label className="seats">
-                                <input name="seats" type="radio" className="Visually-hidden" disabled />
-                            </label>
-                            <label className="seats">
-                                <input name="seats" type="radio" className="Visually-hidden" disabled />
-                            </label>
-                        </form> */}
+                            {seatsPerRow.map((numSeats, rowIndex) => (
 
-                    <img className="seats-pic" src="https://cdn.discordapp.com/attachments/1426165952348688414/1468916741919735849/image.png?ex=6985c2d2&is=69847152&hm=1ec8efa1129450fdfe90660a63fdfff909398247cea0c406a82b395fde94d9d2&" alt="" />
+                                <div key={`row-${rowIndex}`} className="seat-row">
+
+                                    {Array.from({ length: numSeats }).map((_, seatIndex) => {
+
+                                        const seatId = `Rad ${rowIndex + 1}  Stol ${seatIndex + 1}`;
+
+                                        return (
+                                            <label key={seatId} className="seats">
+                                                <input
+                                                    name="seats"
+                                                    type="checkbox"
+                                                    value={seatId}
+                                                    className="Visually-hidden"
+                                                    checked={selectedSeats.includes(seatId)}
+                                                    onChange={() => handleSeatClick(seatId)}
+                                                    disabled={totalTickets === 0}
+                                                />
+                                                <span>
+                                                    <i className="bi bi-person-check check-icon fs-4"></i> {/* // gröna rutor hover */}
+                                                    <i className="bi bi-person-fill-x remove-icon fs-4"></i> {/* // röda rutor hover */}
+                                                </span>
+                                            </label>
+                                        );
+                                    })}
+                                </div>
+                            ))}
+                        </form>
+                    </div>
                     <img src={movie?.Cover} alt={movie?.Title} className="booking-poster" />
                 </div>
 
                 <div className="formlabel">
-                        <Form.Label id="date"> Ändra Datum </Form.Label>
-                        <Form.Control
-                            type="date"
-                            className="date-picker"
-                            value={selectedDate}
-                            onChange={(e) => setSelectedDate(e.target.value)}
-                            />
-                            </div>
+                    <Form.Label id="date"> Ändra Datum </Form.Label>
+                    <Form.Control
+                        type="date"
+                        className="date-picker"
+                        value={selectedDate}
+                        onChange={(e) => setSelectedDate(e.target.value)}
+                    />
+                </div>
 
                 <div className="ticket-selector">
                     <h1>Välj biljetter</h1>
@@ -215,6 +196,22 @@ export default function BookingPage() {
                         <Button onClick={resetTickets}>Återställ</Button>
                     </div>
                 </div>
+                <div className="entermail">
+                    <Alert show={show} variant="success">
+                        <Alert.Heading>Biljettleverans</Alert.Heading>
+                        <p id="biljettinfo">För biljetter och bokningsbekräftelse.</p>
+                        <hr />
+                        <Form>
+                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                                <Form.Label>Email address</Form.Label>
+                                <Form.Control className="inputmail" type="email" placeholder="Ange emailadress..." />
+                                <Form.Text className="text-muted biljettermail">
+                                    Vi skickar biljetterna till denna mail.
+                                </Form.Text>
+                            </Form.Group>
+                        </Form>
+                    </Alert>
+                </div>
                 <div className="bookinginformation">
                     <Alert show={show} variant="success">
                         <Alert.Heading>Bokningssammanfattning</Alert.Heading>
@@ -224,8 +221,8 @@ export default function BookingPage() {
                             {pensioner > 0 && <p>🎟️ {pensioner} Pensionär</p>}
                             {kid > 0 && <p>🎟️ {kid} Barn</p>}
                         </div>
-                        <p>📍 Rad 67, Plats 13-14</p>
-                        <p> {totalPrice > 0 && `💵 ${totalPrice}kr`}</p>
+                        <p>📍 {selectedSeats.length > 0 ? ` Valda platser: ${selectedSeats.join(", ")} ` : "Inga valda platser."}</p>
+                        <p> {totalPrice > 0 && `💵 ${totalPrice}kr`} (betalning sker på plats) </p>
                         <p>📅 {selectedDate}</p>
                         <hr />
                         <div className="d-flex justify-content-end">
