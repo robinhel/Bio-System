@@ -10,8 +10,8 @@ interface Screenings {
     id: number;
     movieId: number;
     theaterId: number;
-    s   tartTime: string;
-endTime: string;
+    startTime: string;
+    endTime: string;
 }
 interface Movie {
     id: number;
@@ -28,6 +28,7 @@ export default function MovieDetails() {
     const [movie, setMovie] = useState<Movie | null>(null);
     const [screenings, setScreenings] = useState<Screenings[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const [selectedDate, setSelectedDate] = useState<string | null>(null)
 
     useEffect(() => {
         if (!id) return;
@@ -103,8 +104,15 @@ export default function MovieDetails() {
                                     console.log(movie.id)
                                 }
                                 else {
+                                    //'11', '10', '1', '2026-03-08 21:00:00', '2026-03-08 23:15:00'
+
+                                    const dateKey = screening.startTime.split("T")[0];
+                                    console.log("Datum: ", dateKey)
                                     const start = new Date(screening.startTime);
+                                    console.log("Start time: ", start)
                                     const end = new Date(screening.endTime);
+
+
 
                                     const timeSpan =
                                         start.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) +
@@ -112,13 +120,31 @@ export default function MovieDetails() {
                                         end.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
                                     return (
-                                        <Link
-                                            key={screening.id}
-                                            to={`/booking-page/${screening.id}`}
-                                            className="time-slot"
-                                        >
-                                            {timeSpan}
-                                        </Link>
+                                        <div>
+                                            <div className="date-box">
+                                                <button
+                                                    className={`date-button ${selectedDate === dateKey ? "active" : ""}`}
+                                                    onClick={() => setSelectedDate(dateKey)}
+                                                >
+                                                    {dateKey}
+
+                                                </button>
+                                            </div>
+
+                                            {selectedDate == dateKey && (
+                                                <Link
+
+                                                    key={screening.id}
+                                                    to={`/booking-page/${screening.id}`}
+                                                    className="time-slot"
+                                                >
+                                                    {timeSpan}
+                                                    {dateKey}
+                                                    <br />
+                                                    {screening.theaterId}
+                                                </Link>
+                                            )}
+                                        </div>
                                     );
                                 }
                             })}
