@@ -91,6 +91,7 @@ export default function BookingPage() {
                     });
             });
     }, [screeningId]);
+    
 
     const seatsPerRow = [8, 9, 10, 10, 10, 10, 12, 12];
 
