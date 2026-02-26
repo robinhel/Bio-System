@@ -8,11 +8,10 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 
 BookingPage.route = {
-    path: '/booking-page',
-    menuLabel: 'Bokningssida',
-    index: 5,
-};
+    path: '/booking-page/:screeningId',
 
+
+};
 interface Movie {
     id: number;
     Title: string;
@@ -22,10 +21,18 @@ interface Movie {
     AgeRating: number;
 }
 
+interface Screening {
+    id: number;
+    startTime: string;
+    movie: Movie;
+}
+
 
 
 
 export default function BookingPage() {
+
+    const { screeningId } = useParams<{ screeningId: string }>();
 
     const [movie, setMovie] = useState<Movie | null>(null);
     const [selectedDate, setSelectedDate] = useState("");
@@ -64,18 +71,24 @@ export default function BookingPage() {
         setSelectedSeats([]);
     };
 
-
-
-
     useEffect(() => {
-        fetch('/api/movies')
+        if (!screeningId) return;
+
+        fetch(`/api/screenings/${screeningId}`)
             .then(res => res.json())
-            .then(data => {
-                const firstMovie = data[0];
-                setMovie(firstMovie);
-            })
-            .catch(error => console.error('Kunde inte hämta din valda film.', error));
-    }, []);
+            
+            .then(screeningData => {
+                console.log(screeningData)
+                setSelectedDate(screeningData.startTime.split('T')[0]);
+
+                fetch(`/api/movies/${screeningData.movieId}`)
+                    .then(res => res.json())
+                    .then(movieData => {
+                        console.log(movieData)
+                        setMovie(movieData); 
+                    });
+            });
+    }, [screeningId]);
 
     const seatsPerRow = [8, 9, 10, 10, 10, 10, 12, 12];
 
@@ -92,9 +105,9 @@ export default function BookingPage() {
         else {
             alert(`Du har endast valt ${totalTickets} biljett. Lägg till fler biljetter för att boka fler platser. `)
         }
-    } 
+    }
 
-        return (
+    return (
         <>
             <div className="booking-page">
                 <h1>Bokning för {movie?.Title}</h1>
