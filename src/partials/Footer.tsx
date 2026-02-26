@@ -6,48 +6,50 @@ import { Link } from "react-router-dom";
 export default function Footer() {
   return (
     <footer className="site-footer">
-      <Container>
 
-        <Row className="footer-content">
+      <Container fluid>
+        
+        <Row className="justify-content-start footer-socials">
 
-          {/* Wrapper som trycker allt till höger */}
-          <Col xs={12} className="footer-right-wrapper">
+          <Col xs={12} md="auto" className="footer-section text-center">
+            <h5 className="footer-title">Sociala medier</h5>
+            <div className="social-stack">
+              <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
+                <IonIcon icon={logoFacebook} size="large" />
+              </a>
+              <a href="https://x.com/" target="_blank" rel="noopener noreferrer">
 
-            {/* Socials */}
-            <div className="footer-socials">
-              <h5 className="footer-title">Sociala medier</h5>
+                <IonIcon icon={logoX} size="large" />
+              </a>
+              <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
 
-              <div className="social-stack">
-                <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
-                  <IonIcon icon={logoFacebook} size="large" />
-                </a>
+                <IonIcon icon={logoInstagram} size="large" />
+              </a>
+              <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">
 
-                <a href="https://x.com/" target="_blank" rel="noopener noreferrer">
-                  <IonIcon icon={logoX} size="large" />
-                </a>
-
-                <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
-                  <IonIcon icon={logoInstagram} size="large" />
-                </a>
-
-                <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">
-                  <IonIcon icon={logoLinkedin} size="large" />
-                </a>
-              </div>
+                <IonIcon icon={logoLinkedin} size="large" />
+              </a>
             </div>
+          </Col>
 
-            {/* Navigation */}
-            <div className="footer-section">
-              <h5 className="footer-title">Navigation</h5>
-
-              <div className="nav-stack">
-                <Link to="/">Hem</Link>
-                <Link to="/about-us">Om Oss</Link>
-                <Link to="/team">Teamet</Link>
-                <Link to="/contact">Kontakta oss</Link>
-              </div>
+          <Col xs={12} md="auto" className="footer-section">
+            <h5 className="footer-title">Information</h5>
+            <div className="nav-stack">
+              <Link to="/">Hem</Link>
+              <Link to="/about-us">Om Bio Borgen</Link>
+              <Link to="/team">Teamet</Link>
+              <Link to="/contact">Kontakta oss</Link>
             </div>
+          </Col>
 
+          <Col xs={12} md="auto" className="footer-section">
+            <h5 className="footer-title">För Företag</h5>
+            <div className="nav-stack">
+              <Link to="">Företagsbiljetter</Link>
+              <Link to="">Möten & event</Link>
+              <Link to="">Bioreklam</Link>
+              <Link to="">Föreningsbiljetten</Link>
+            </div>
           </Col>
 
         </Row>
@@ -55,7 +57,7 @@ export default function Footer() {
         <hr className="H-line" />
 
         <Row>
-          <Col className="copyright">
+          <Col className="copyright text-center">
             © {new Date().getFullYear()} Bio Borgen | All Rights Reserved
           </Col>
         </Row>

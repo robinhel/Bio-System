@@ -7,13 +7,16 @@
 main {
   flex: 1;
 }
+
 .site-footer {
   background: radial-gradient(circle at top, #410000 0%, #010820 100%);
   color: white;
-  padding: 120px 0 10px 0; 
+  padding: 55px 0 10px 0; 
   border-top: 2px solid #e50914;
 }
-
+.site-footer {
+  padding-top: 30px;
+}
 
 .footer-right-wrapper {
   display: flex;
@@ -21,33 +24,35 @@ main {
   gap: 20px;                   
   flex-wrap: wrap;             
 }
+
 .footer-section {
   margin-bottom: 8px;
 }
-.footer-section:first-child {
-  align-items: start;
+
+.F-Info:first-child {
+  align-items: end;
 }
-.footer-socials:first-child {
-  align-items: center;
-}
+
 .social-stack {
+  justify-content: flex-end;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  align-items: center; /* <-- viktigt */
+  align-items: center; 
 }
 
 .footer-section {
-  margin-bottom: 30px; /* mindre än 30px */
+  margin-bottom: 30px; 
+  margin-left: 50px;
 }
-
-
-
+.footer-content {
+  gap: 1000px;
+}
 
 .footer-title {
   margin-bottom: 6px;
-  font-size: 20px;
-  letter-spacing: 0.5px;
+  font-size: 25px;
+  letter-spacing: 1px;
 }
 
 .social-stack,
@@ -57,7 +62,7 @@ main {
 
 .social-stack ion-icon {
   font-size: 22px;
-  color: white;
+  color: rgb(65, 64, 64);
   transition: 0.2s ease
 }
 
@@ -73,7 +78,7 @@ main {
 }
 
 .nav-stack a {
-  color: white;
+  color: rgb(65, 64, 64);
   text-decoration: none;
   transition: 0.2s ease;
 }
@@ -91,7 +96,23 @@ main {
 }
 
 .copyright {
-  text-align: center;
+  text-align: start;
   padding: 8px 0 12px 0;
   font-size: 13px;
+}
+.footer-socials {
+  display: flex;
+  align-items: start;
+  gap: 8px;
+  justify-content: flex-start;
+}
+
+
+.Social-label {
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  opacity: 8;
+  margin-bottom: 10px;
+  color: rgb(65, 64, 64);
 }
