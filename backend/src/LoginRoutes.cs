@@ -1,4 +1,5 @@
 namespace WebApp;
+
 public static class LoginRoutes
 {
     private static Obj GetUser(HttpContext context)
@@ -42,7 +43,14 @@ public static class LoginRoutes
 
             // Add the user to the session, without password
             dbUser.Delete("password");
-            Session.Set(context, "user", dbUser);
+            Session.Set(context, "user", new
+            {
+                id = dbUser.id,
+                email = dbUser.email,
+                firstName = dbUser.firstName,
+                lastName = dbUser.lastName,
+                role = dbUser.role
+            });
 
             // Return the user
             return RestResult.Parse(context, dbUser!);

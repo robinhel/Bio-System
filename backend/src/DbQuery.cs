@@ -159,19 +159,21 @@ public static class DbQuery
         if (Convert.ToInt32(command.ExecuteScalar()) == 0)
         {
             var aclData = @"
-                INSERT INTO acl (userRoles, method, allow, route, `match`, comment) VALUES
-                ('visitor', 'POST', 'allow', '/api/auth/register', 'true', 'Registrering öppen för alla'),
-                ('visitor', 'POST', 'allow', '/api/auth/login', 'true', 'Login öppen för alla'),
-                ('visitor', 'GET', 'allow', '/api/movies', 'true', 'Visa filmer för alla'),
-                ('visitor', 'GET', 'allow', '/api/screenings', 'true', 'Visa visningar för alla'),
-                ('user, admin', 'GET', 'allow', '/api/bookings', 'true', 'Användare kan se bokningar'),
-                ('user, admin', 'POST', 'allow', '/api/bookings', 'true', 'Användare kan boka'),
-                ('visitor', 'POST', 'allow', '/api/login', 'true', 'Login öppen för alla'),
-                ('visitor', 'POST', 'allow', '/api/register', 'true', 'Registrering öppen för alla'),
-                ('admin', '*', 'allow', '/api', 'true', 'Admin får göra allt i API'),
-                ('visitor', '*', 'allow', '/api', 'true', 'Alla får göra allt'),
-                ('user', '*', 'allow', '/api', 'true', 'Alla får göra allt');
-            ";
+        INSERT INTO acl (userRoles, method, allow, route, `match`, comment) VALUES
+        ('visitor', 'POST', 'allow', '/api/auth/register', 'true', 'Registrering öppen för alla'),
+        ('visitor', 'POST', 'allow', '/api/auth/login', 'true', 'Login öppen för alla'),
+        ('visitor', 'POST', 'allow', '/api/login', 'true', 'Alternativ login-route'),
+        ('visitor', 'POST', 'allow', '/api/register', 'true', 'Alternativ register-route'),
+        ('visitor', 'GET', 'allow', '/api/movies', 'true', 'Visa filmer för alla'),
+        ('visitor', 'GET', 'allow', '/api/screenings', 'true', 'Visa visningar för alla'),
+        ('visitor', 'GET', 'allow', '/api/theaters', 'true', 'Visa salonger för alla'),
+        ('user, admin', 'GET', 'allow', '/api/bookings', 'true', 'Användare kan se bokningar'),
+        ('user, admin', 'POST', 'allow', '/api/bookings', 'true', 'Användare kan boka'),
+        ('user, admin', 'GET', 'allow', '/api/seats', 'true', 'Användare kan se säten'),
+        ('admin', '*', 'allow', '/api', 'true', 'Admin får göra allt i API'),
+        ('visitor', '*', 'allow', '/api', 'true', 'Alla får göra allt - OSÄKERT!'),
+        ('user', '*', 'allow', '/api', 'true', 'Alla användare får göra allt - OSÄKERT!')
+    ";
             command.CommandText = aclData;
             command.ExecuteNonQuery();
         }
