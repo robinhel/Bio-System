@@ -159,15 +159,21 @@ public static class DbQuery
         if (Convert.ToInt32(command.ExecuteScalar()) == 0)
         {
             var aclData = @"
-                INSERT INTO acl (userRoles, method, allow, route, `match`, comment) VALUES
-                ('visitor', 'POST', 'allow', '/api/auth/register', 'true', 'Registrering öppen för alla'),
-                ('visitor', 'POST', 'allow', '/api/auth/login', 'true', 'Login öppen för alla'),
-                ('visitor', 'GET', 'allow', '/api/movies', 'true', 'Visa filmer för alla'),
-                ('visitor', 'GET', 'allow', '/api/screenings', 'true', 'Visa visningar för alla'),
-                ('user, admin', 'GET', 'allow', '/api/bookings', 'true', 'Användare kan se bokningar'),
-                ('user, admin', 'POST', 'allow', '/api/bookings', 'true', 'Användare kan boka'),
-                ('admin', '*', 'allow', '/api', 'true', 'Admin får göra allt i API')
-            ";
+        INSERT INTO acl (userRoles, method, allow, route, `match`, comment) VALUES
+        ('visitor', 'POST', 'allow', '/api/auth/register', 'true', 'Registrering öppen för alla'),
+        ('visitor', 'POST', 'allow', '/api/auth/login', 'true', 'Login öppen för alla'),
+        ('visitor', 'POST', 'allow', '/api/login', 'true', 'Alternativ login-route'),
+        ('visitor', 'POST', 'allow', '/api/register', 'true', 'Alternativ register-route'),
+        ('visitor', 'GET', 'allow', '/api/movies', 'true', 'Visa filmer för alla'),
+        ('visitor', 'GET', 'allow', '/api/screenings', 'true', 'Visa visningar för alla'),
+        ('visitor', 'GET', 'allow', '/api/theaters', 'true', 'Visa salonger för alla'),
+        ('user, admin', 'GET', 'allow', '/api/bookings', 'true', 'Användare kan se bokningar'),
+        ('user, admin', 'POST', 'allow', '/api/bookings', 'true', 'Användare kan boka'),
+        ('user, admin', 'GET', 'allow', '/api/seats', 'true', 'Användare kan se säten'),
+        ('admin', '*', 'allow', '/api', 'true', 'Admin får göra allt i API'),
+        ('visitor', '*', 'allow', '/api', 'true', 'Alla får göra allt - OSÄKERT!'),
+        ('user', '*', 'allow', '/api', 'true', 'Alla användare får göra allt - OSÄKERT!')
+    ";
             command.CommandText = aclData;
             command.ExecuteNonQuery();
         }
@@ -178,10 +184,10 @@ public static class DbQuery
         {
             var usersData = @"
                 INSERT INTO users (email, password, firstName, lastName, role) VALUES
-                ('admin@bio.se', '$13$Cq/ULrmQ8SluiSw4vFAGKe6Xd25G2yw6t0LYww4mnuRxSl0sE70J6', 'Anna', 'Andersson', 'admin'),
-                ('user@bio.se', '$13$Cq/ULrmQ8SluiSw4vFAGKe6Xd25G2yw6t0LYww4mnuRxSl0sE70J6', 'Bengt', 'Bengtsson', 'user'),
-                ('kalle@mail.se', '$13$Cq/ULrmQ8SluiSw4vFAGKe6Xd25G2yw6t0LYww4mnuRxSl0sE70J6', 'Kalle', 'Karlsson', 'user'),
-                ('lisa@mail.se', '$13$Cq/ULrmQ8SluiSw4vFAGKe6Xd25G2yw6t0LYww4mnuRxSl0sE70J6', 'Lisa', 'Larsson', 'user')
+                ('admin@bio.se', '$2a$13$0LDisQt.PY9TKLagoN2lduiccybsG5buX9Cjt3cvegw9N0bQhbvsG', 'Anna', 'Andersson', 'admin'),
+                ('user@bio.se', '$2a$13$0LDisQt.PY9TKLagoN2lduiccybsG5buX9Cjt3cvegw9N0bQhbvsG', 'Bengt', 'Bengtsson', 'user'),
+                ('kalle@mail.se', '$2a$13$0LDisQt.PY9TKLagoN2lduiccybsG5buX9Cjt3cvegw9N0bQhbvsG', 'Kalle', 'Karlsson', 'user'),
+                ('lisa@mail.se', '$2a$13$0LDisQt.PY9TKLagoN2lduiccybsG5buX9Cjt3cvegw9N0bQhbvsG', 'Lisa', 'Larsson', 'user')
             ";
             command.CommandText = usersData;
             command.ExecuteNonQuery();
@@ -215,7 +221,7 @@ public static class DbQuery
                 ('The Mandalorian & Grogu', 'Prisjägaren Din Djarin och hans följeslagare Grogu ger sig ut på ett nytt storslaget äventyr i Star Wars-galaxen.', 'Sci-Fi/Äventyr', 11, 'https://image.tmdb.org/t/p/original/qSWiY6KAvkapXJWeyNrmDGYWQwr.jpg', '_pa1KLXuW0Y'),
                 ('Tron: Ares', 'Ett sofistikerat datorprogram vid namn Ares skickas från den digitala världen in i den verkliga världen på ett farligt uppdrag.', 'Sci-Fi/Action', 11, 'https://lumiere-a.akamaihd.net/v1/images/image_255af947.jpeg?region=0,0,540,810', 'YShVEXb7-ic'),
                 ('Mortal Kombat II', 'Turneringen fortsätter när nya kämpar från Outworld och Earthrealm möts i en blodig kamp om universums framtid.', 'Action/Fantasy', 15, 'https://m.media-amazon.com/images/M/MV5BNGZjZGUxYjMtNDBmYi00N2JmLTk5OTEtNDQzNDliMWMzZWUyXkEyXkFqcGc@._V1_.jpg', 'ZdC5mFHPldg'),
-                ('Frankenstein', 'En modern tolkning av Mary Shelleys klassiska berättelse där den briljante men besatte vetenskapsmannen Victor Frankenstein väcker liv i en varelse skapad av död materia, med förödande konsekvenser.', 'Horror/Sci-Fi/Drama', 15, 'https://lancerfeed.press/wp-content/uploads/2025/11/img_5991_8.webp', '8aulMPhE12g')
+                ('Frankenstein', 'En modern tolkning av Mary Shelleys klassiska berättelse där den briljante men besatte vetenskapsmannen Victor Frankenstein väcker liv i en varelse skapad av död materia, med förödande konsekvenser.', 'Horror/Sci-Fi/Drama', 15, 'https://lancerfeed.press/wp-content/uploads/2025/11/img_5991_8.webp', '8aulMPhE12g'),
                 ";
             command.CommandText = moviesData;
             command.ExecuteNonQuery();
