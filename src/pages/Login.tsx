@@ -10,10 +10,18 @@ LoginPage.route = {
 export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
     const navigate = useNavigate();
+
+    const errorMessages: Record<string, string> = {
+        'No such user.': 'Det finns inget konto med den e-postadressen.',
+        'Password mismatch.': 'Fel lösenord.',
+        'A user is already logged in.': 'En användare är redan inloggad.',
+    };
 
     async function handleLogin(e: React.FormEvent) {
         e.preventDefault();
+        setError('');
 
         const response = await fetch('/api/login', {
             method: 'POST',
@@ -22,8 +30,13 @@ export default function LoginPage() {
             body: JSON.stringify({ email, password }),
         });
 
-        if (response.ok) {
+        const data = await response.json();
+
+        if (response.ok && !data.error) {
             navigate('/');
+        } else {
+            const msg = data?.error;
+            setError(errorMessages[msg] ?? msg ?? 'Något gick fel, försök igen.');
         }
     }
 
@@ -48,6 +61,7 @@ export default function LoginPage() {
                     required
                 /><br />
 
+                {error && <p className="auth-error">{error}</p>}
                 <button type="submit" className="auth-btn">Logga In</button>
             </form>
         </div>
