@@ -94,31 +94,20 @@ export default function BookingPage() {
         }
     } 
 
-
-
-
-
-    return (
+        return (
         <>
             <div className="booking-page">
                 <h1>Bokning för {movie?.Title}</h1>
                 <div className="bookingdetail">
                     <div className="theater-layout">
-                        
                         <div className="theater-screen">
                             <p>SKÄRMEN</p>
                         </div>
-
                         <form className="seating-grid">
-
                             {seatsPerRow.map((numSeats, rowIndex) => (
-
                                 <div key={`row-${rowIndex}`} className="seat-row">
-
                                     {Array.from({ length: numSeats }).map((_, seatIndex) => {
-
                                         const seatId = `Rad ${rowIndex + 1}  Stol ${seatIndex + 1}`;
-
                                         return (
                                             <label key={seatId} className="seats">
                                                 <input
