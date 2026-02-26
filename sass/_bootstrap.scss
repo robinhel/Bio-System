@@ -26,6 +26,19 @@ $enable-negative-margins: true;
   margin-left: 22px;
   margin-right: 22px;
 }
+.navbar-nav {
+  width: 100%; 
+  display: flex;
+}
+.nav-link[href="/login-page"] {
+  margin-left: auto !important; 
+  padding-left: 20px;
+  order: 1;
+  font-weight: bold;
+  &:hover{
+    color: rgb(94, 2, 2);
+  }
+}
 
 // Override some Bootstrap defaults
 .navbar-brand {

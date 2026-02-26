@@ -24,6 +24,35 @@
     border-radius: 20px;
 }
 
+.date-box {
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.date-button {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 2px solid #ccc;
+    background-color: white;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+
+.date-button:hover {
+    background-color: #f2f2f2;
+    transform: translateY(-2px);
+}
+
+
+.date-button.active {
+    background-color: black;
+    color: white;
+    border-color: black;
+}
+
 .movie-cover {
     width: 25vh;
     aspect-ratio: 2/3;
@@ -92,30 +121,4 @@
     background: linear-gradient(to bottom, rgb(47, 46, 46) 10%, rgb(0, 0, 0) 100%);
     border-radius: 15px;
     overflow: hidden;
-}
-
-.details-container {
-    gap: 10px;
-    display: flex;
-    //outline: 3px solid red;
-}
-
-.movie-details {
-    //outline: 3px solid red;
-    width: 20vw;
-    text-align: center;
-
-}
-
-.movie-description {
-    //outline: 3px solid red;
-    display: block;
-
-    max-width: 100%;
-    height: auto;
-
-    h2 {
-        //text-align: center;
-        margin-bottom: 10px;
-    }
 }

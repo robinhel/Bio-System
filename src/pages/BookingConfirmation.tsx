@@ -22,18 +22,52 @@ export default function BookingConfirmation() {
 
   const [movies, setMovies] = useState<Movie[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isPending, setIsPending] = useState(true);
+  const [error, setError] = useState(null);
+  
+  useEffect(() => {
+     setTimeout(() => {
+      fetch('/api/movies')
+        .then(res => {
+          if (!res.ok) {
+            throw Error('Kunde inte hämta data');
+          }
+          return res.json();
+        })
+        .then(data => {
+          setMovies(data);
+          setIsPending(false);
+          setError(null);
+        })
+        .catch(err => {
+          setIsPending(false);
+          setError(err.message);
+        });
+  }, 100);
+  }, []); 
+  
+  if (isPending) { 
+    return (
+      <div className="c-section">
+        <h2 className="loading-text"> Loading... </h2>
+      </div>
+    ); 
+  }
+  if (error) {
+    return (
+      <div className="c-section">
+        <div className="error-msg"> Ett fel uppstod: {error} </div>
+      </div>
+    );
+  }
 
-useEffect(() => {
-  fetch('/api/Movies')
-    .then(res => res.json())
-    .then(data => setMovies(data));
-}, []);  
-  const filterMovie = movies.filter((movie) =>
-    movie.Title?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filterMovie = movies.filter((movie) =>
+  //   movie.Title?.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
+   
 
   return (
-      <div className="c-section">
+    <div className="c-section">
         <img className="ava" src="/images/avatar.webp" alt="Avatar cover" />
         <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" fill="currentColor" className="qr-code" viewBox="0 0 16 16">
           <path d="M2 2h2v2H2z"/>
@@ -49,7 +83,8 @@ useEffect(() => {
           <p><strong>Stolnummer:</strong> A-4, A-3</p>
           <p><strong>Bokningsdag:</strong> 12.30, 2026-02-17</p>
         </div>
-        <div className="tick">
+      <div className="tick">
+       
           <h2 className="biljett">Biljetter </h2>
           <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" className="icon" viewBox="0 0 16 16">
             <path d="M4 5.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5M5 7a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2z"/>
@@ -59,8 +94,5 @@ useEffect(() => {
           <p className="totalsumma"><strong>Totalt: 210 sek</strong></p>
         </div>
       </div>
-  )
-
- }
-
-
+  );
+}
