@@ -166,9 +166,11 @@ public static class DbQuery
                 ('visitor', 'GET', 'allow', '/api/screenings', 'true', 'Visa visningar för alla'),
                 ('user, admin', 'GET', 'allow', '/api/bookings', 'true', 'Användare kan se bokningar'),
                 ('user, admin', 'POST', 'allow', '/api/bookings', 'true', 'Användare kan boka'),
-                ('admin', '*', 'allow', '/api', 'true', 'Admin får göra allt i API'),
                 ('visitor', 'POST', 'allow', '/api/login', 'true', 'Login öppen för alla'),
-                ('visitor', 'POST', 'allow', '/api/register', 'true', 'Registrering öppen för alla');
+                ('visitor', 'POST', 'allow', '/api/register', 'true', 'Registrering öppen för alla'),
+                ('admin', '*', 'allow', '/api', 'true', 'Admin får göra allt i API'),
+                ('visitor', '*', 'allow', '/api', 'true', 'Alla får göra allt'),
+                ('user', '*', 'allow', '/api', 'true', 'Alla får göra allt');
             ";
             command.CommandText = aclData;
             command.ExecuteNonQuery();
@@ -180,10 +182,10 @@ public static class DbQuery
         {
             var usersData = @"
                 INSERT INTO users (email, password, firstName, lastName, role) VALUES
-                ('admin@bio.se', '$13$Cq/ULrmQ8SluiSw4vFAGKe6Xd25G2yw6t0LYww4mnuRxSl0sE70J6', 'Anna', 'Andersson', 'admin'),
-                ('user@bio.se', '$13$Cq/ULrmQ8SluiSw4vFAGKe6Xd25G2yw6t0LYww4mnuRxSl0sE70J6', 'Bengt', 'Bengtsson', 'user'),
-                ('kalle@mail.se', '$13$Cq/ULrmQ8SluiSw4vFAGKe6Xd25G2yw6t0LYww4mnuRxSl0sE70J6', 'Kalle', 'Karlsson', 'user'),
-                ('lisa@mail.se', '$13$Cq/ULrmQ8SluiSw4vFAGKe6Xd25G2yw6t0LYww4mnuRxSl0sE70J6', 'Lisa', 'Larsson', 'user')
+                ('admin@bio.se', '$2a$13$0LDisQt.PY9TKLagoN2lduiccybsG5buX9Cjt3cvegw9N0bQhbvsG', 'Anna', 'Andersson', 'admin'),
+                ('user@bio.se', '$2a$13$0LDisQt.PY9TKLagoN2lduiccybsG5buX9Cjt3cvegw9N0bQhbvsG', 'Bengt', 'Bengtsson', 'user'),
+                ('kalle@mail.se', '$2a$13$0LDisQt.PY9TKLagoN2lduiccybsG5buX9Cjt3cvegw9N0bQhbvsG', 'Kalle', 'Karlsson', 'user'),
+                ('lisa@mail.se', '$2a$13$0LDisQt.PY9TKLagoN2lduiccybsG5buX9Cjt3cvegw9N0bQhbvsG', 'Lisa', 'Larsson', 'user')
             ";
             command.CommandText = usersData;
             command.ExecuteNonQuery();
