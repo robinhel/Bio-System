@@ -56,6 +56,7 @@ export default function MovieDetails() {
             })
             .catch(err => console.log(err));
     }, [id]);
+    
 
     if (error) return <p>{error}</p>;
     if (!movie) return <p>Laddar...</p>;
@@ -65,6 +66,7 @@ export default function MovieDetails() {
     const dates = [...new Set(
         movieScreenings.map(s => s.startTime.split("T")[0])
     )];
+    
 
     return (
         <div className="movie-details-page">
