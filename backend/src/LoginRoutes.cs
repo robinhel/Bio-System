@@ -67,5 +67,10 @@ public static class LoginRoutes
                 new { status = "Successful logout." }
             );
         });
+
+        App.MapGet("/api/generate-hash", () =>
+        {
+            return Password.Encrypt("123");
+        });
     }
 }
