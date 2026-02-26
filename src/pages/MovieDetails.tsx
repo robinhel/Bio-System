@@ -59,102 +59,97 @@ export default function MovieDetails() {
 
     if (error) return <p>{error}</p>;
     if (!movie) return <p>Laddar...</p>;
+    const movieScreenings = screenings.filter(
+        s => s.movieId === Number(id)
+    );
+    const dates = [...new Set(
+        movieScreenings.map(s => s.startTime.split("T")[0])
+    )];
+
     return (
-        <>
-            <div className="movie-details-page">
-                <h1>{movie.Title}</h1>
-                <h1></h1>
+        <div className="movie-details-page">
+            <h1>{movie.Title}</h1>
 
-                <div className="movie-box">
-                    <div className="movie-trailer">
-                        <iframe
-                            src={`https://www.youtube.com/embed/${movie.trailer}`}
-                            title="Movie trailer"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                        />
-                    </div>
-
-                    {movie.Cover && (
-                        <img className="movie-cover"
-                            src={movie.Cover}
-                            alt={`Cover for ${movie.Title}`}
-                        />
-                    )}
+            <div className="movie-box">
+                <div className="movie-trailer">
+                    <iframe
+                        src={`https://www.youtube.com/embed/${movie.trailer}`}
+                        title="Movie trailer"
+                        allowFullScreen
+                    />
                 </div>
-                <div className="details-container">
-                    <div className="movie-description">
-                        <h2>Beskrivning</h2>
-                        <p>{movie.Description}</p>
-                    </div>
 
-                    <div className="movie-details">
-                        <h2>Detaljer</h2>
-                        <div className="details-container-p">
-                            <p>Genre: {movie.Genre}</p>
-                            <p>Åldersgräns: {movie.AgeRating}</p>
-                        </div>
-                    </div>
+                {movie.Cover && (
+                    <img
+                        className="movie-cover"
+                        src={movie.Cover}
+                        alt={movie.Title}
+                    />
+                )}
+            </div>
+
+            <div className="details-container">
+                <div>
+                    <h2>Beskrivning</h2>
+                    <p>{movie.Description}</p>
                 </div>
-                <div className="time-slots">
-                    <div className="time-box">
-                        {screenings
-                            .map(screening => {
-                                if (movie.id != screening.movieId) {
-                                    console.log(movie.id)
-                                }
-                                else {
-                                    //'11', '10', '1', '2026-03-08 21:00:00', '2026-03-08 23:15:00'
 
-                                    const dateKey = screening.startTime.split("T")[0];
-                                    console.log("Datum: ", dateKey)
-                                    const start = new Date(screening.startTime);
-                                    console.log("Start time: ", start)
-                                    const end = new Date(screening.endTime);
-
-
-
-                                    const timeSpan =
-                                        start.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) +
-                                        " - " +
-                                        end.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-
-                                    return (
-                                        <div>
-                                            <div className="date-box">
-                                                <button
-                                                    className={`date-button ${selectedDate === dateKey ? "active" : ""}`}
-                                                    onClick={() => setSelectedDate(dateKey)}
-                                                >
-                                                    {dateKey}
-
-                                                </button>
-                                            </div>
-
-                                            {selectedDate == dateKey && (
-                                                <Link
-
-                                                    key={screening.id}
-                                                    to={`/booking-page/${screening.id}`}
-                                                    className="time-slot"
-                                                >
-                                                    {timeSpan}
-                                                    {dateKey}
-                                                    <br />
-                                                    {screening.theaterId}
-                                                </Link>
-                                            )}
-                                        </div>
-                                    );
-                                }
-                            })}
-
-                    </div>
+                <div>
+                    <h2>Detaljer</h2>
+                    <p>Genre: {movie.Genre}</p>
+                    <p>Åldersgräns: {movie.AgeRating}</p>
                 </div>
             </div>
-        </>
+
+            <div className="time-slots">
+                <div className="time-box">
+                    <div className="date-row">
+                        {dates.map(date => (
+                            <button
+                                key={date}
+                                className={`date-button ${selectedDate === date ? "active" : ""}`}
+                                onClick={() => setSelectedDate(date)}
+                            >
+                                {date}
+                            </button>
+                        ))}
+                    </div>
+
+                    {selectedDate && (
+                        <div className="times">
+                            {movieScreenings.map(screening => {
+
+                                if (screening.movieId !== Number(id)) return null;
+
+                                const dateKey = screening.startTime.split("T")[0];
+
+                                if (dateKey !== selectedDate) return null;
+
+                                const start = new Date(screening.startTime);
+                                const end = new Date(screening.endTime);
+
+                                const timeSpan =
+                                    start.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) +
+                                    " - " +
+                                    end.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+                                return (
+                                    <Link
+                                        key={screening.id}
+                                        to={`/booking-page/${screening.id}`}
+                                        className="time-slot"
+                                    >
+                                        {timeSpan}
+                                    </Link>
+                                );
+                            })}
+                        </div>
+                    )}
+
+                </div>
+            </div>
+        </div>
     );
 }
-// ha en sortera datum på rad som är defualt inget, när man väljer datum
-// datum kommer tider för just den dagen i samma box
+
 
