@@ -25,7 +25,7 @@ export default function MovieDetails() {
     useEffect(() => {
         if (!id) return;
 
-        fetch(`/api/Movies/${id}`)
+        fetch(`/api/movies/${id}`)
             .then((res) => {
                 if (!res.ok) throw new Error("Kunde inte hämta film");
                 return res.json();
