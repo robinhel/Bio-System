@@ -13,10 +13,9 @@
     border-radius: 15px;
     background-color: rgb(26, 24, 24);
     padding: 65px 120px;
-    min-height: 500px;   // Ger rutan en rejäl minimihöjd
+    min-height: 500px; 
     position: relative;
-    justify-content: space-between; // Lägger postern till höger och innehåll i mitten
-
+    justify-content: space-between;
     .booking-poster {
         margin-left: 30%;
         width: 100%;
@@ -58,8 +57,8 @@
 .theater-layout {
     flex: 1;
     display: flex;
-    flex-direction: column; // Lägger duken överst och stolarna under
-    align-items: center;    // Centrerar allt i mitten av skärmen
+    flex-direction: column;
+    align-items: center; 
 
     // Själva bioduken
     .theater-screen {
@@ -69,8 +68,8 @@
         /* height: 170px; */
         background: rgb(255, 255, 255);
         margin-bottom: 80px;
-        box-shadow: 0 4px 15px rgba(255, 255, 255, 0.4); // Ger duken ett vitt sken
-        border-radius: 10% 10% 0 0; // Gör duken lätt rundad för en 3D-känsla
+        box-shadow: 0 4px 15px rgba(255, 255, 255, 0.4); 
+        border-radius: 10% 10% 0 0;
         text-align: center;
         font-size: 12px;
         padding-top: 10px;
@@ -85,9 +84,9 @@
 // Rutnätet som håller alla stolsrader
 .seating-grid {
     display: flex;
-    flex-direction: column; // Staplar raderna på höjden
-    gap: 17px;              // Mellanrum mellan raderna
-    align-items: center;    // Ser till att salongen är centrerad
+    flex-direction: column; 
+    gap: 17px;            
+    align-items: center;
     flex-direction: column;
     
 }
@@ -95,8 +94,8 @@
 // En enskild rad med stolar
 .seat-row {
     display: flex;
-    flex-direction: row;    // Lägger stolarna sida vid sida
-    gap: 9px;               // Mellanrum mellan varje stol
+    flex-direction: row;  
+    gap: 9px;             
     justify-content: center;
 }
 
@@ -104,17 +103,17 @@
 .seats {
     width: 50px;
     height: 50px;
-    background-color: #f9f6f7; // Standardfärg när sätet är ledigt
-    border-radius: 4px;        // Lite rundade hörn
+    background-color: #f9f6f7;
+    border-radius: 4px; 
     display: flex;
-    justify-content: center;   // Centrerar texten (numret) vågrätt
-    align-items: center;       // Centrerar texten (numret) lodrätt
-    color: rgba(255, 255, 255, 0); // Döljer numret när stolen inte är vald
+    justify-content: center;
+    align-items: center;       
+    color: rgba(255, 255, 255, 0);
     font-size: 0.9rem;
-    cursor: pointer;           // Muspekaren ändras till en hand vid hover
+    cursor: pointer;
 }
 
-// Döljer själva checkbox-rutan men behåller den för datorn/skärmläsare
+
 .Visually-hidden {
     position: absolute;
     width: 1px;
@@ -130,31 +129,31 @@
 
 // STYLING NÄR MAN KLICKAR (Valt säte)
 .seats {
-    /* Standardläge: Inga ikoner syns på tomma säten */
+
     span {
         .check-icon, .remove-icon {
             display: none;
         }
     }
 
-    /* NÄR SÄTET ÄR VALT (Grön ruta) */
+    /* NÄR SÄTET ÄR VALT */
     &:has(input:checked) {
         background-color: #4ade80;
         
         .check-icon {
-            display: block; // Visa gubben med bocken
+            display: block; 
             color: white;
         }
 
         /* NÄR MAN HOVERAR ÖVER EN REDAN VALD RUTA */
         &:hover {
-            background-color: #d32424; // Blir röd för att visa "ta bort"
+            background-color: #d32424;
             
             .check-icon {
-                display: none; // Göm bocken
+                display: none;
             }
             .remove-icon {
-                display: block; // Visa gubben med krysset istället
+                display: block;
                 color: white;
             }
         }
@@ -162,14 +161,14 @@
 }
 
 .seats:hover {
-    background-color: #d1d1d1; // Blir lite gråare
-    transform: scale(1.08);     // Stolen blir lite större (pop-out effekt)
-    box-shadow: 0 4px 15px rgba(121, 121, 121, 0.4); // Lägger till en skugga
+    background-color: #d1d1d1; 
+    transform: scale(1.08);
+    box-shadow: 0 4px 15px rgba(121, 121, 121, 0.4); 
 }
 
 .custom-icon {
-    font-size: 2rem; // Eller t.ex. 40px
-    color: #4ade80;  // Du kan också passa på att ändra färg här
+    font-size: 2rem;
+    color: #4ade80;
 }
 
 /* ==========================================================================
