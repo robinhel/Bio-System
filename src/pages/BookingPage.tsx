@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Form } from 'react-bootstrap';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
@@ -33,8 +33,7 @@ interface Screening {
 export default function BookingPage() {
 
     const { screeningId } = useParams<{ screeningId: string }>();
-
-
+    const navigate = useNavigate();
     const [movie, setMovie] = useState<Movie | null>(null);
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
@@ -104,6 +103,34 @@ export default function BookingPage() {
         setKid(0);
         setPensioner(0);
         setSelectedSeats([]);
+    };
+    const handleConfirm = async () => {
+        console.log("Säten som skickas:", selectedSeats);
+        const bookingData = {
+            userId: 1, 
+            screeningId: parseInt(screeningId || "0"),
+            totalPrice: totalPrice,
+            bookingNumber: "BKG-" + Math.random().toString(36).substring(7).toUpperCase()
+        };
+
+        const res = await fetch('/api/bookings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(bookingData)
+        });
+
+        if (res.ok) {
+            const savedBooking = await res.json();
+            const newId = savedBooking.id || savedBooking.Id;
+            navigate(`/bookingconfirmation/${newId}`, { 
+                state: { 
+                    selectedSeats: selectedSeats, 
+                    selectedDate: selectedDate 
+                } 
+            });
+        } else {
+            alert("Kunde inte spara bokningen.");
+        }
     };
 
     useEffect(() => {
@@ -314,11 +341,13 @@ export default function BookingPage() {
                     {!show && <Button onClick={() => setShow(true)}>Öppna mig</Button>}
                 </div>
                 <div className="confirm-booking">
-                    <Link to="/bookingconfirmation-page">
-                        <Button variant="Primary" size="lg">
-                            Bekräfta bokning
-                        </Button>
-                    </Link>
+                    <Button 
+                        variant="primary" 
+                        size="lg" 
+                        onClick={handleConfirm}
+                        disabled={selectedSeats.length !== totalTickets || totalTickets === 0}>
+                        Bekräfta bokning
+                    </Button> 
                 </div>
             </div>
         </>

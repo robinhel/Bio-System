@@ -35,6 +35,16 @@
     cursor: pointer;
 }
 
+.auth-error {
+    color: #ff6b6b;
+    background-color: rgba(255, 0, 0, 0.15);
+    border: 1px solid #ff4444;
+    border-radius: 5px;
+    padding: 8px 16px;
+    margin-top: 20px;
+    font-size: 0.9rem;
+}
+
 .auth-link {
     border-radius: 5px;
     display: flex; // Aktiverar flexbox
@@ -42,5 +52,4 @@
     color: #ffffff;
     margin-top: 50px;
     margin: auto;
-
 }
