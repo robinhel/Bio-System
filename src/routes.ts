@@ -13,6 +13,8 @@ import RegisterPage from './pages/Register.tsx';
 import CancelBookingPage from './pages/CancelBooking.tsx';
 import BookingConfirmation from './pages/BookingConfirmation.tsx';
 import ContactPage from './pages/contact.tsx';
+import profile from './pages/Profile.tsx';
+
 
 
 export default [
@@ -25,7 +27,8 @@ export default [
   LoginPage,
   RegisterPage,
   CancelBookingPage,
-  BookingConfirmation
+  BookingConfirmation,
+  profile
 ]
   // map the route property of each page component to a Route
   .map(x => (({ element: createElement(x), ...x.route }) as Route))

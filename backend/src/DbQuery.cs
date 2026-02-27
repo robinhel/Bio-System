@@ -160,8 +160,6 @@ public static class DbQuery
         {
             var aclData = @"
         INSERT INTO acl (userRoles, method, allow, route, `match`, comment) VALUES
-        ('visitor', 'POST', 'allow', '/api/auth/register', 'true', 'Registrering öppen för alla'),
-        ('visitor', 'POST', 'allow', '/api/auth/login', 'true', 'Login öppen för alla'),
         ('visitor', 'POST', 'allow', '/api/login', 'true', 'Alternativ login-route'),
         ('visitor', 'POST', 'allow', '/api/register', 'true', 'Alternativ register-route'),
         ('visitor', 'GET', 'allow', '/api/movies', 'true', 'Visa filmer för alla'),

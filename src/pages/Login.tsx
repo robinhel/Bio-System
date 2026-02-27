@@ -67,7 +67,7 @@ export default function LoginPage() {
         </div>
 
         <Link className="auth-link" to="/register-page">
-            <button className="auth-btn">Skapa konto</button>
+            <button className="auth-btn">Bli medlem</button>
         </Link>
     </>;
 }
