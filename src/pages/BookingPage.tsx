@@ -34,6 +34,7 @@ export default function BookingPage() {
 
     const { screeningId } = useParams<{ screeningId: string }>();
 
+
     const [movie, setMovie] = useState<Movie | null>(null);
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
@@ -46,7 +47,16 @@ export default function BookingPage() {
     const [kid, setKid] = useState(0);
     const totalPrice = (adult * 140) + (pensioner * 100) + (kid * 60);
 
-    const addAdult = () => setAdult(adult + 1);
+    const addAdult = () => {
+     if(adult + pensioner + kid < 8){
+        setAdult(adult + 1);
+     }
+     else{
+        alert("Max 8 biljetter per bokning.");
+     }
+
+
+    }
     const dates = [...new Set(
         screenings.map(s => s.startTime.split("T")[0])
     )];
@@ -57,19 +67,37 @@ export default function BookingPage() {
         }
     }
 
-    const addPensioner = () => setPensioner(pensioner + 1);
+    const addPensioner = () => {
+      if(adult + pensioner + kid < 8){
+         setPensioner(pensioner + 1);
+     }
+     else{
+        alert("Max 8 biljetter per bokning.");
+     }
+        
+    }
     const subPensioner = () => {
         if (pensioner > 0) {
             setPensioner(pensioner - 1);
         }
     }
 
-    const addKid = () => setKid(kid + 1);
+    const addKid = () =>  {
+      if(adult + pensioner + kid < 8){
+         setKid(kid + 1);
+     }
+     else{
+        alert("Max 8 biljetter per bokning.");
+     }
+        
+    }
     const subKid = () => {
         if (kid > 0) {
             setKid(kid - 1);
         }
     }
+        const isMaxReached = (adult + pensioner + kid) >= 8;
+
 
     const resetTickets = () => {
         setAdult(1);
