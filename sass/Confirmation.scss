@@ -1,24 +1,30 @@
 // Stylea hela paketet
 .c-section {
   position: relative; // Gör så vi kan placera grejer inuti boxen 
-  width: 600px; // Bredden på boxen
-  max-width: 95%; // Ser till att boxen krymper på mindre skärmar
+  width: 95%; // Bredden på boxen
+  max-width: 600px; // Ser till att boxen krymper på mindre skärmar
   margin: 0 auto; // Centrerar boxen
   display: flex; // Flexbox för att innehåll kan ligga bredvid varandra
   flex-wrap: wrap; // Gör så elementen hoppar ner på nästa rad vid t.ex mindre skärmar
   justify-content: space-between; // Gör space mellan info och biljett symbolen
   background: #1a1a1a; // Bakrundsfärg på hela bordern
-  padding: 20px; // Luft
+  padding: 10px; // Luft
   border-radius: 20px; // Runt avslut
+}
+.image-container {
+  width: 100%;           /* Hela bredden på din biljett */
+  height: 250px;         /* Justera denna för att se mer/mindre av toppen */
+  overflow: hidden;      /* Klipper allt som sticker ut */
+  border-radius: 15px 15px 0 0; 
 }
 
 // Bilden
-.ava {
+.c-img {
   width: 100%; // Bilden tar upp hela bredden i boxen
-  height: 200px; // Bildens höjd
+  height: 230px; // Bildens höjd
   object-fit: cover; // Fyller hela rutan utan att bli utdragen, klipps om de behövs
   border-radius: 15px; // rundar
-  margin-bottom: 20px; //skapar mellan rum under bid och text
+  margin-bottom: 10px; //skapar mellan rum under bid och text
 }
 
 // QR koden (bootstrap)
@@ -37,6 +43,13 @@
 .b-info p {
   margin: 5px 0;
   font-size: 0.9rem;
+}
+.b-info h1{
+  font-size: 1.8rem;
+  color: #ffffff;
+  margin-bottom: 15px;
+  text-transform: uppercase; /* Gör titeln i stora bokstäver för biokänsla */
+  letter-spacing: 1px;
 }
 
 // Hela paketet för ticket
