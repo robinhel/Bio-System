@@ -8,17 +8,25 @@
 }
 
 .bookingdetail {
-    margin-top: 7%;
+   margin-top: 7%;
     display: flex;
     border-radius: 15px;
     background-color: rgb(26, 24, 24);
-    padding: 65px 120px;
+    padding: 65px 120px; 
     min-height: 500px; 
     position: relative;
-    justify-content: space-between;
+    gap: 150px; 
+    justify-content: space-between; 
+    align-items: center;
+
     .booking-poster {
-        margin-left: 30%;
-        width: 100%;
+        margin-left: 0; 
+        width: 300px; 
+        max-width: 300px;
+        height: 500px;
+        flex-shrink: 0; 
+        object-fit: cover;
+        border-radius: 20px;
     }
 
     .formlabel {
@@ -33,13 +41,16 @@
     }
 }
 
+
 .booking-poster {
-    width: 250px;
+    width: 300px; 
+    max-width: 300px;
     height: auto;
     aspect-ratio: 2/3;
     object-fit: cover;
     border-radius: 20px;
     transition: transform 0.3s ease;
+    flex-shrink: 0;
 }
 
 .poster-text {
@@ -288,39 +299,83 @@
    MOBILE VIEW
    ========================================================================== */
 @media (max-width: 768px) {
-    .bookingdetail {
-        position: relative;
-        .seats-pic { width: 80%; position: relative; }
-        .booking-poster { margin-left: 83%; }
-        .formlabel {
-            z-index: 10;
-            width: 10%;
-            #date { display: none; }
-        }
-        .booking-page {
-            align-items: center;
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
+  .booking-page {
+    padding: 10px;
+
+    h1 {
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+    }
+  }
+
+  .bookingdetail {
+    flex-direction: column;
+    padding: 30px 15px;
+    gap: 40px;
+    margin-top: 20px;
+    justify-content: center;
+    align-items: center;
+
+    .theater-layout {
+      order: 2;
+      width: 100%;
+      min-width: unset;
+
+      .theater-screen {
+        width: 80%;
+        margin-bottom: 60px;
+      }
     }
 
     .booking-poster {
-        border-radius: 0px;
-        margin-left: 0%;
-        position: absolute;
-        align-items: center;
-        max-width: 50px;
-        z-index: 10;
+      margin: 0 auto;
+      width: 200px;
+      max-width: 200px;
+      height: auto;
+    
+    }
+  }
+
+  .seats {
+    width: 23px;
+    height: 25px;
+    max-width: 40px;
+    max-height: 40px;
+
+    i {
+      font-size: 1.1rem !important;
     }
 
-    .poster-text {
-        align-items: center;
-        text-align: center;
-        margin-left: 0%;
-        p { margin-left: 0; width: 100%; }
+    &:active {
+      background-color: #4ade80 !important;
     }
 
-    .bookinginformation { align-items: center; margin-left: 0%; }
-    .formlabel { margin-left: 0%; }
-}
+    &:has(input:checked):hover {
+      background-color: #4ade80 !important;
+
+      .remove-icon {
+        display: none !important;
+      }
+
+      .check-icon {
+        display: block !important;
+      }
+    }
+  }
+
+  .seating-grid {
+    gap: 10px;
+  }
+
+  .seat-row {
+    gap: 5px;
+  }
+
+  .ticketselector,
+  .entermail,
+  .bookinginformation {
+    width: 100%;
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+} 
