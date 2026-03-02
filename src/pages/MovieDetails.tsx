@@ -28,7 +28,7 @@ export default function MovieDetails() {
     const [movie, setMovie] = useState<Movie | null>(null);
     const [screenings, setScreenings] = useState<Screenings[]>([]);
     const [error, setError] = useState<string | null>(null);
-    const [selectedDate, setSelectedDate] = useState<string | null>(null)
+    const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
     useEffect(() => {
         if (!id) return;
@@ -107,15 +107,21 @@ export default function MovieDetails() {
             <div className="details-tickets-card">
                 <h1>Biljetter</h1>
                 <div className="details-date-row">
-                    {dates.map(date => (
-                        <button
-                            key={date}
-                            className={`date-button ${selectedDate === date ? "active" : ""}`}
-                            onClick={() => setSelectedDate(date)}
-                        >
-                            {date}
-                        </button>
-                    ))}
+                    {dates.map(date => {
+                        const d = new Date(date);
+                        const dayName = d.toLocaleDateString("sv-SE", { weekday: "long" });
+                        const dayNum = d.toLocaleDateString("sv-SE", { day: "numeric", month: "long" });
+
+                        return (
+                            <button
+                                key={date}
+                                className={`date-button ${selectedDate === date ? "active" : ""}`}
+                                onClick={() => setSelectedDate(date)}
+                            >
+                                {dayName} <br /> {dayNum}
+                            </button>
+                        );
+                    })}
                 </div>
             </div>
 

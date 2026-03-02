@@ -1,6 +1,12 @@
 .movie-details-page {
-    display: grid;
-    max-width: 1000px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+body,
+html {
+    overflow-x: hidden;
 }
 
 .movie-box {
@@ -63,8 +69,10 @@
 .details-date-row {
     display: flex;
     gap: 14px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     margin-bottom: 20px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 h1 {
@@ -123,8 +131,10 @@ h1 {
     .details-time-slots {
         display: flex;
         gap: 14px;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         margin-bottom: 20px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
 
@@ -167,6 +177,20 @@ h1 {
 
 //mobiler
 @media (max-width: 768px) {
+
+    .movie-details-page {
+        width: 768px;
+    }
+
+
+    .details-date-row,
+    .details-time-slots {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        gap: 10px;
+        padding-bottom: 5px;
+    }
 
     .movie-cover {
         display: none;
