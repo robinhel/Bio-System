@@ -104,9 +104,9 @@ export default function MovieDetails() {
             </div>
 
 
-            <div className="tickets-card">
+            <div className="details-tickets-card">
                 <h1>Biljetter</h1>
-                <div className="date-row">
+                <div className="details-date-row">
                     {dates.map(date => (
                         <button
                             key={date}
@@ -121,10 +121,10 @@ export default function MovieDetails() {
 
 
             {selectedDate && (
-                <div className="times">
+                <div className="details-times">
                     <h1>Bio Borgen</h1>
 
-                    <div className="time-slots">
+                    <div className="details-time-slots">
                         {movieScreenings.map(screening => {
 
                             if (screening.movieId !== Number(id)) return null;
@@ -145,12 +145,12 @@ export default function MovieDetails() {
                                 <Link
                                     key={screening.id}
                                     to={`/booking-page/${screening.id}`}
-                                    className="time-button"
+                                    className="details-time-button"
                                 >
-                                    <span className="salong">
+                                    <span className="details-salong">
                                         Salong {screening.theaterId}
                                     </span>
-                                    <span className="time">
+                                    <span className="details-time">
                                         {timeSpan}
                                     </span>
                                 </Link>

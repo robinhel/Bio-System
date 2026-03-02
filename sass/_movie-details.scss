@@ -51,7 +51,7 @@
 }
 
 //tider och datum
-.tickets-card {
+.details-tickets-card {
     background-color: #383838;
     padding: 25px;
     border-radius: 14px;
@@ -60,7 +60,7 @@
     margin-bottom: 15px;
 }
 
-.date-row {
+.details-date-row {
     display: flex;
     gap: 14px;
     flex-wrap: wrap;
@@ -112,7 +112,7 @@ h1 {
 
 }
 
-.times {
+.details-times {
     background-color: rgba(255, 255, 255, 0.068);
     backdrop-filter: blur(10px);
     padding: 25px;
@@ -120,7 +120,7 @@ h1 {
     width: 100%;
     height: 165px;
 
-    .time-slots {
+    .details-time-slots {
         display: flex;
         gap: 14px;
         flex-wrap: wrap;
@@ -128,7 +128,7 @@ h1 {
     }
 
 
-    .time-button {
+    .details-time-button {
         text-decoration: none;
         background-color: #efefef;
         border: none;
@@ -149,12 +149,12 @@ h1 {
             ;
         }
 
-        .salong {
+        .details-salong {
             font-size: small;
             color: #1a1a1a;
         }
 
-        .time {
+        .details-time {
             font-size: small;
             color: #1a1a1a;
         }
