@@ -2,7 +2,7 @@ ContactPage.route = {
     path: '/contact',
     index: 3,
 };
-import { logoFacebook, logoTwitter, logoInstagram, logoLinkedin } from "ionicons/icons";
+import { logoFacebook, logoX, logoInstagram, logoLinkedin, } from "ionicons/icons";
 import { Container, Row, Col } from 'react-bootstrap';
 import { IonIcon } from "@ionic/react";
 export default function ContactPage() {
@@ -23,13 +23,13 @@ export default function ContactPage() {
             </a>
           </Col>
           <Col xs="auto">
-            <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer">
-              <IonIcon icon={logoTwitter} style={{ fontSize: '32px', color: '#1da1f2' }}/>
+            <a href="https://X.com/" target="_blank" rel="noopener noreferrer">
+              <IonIcon icon={logoX} style={{ fontSize: '32px', color: '#000000' }}/>
             </a>
           </Col>
           <Col xs="auto">
             <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
-              <IonIcon icon={logoInstagram} style={{ fontsize: '32px', color: '#9900ff' }}/>
+              <IonIcon icon={logoInstagram} style={{ fontsize: '52px', color: '#9900ff' }}/>
             </a>
           </Col>
           <Col xs="auto">
