@@ -46,6 +46,8 @@ export default function BookingPage() {
     const [kid, setKid] = useState(0);
     const totalPrice = (adult * 140) + (pensioner * 100) + (kid * 60);
 
+    const [occupiedSeats] = useState<string[]>(["Rad 1 Stol 3", "Rad 1 Stol 4", "Rad 2 Stol 1", "Rad 2 Stol 2"])  //// NEW
+
     const addAdult = () => {
      if(adult + pensioner + kid < 8){
         setAdult(adult + 1);
@@ -126,7 +128,7 @@ export default function BookingPage() {
                 state: { 
                     selectedSeats: selectedSeats, 
                     selectedDate: selectedDate 
-                } 
+                    } 
             });
         } else {
             alert("Kunde inte spara bokningen.");
@@ -180,9 +182,13 @@ export default function BookingPage() {
                             {seatsPerRow.map((numSeats, rowIndex) => (
                                 <div key={`row-${rowIndex}`} className="seat-row">
                                     {Array.from({ length: numSeats }).map((_, seatIndex) => {
-                                        const seatId = `Rad ${rowIndex + 1}  Stol ${seatIndex + 1}`;
+                                        const seatId = `Rad ${rowIndex + 1} Stol ${seatIndex + 1}`;
+                                        const isOccupied = occupiedSeats.includes(seatId); //////////// NEW
                                         return (
-                                            <label key={seatId} className="seats">
+                                            <label 
+                                            key={seatId}
+                                            className={`seats ${isOccupied ? "occupied" : ""}`} ///////// NEW CLASSNAME
+                                            >
                                                 <input
                                                     name="seats"
                                                     type="checkbox"
@@ -190,7 +196,7 @@ export default function BookingPage() {
                                                     className="Visually-hidden"
                                                     checked={selectedSeats.includes(seatId)}
                                                     onChange={() => handleSeatClick(seatId)}
-                                                    disabled={totalTickets === 0}
+                                                    disabled={totalTickets === 0 || isOccupied === true} ///////////// NEW 'ISOCCUPIED'
                                                 />
                                                 <span>
                                                     <i className="bi bi-person-check check-icon fs-4"></i> {/* // gröna rutor hover */}
@@ -345,6 +351,7 @@ export default function BookingPage() {
                         variant="primary" 
                         size="lg" 
                         onClick={handleConfirm}
+                        
                         disabled={selectedSeats.length !== totalTickets || totalTickets === 0}>
                         Bekräfta bokning
                     </Button> 
