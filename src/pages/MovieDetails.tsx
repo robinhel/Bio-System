@@ -28,7 +28,7 @@ export default function MovieDetails() {
     const [movie, setMovie] = useState<Movie | null>(null);
     const [screenings, setScreenings] = useState<Screenings[]>([]);
     const [error, setError] = useState<string | null>(null);
-    const [selectedDate, setSelectedDate] = useState<string | null>(null)
+    const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
     useEffect(() => {
         if (!id) return;
@@ -56,7 +56,7 @@ export default function MovieDetails() {
             })
             .catch(err => console.log(err));
     }, [id]);
-    
+
 
     if (error) return <p>{error}</p>;
     if (!movie) return <p>Laddar...</p>;
@@ -66,7 +66,7 @@ export default function MovieDetails() {
     const dates = [...new Set(
         movieScreenings.map(s => s.startTime.split("T")[0])
     )];
-    
+
 
     return (
         <div className="movie-details-page">
@@ -103,53 +103,70 @@ export default function MovieDetails() {
                 </div>
             </div>
 
-            <div className="time-slots">
-                <div className="time-box">
-                    <div className="date-row">
-                        {dates.map(date => (
+
+            <div className="details-tickets-card">
+                <h1>Biljetter</h1>
+                <div className="details-date-row">
+                    {dates.map(date => {
+                        const d = new Date(date);
+                        const dayName = d.toLocaleDateString("sv-SE", { weekday: "long" });
+                        const dayNum = d.toLocaleDateString("sv-SE", { day: "numeric", month: "long" });
+
+                        return (
                             <button
                                 key={date}
                                 className={`date-button ${selectedDate === date ? "active" : ""}`}
                                 onClick={() => setSelectedDate(date)}
                             >
-                                {date}
+                                {dayName} <br /> {dayNum}
                             </button>
-                        ))}
-                    </div>
-
-                    {selectedDate && (
-                        <div className="times">
-                            {movieScreenings.map(screening => {
-
-                                if (screening.movieId !== Number(id)) return null;
-
-                                const dateKey = screening.startTime.split("T")[0];
-
-                                if (dateKey !== selectedDate) return null;
-
-                                const start = new Date(screening.startTime);
-                                const end = new Date(screening.endTime);
-
-                                const timeSpan =
-                                    start.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) +
-                                    " - " +
-                                    end.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-
-                                return (
-                                    <Link
-                                        key={screening.id}
-                                        to={`/booking-page/${screening.id}`}
-                                        className="time-slot"
-                                    >
-                                        {timeSpan}
-                                    </Link>
-                                );
-                            })}
-                        </div>
-                    )}
-
+                        );
+                    })}
                 </div>
             </div>
+
+
+            {selectedDate && (
+                <div className="details-times">
+                    <h1>Bio Borgen</h1>
+
+                    <div className="details-time-slots">
+                        {movieScreenings.map(screening => {
+
+                            if (screening.movieId !== Number(id)) return null;
+
+                            const dateKey = screening.startTime.split("T")[0];
+
+                            if (dateKey !== selectedDate) return null;
+
+                            const start = new Date(screening.startTime);
+                            const end = new Date(screening.endTime);
+
+                            const timeSpan =
+                                start.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) +
+                                " - " +
+                                end.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+                            return (
+                                <Link
+                                    key={screening.id}
+                                    to={`/booking-page/${screening.id}`}
+                                    className="details-time-button"
+                                >
+                                    <span className="details-salong">
+                                        Salong {screening.theaterId}
+                                    </span>
+                                    <span className="details-time">
+                                        {timeSpan}
+                                    </span>
+                                </Link>
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
+
+
         </div>
     );
 }
