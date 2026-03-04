@@ -128,7 +128,7 @@ export default function BookingPage() {
                 state: { 
                     selectedSeats: selectedSeats, 
                     selectedDate: selectedDate 
-                } 
+                    } 
             });
         } else {
             alert("Kunde inte spara bokningen.");
