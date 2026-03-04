@@ -1,3 +1,4 @@
+
 namespace WebApp;
 
 public static partial class Session

@@ -340,15 +340,17 @@ public static class DbQuery
                     }
                     catch
                     {
-                        // If parsing fails, keep the original value and try to convert to number
+                        // If parsing fails, keep the original value and try to convert to number jappp
                         obj[key] = strValue.TryToNum();
                     }
                 }
             }
             else
             {
-                obj[key] = value;
+                // Normal handling - convert to string and try to parse as number
+                obj[key] = value.ToString().TryToNum();
             }
+
         }
         return obj;
     }
