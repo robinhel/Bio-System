@@ -315,47 +315,39 @@ public static class DbQuery
     private static dynamic ObjFromReader(MySqlDataReader reader)
     {
         var obj = Obj();
-        for (var i = 0; i < reader.FieldCount; i++)
+        for (int i = 0; i < reader.FieldCount; i++)
         {
             var key = reader.GetName(i);
             var value = reader.GetValue(i);
 
-            // Handle NULL values
             if (value == DBNull.Value)
             {
                 obj[key] = null;
             }
-            // Handle DateTime - convert to ISO string
-            else if (value is DateTime dt)
-            {
-                obj[key] = dt.ToString("yyyy-MM-ddTHH:mm:ss");
-            }
-            // Handle boolean (MySQL returns sbyte for TINYINT(1))
-            else if (value is sbyte sb)
-            {
-                obj[key] = sb != 0;
-            }
-            else if (value is bool b)
-            {
-                obj[key] = b;
-            }
             // Handle JSON columns (MySQL returns JSON as string starting with [ or {)
             else if (value is string strValue && (strValue.StartsWith("[") || strValue.StartsWith("{")))
             {
-                try
+                // Special case: Don't parse 'data' column from sessions - keep as string
+                if (key == "data")
                 {
-                    obj[key] = JSON.Parse(strValue);
+                    obj[key] = strValue;
                 }
-                catch
+                else
                 {
-                    // If parsing fails, keep the original value and try to convert to number
-                    obj[key] = strValue.TryToNum();
+                    try
+                    {
+                        obj[key] = JSON.Parse(strValue);
+                    }
+                    catch
+                    {
+                        // If parsing fails, keep the original value and try to convert to number
+                        obj[key] = strValue.TryToNum();
+                    }
                 }
             }
             else
             {
-                // Normal handling - convert to string and try to parse as number
-                obj[key] = value.ToString().TryToNum();
+                obj[key] = value;
             }
         }
         return obj;
@@ -371,8 +363,27 @@ public static class DbQuery
         db.Open();
         var command = db.CreateCommand();
         command.CommandText = @sql;
+
         var entries = (Arr)paras.GetEntries();
-        entries.ForEach(x => command.Parameters.AddWithValue("@" + x[0], x[1]));
+        foreach (var x in entries)
+        {
+            // Om värdet är en Arr, skapa flera parametrar (för t.ex. IN-queries)
+            if (x[1] is Arr arr)
+            {
+                for (int i = 0; i < arr.Length; i++)
+                {
+                    var paramName = $"@{x[0]}_{i}";
+                    command.Parameters.AddWithValue(paramName, arr[i]);
+                    // Ersätt i SQL-strängen (om det är en IN-query t.ex.)
+                    command.CommandText = command.CommandText.Replace($"@{x[0]}", string.Join(", ", arr.Select((_, idx) => $"@{x[0]}_{idx}")));
+                }
+            }
+            else
+            {
+                command.Parameters.AddWithValue("@" + x[0], x[1]);
+            }
+        }
+
         if (context != null)
         {
             DebugLog.Add(context, new
