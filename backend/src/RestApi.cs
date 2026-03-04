@@ -18,7 +18,7 @@ public static class RestApi
             if (!result.HasKey("error"))
             {
                 // Get the insert id and add to our result
-                result.insertId = SQLQueryOne(
+                result.id = SQLQueryOne( // changed from result.InsertID to result.id
                     @$"SELECT id AS __insertId 
                        FROM {table} ORDER BY id DESC LIMIT 1"
                 ).__insertId;
