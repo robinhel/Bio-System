@@ -19,8 +19,15 @@ interface Movie {
     Description: string;
     Genre: string;
     Cover: string;
-    AgeRating: number;
     trailer: string;
+    rating: string;
+    actors: string;
+    director: string;
+    review: string;
+    AgeRating: number;
+    release_year: number;
+    runtime: number;
+    budget: number;
 };
 
 export default function MovieDetails() {
@@ -70,7 +77,6 @@ export default function MovieDetails() {
 
     return (
         <div className="movie-details-page">
-            <h1>{movie.Title}</h1>
 
             <div className="movie-box">
                 <div className="movie-trailer">
@@ -88,19 +94,31 @@ export default function MovieDetails() {
                         alt={movie.Title}
                     />
                 )}
-            </div>
 
+            </div >
+            <p className="details-title">{movie.Title}</p>
+            <div className="details-row">
+                <p>{movie.release_year}</p>
+                <span className="dot">•</span>
+                <p>{movie.runtime}m</p>
+                <span className="dot">•</span>
+                <p>{movie.Genre}</p>
+                <p className="details-rating-box">{movie.rating}</p>
+                <p className="details-age-rating-box">{movie.AgeRating}+</p>
+
+            </div>
             <div className="details-container">
                 <div>
                     <h2>Beskrivning</h2>
                     <p>{movie.Description}</p>
                 </div>
-
-                <div>
-                    <h2>Detaljer</h2>
-                    <p>Genre: {movie.Genre}</p>
-                    <p>Åldersgräns: {movie.AgeRating}</p>
+                <div className="details-director">
+                    <h2>medvärkande</h2>
+                    <p>Skådespelare: {movie.actors}</p>
+                    <p>regissör: {movie.director}</p>
                 </div>
+                <p>Budget: {movie.budget}</p>
+
             </div>
 
 
