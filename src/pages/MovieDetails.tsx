@@ -108,16 +108,45 @@ export default function MovieDetails() {
 
             </div>
             <div className="details-container">
-                <div>
+
+                <div className="details-left">
                     <h2>Beskrivning</h2>
-                    <p>{movie.Description}</p>
+                    <p className="details-description-text">
+                        {movie.Description}
+                    </p>
+
+
+                    <div>
+                        <h3>Recenssioner</h3>
+                        <p>{movie.review}</p>
+                    </div>
                 </div>
-                <div className="details-director">
-                    <h2>medvärkande</h2>
-                    <p>Skådespelare: {movie.actors}</p>
-                    <p>regissör: {movie.director}</p>
+
+
+                <div className="details-right">
+
+                    <div className="details-block">
+                        <h3>Medverkande</h3>
+
+                        <div className="details-act">
+                            <p>Skådespelare:</p>
+                            <p>{movie.actors}</p>
+                        </div>
+
+                        <div className="details-act">
+                            <p>Regissör:</p>
+                            <p>{movie.director}</p>
+                        </div>
+                    </div>
+
+
+                    <div className="details-block">
+                        <h3>Budget</h3>
+                        <p>${movie.budget.toLocaleString()}</p>
+                    </div>
+
+
                 </div>
-                <p>Budget: {movie.budget}</p>
 
             </div>
 

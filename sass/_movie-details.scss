@@ -109,6 +109,7 @@ html {
     background-color: #383838;
     border-radius: 14px;
     margin-bottom: 15px;
+    margin-top: 10px;
     width: 100%;
     padding: 25px;
 
@@ -124,10 +125,38 @@ html {
 
     p {
         color: #F8F8F8;
+        font-size: 15px;
 
     }
 }
 
+.details-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+}
+
+.details-left {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.details-right {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.details-block {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.details-description-text {
+    line-height: 1.6;
+}
 
 //-----------------------------------------------------------------------------------times and dates section----------------------------------------------------
 .details-tickets-card {
