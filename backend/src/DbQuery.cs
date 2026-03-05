@@ -43,6 +43,7 @@ public static class DbQuery
     private static void CreateTablesIfNotExist(MySqlConnection db)
     {
         var createTablesSql = @"
+        DROP TABLE IF EXISTS sessions;
         CREATE TABLE IF NOT EXISTS sessions (
             id VARCHAR(255) PRIMARY KEY NOT NULL,
             created DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
