@@ -43,6 +43,7 @@ public static class DbQuery
     private static void CreateTablesIfNotExist(MySqlConnection db)
     {
         var createTablesSql = @"
+        DROP TABLE IF EXISTS sessions;
         CREATE TABLE IF NOT EXISTS sessions (
             id VARCHAR(255) PRIMARY KEY NOT NULL,
             created DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -84,7 +85,14 @@ public static class DbQuery
             Genre VARCHAR(100) NOT NULL,
             AgeRating INT NOT NULL,
             Cover VARCHAR(500) NOT NULL DEFAULT '',
-            trailer VARCHAR(100) NOT NULL DEFAULT ''
+            trailer VARCHAR(100) NOT NULL DEFAULT '',
+            rating DECIMAL(3,1),
+            actors TEXT,
+            director VARCHAR(255),
+            release_year INT,
+            runtime INT,
+            budget BIGINT,
+            review TEXT
         );
 
         CREATE TABLE IF NOT EXISTS screenings (
@@ -209,17 +217,20 @@ public static class DbQuery
         if (Convert.ToInt32(command.ExecuteScalar()) == 0)
         {
             var moviesData = @"
-                INSERT INTO movies (Title, Description, Genre, AgeRating, Cover, trailer) VALUES
-                ('Avatar: Fire and Ash', 'Resan fortsätter på Pandora där Jake Sully och Neytiri ställs inför ett nytt hot från Asfolket, en aggressiv Na-vi-stam som lever i vulkaniska miljöer.', 'Sci-Fi/Action', 11, 'https://upload.wikimedia.org/wikipedia/en/9/95/Avatar_Fire_and_Ash_poster.jpeg', 'nb_fFj_0rq8'),
-                ('Superman', 'Stålmannen försöker förena sitt utomjordiska arv med sin mänskliga uppväxt som Clark Kent. En nystart för DC:s filmuniversum regisserad av James Gunn.', 'Action/Sci-Fi', 11, 'https://m.media-amazon.com/images/M/MV5BOGMwZGJiM2EtMzEwZC00YTYzLWIxNzYtMmJmZWNlZjgxZTMwXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg', 'Ox8ZLF6cGM0'),
-                ('Zootopia 2', 'Judy Hopps och Nick Wilde är tillbaka för att lösa ett nytt mysterium i den myllrande djurmetropolen Zootopia.', 'Animerat/Familj', 7, 'https://m.media-amazon.com/images/M/MV5BYjg1Mjc3MjQtMTZjNy00YWVlLWFhMWEtMWI3ZTgxYjJmNmRlXkEyXkFqcGc@._V1_.jpg', 'BjkIOU5PhyQ'),
-                ('A Minecraft Movie', 'En udda grupp äventyrare dras in i den blockiga världen Overworld och måste lära sig att tämja naturen för att rädda den från onda krafter.', 'Äventyr/Familj', 7, 'https://upload.wikimedia.org/wikipedia/en/thumb/6/66/A_Minecraft_Movie_poster.jpg/250px-A_Minecraft_Movie_poster.jpg', '8B1EtVPBSMw'),
-                ('Jurassic World Rebirth', 'En ny era av dinosaurier börjar när mänskligheten kämpar för att samexistera med förhistoriska varelser på en global skala.', 'Action/Thriller', 11, 'https://m.media-amazon.com/images/M/MV5BNjg2NTcwYWQtYzk4NS00MTJhLWEzZjItMzIxNjk3YzlkYzU0XkEyXkFqcGc@._V1_.jpg', '6m1eOoUoVao'),
-                ('Avengers: Doomsday', 'Hjältarna i Marvel-universumet ställs inför sin hittills största utmaning när den mystiske och mäktige Doctor Doom dyker upp.', 'Action/Sci-Fi', 11, 'https://upload.wikimedia.org/wikipedia/en/e/ee/Avengers_Doomsday_poster.jpg', 'zit4DTsP9Mw'),
-                ('The Mandalorian & Grogu', 'Prisjägaren Din Djarin och hans följeslagare Grogu ger sig ut på ett nytt storslaget äventyr i Star Wars-galaxen.', 'Sci-Fi/Äventyr', 11, 'https://image.tmdb.org/t/p/original/qSWiY6KAvkapXJWeyNrmDGYWQwr.jpg', '_pa1KLXuW0Y'),
-                ('Tron: Ares', 'Ett sofistikerat datorprogram vid namn Ares skickas från den digitala världen in i den verkliga världen på ett farligt uppdrag.', 'Sci-Fi/Action', 11, 'https://lumiere-a.akamaihd.net/v1/images/image_255af947.jpeg?region=0,0,540,810', 'YShVEXb7-ic'),
-                ('Mortal Kombat II', 'Turneringen fortsätter när nya kämpar från Outworld och Earthrealm möts i en blodig kamp om universums framtid.', 'Action/Fantasy', 15, 'https://m.media-amazon.com/images/M/MV5BNGZjZGUxYjMtNDBmYi00N2JmLTk5OTEtNDQzNDliMWMzZWUyXkEyXkFqcGc@._V1_.jpg', 'ZdC5mFHPldg'),
-                ('Frankenstein', 'En modern tolkning av Mary Shelleys klassiska berättelse där den briljante men besatte vetenskapsmannen Victor Frankenstein väcker liv i en varelse skapad av död materia, med förödande konsekvenser.', 'Horror/Sci-Fi/Drama', 15, 'https://lancerfeed.press/wp-content/uploads/2025/11/img_5991_8.webp', '8aulMPhE12g'),
+                INSERT INTO movies 
+                (Title, Description, Genre, AgeRating, Cover, trailer, rating, actors, director, release_year, runtime, budget, review) 
+                VALUES
+
+                ('Avatar: Fire and Ash','Resan fortsätter på Pandora där Jake Sully och Neytiri ställs inför ett nytt hot från Asfolket, en aggressiv Na-vi-stam som lever i vulkaniska miljöer.','Sci-Fi/Action',11,'https://upload.wikimedia.org/wikipedia/en/9/95/Avatar_Fire_and_Ash_poster.jpeg','nb_fFj_0rq8',8.7,'Sam Worthington, Zoe Saldaña, Sigourney Weaver','James Cameron',2025,165,250000000,'Ett visuellt imponerande sci-fi äventyr som fortsätter expandera världen på Pandora.'),
+                ('Superman','Stålmannen försöker förena sitt utomjordiska arv med sin mänskliga uppväxt som Clark Kent. En nystart för DC:s filmuniversum regisserad av James Gunn.','Action/Sci-Fi',11,'https://m.media-amazon.com/images/M/MV5BOGMwZGJiM2EtMzEwZC00YTYzLWIxNzYtMmJmZWNlZjgxZTMwXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg','Ox8ZLF6cGM0',8.3,'David Corenswet, Rachel Brosnahan, Nicholas Hoult','James Gunn',2025,140,200000000,'En ny start för Superman med fokus på hopp och klassisk superhjälteaction.'),
+                ('Zootopia 2','Judy Hopps och Nick Wilde är tillbaka för att lösa ett nytt mysterium i den myllrande djurmetropolen Zootopia.','Animerat/Familj',7,'https://m.media-amazon.com/images/M/MV5BYjg1Mjc3MjQtMTZjNy00YWVlLWFhMWEtMWI3ZTgxYjJmNmRlXkEyXkFqcGc@._V1_.jpg','BjkIOU5PhyQ',8.1,'Ginnifer Goodwin, Jason Bateman, Idris Elba','Jared Bush',2025,110,150000000,'Charmig uppföljare med humor och mysterium.'),
+                ('A Minecraft Movie','En udda grupp äventyrare dras in i den blockiga världen Overworld och måste lära sig att tämja naturen för att rädda den från onda krafter.','Äventyr/Familj',7,'https://upload.wikimedia.org/wikipedia/en/thumb/6/66/A_Minecraft_Movie_poster.jpg/250px-A_Minecraft_Movie_poster.jpg','8B1EtVPBSMw',7.5,'Jason Momoa, Jack Black, Emma Myers','Jared Hess',2025,100,150000000,'Ett kreativt äventyr i Minecrafts blockvärld.'),
+                ('Jurassic World Rebirth','En ny era av dinosaurier börjar när mänskligheten kämpar för att samexistera med förhistoriska varelser på en global skala.','Action/Thriller',11,'https://m.media-amazon.com/images/M/MV5BNjg2NTcwYWQtYzk4NS00MTJhLWEzZjItMzIxNjk3YzlkYzU0XkEyXkFqcGc@._V1_.jpg','6m1eOoUoVao',7.9,'Scarlett Johansson, Jonathan Bailey, Mahershala Ali','Gareth Edwards',2025,135,265000000,'En ny riktning för Jurassic-serien.'),
+                ('Avengers: Doomsday','Hjältarna i Marvel-universumet ställs inför sin hittills största utmaning när den mystiske och mäktige Doctor Doom dyker upp.','Action/Sci-Fi',11,'https://upload.wikimedia.org/wikipedia/en/e/ee/Avengers_Doomsday_poster.jpg','zit4DTsP9Mw',8.8,'Robert Downey Jr., Benedict Cumberbatch, Tom Holland','Anthony Russo, Joe Russo',2026,160,300000000,'Ett episkt Marvel-äventyr.'),
+                ('The Mandalorian & Grogu','Prisjägaren Din Djarin och hans följeslagare Grogu ger sig ut på ett nytt storslaget äventyr i Star Wars-galaxen.','Sci-Fi/Äventyr',11,'https://image.tmdb.org/t/p/original/qSWiY6KAvkapXJWeyNrmDGYWQwr.jpg','_pa1KLXuW0Y',8.4,'Pedro Pascal, Sigourney Weaver','Jon Favreau',2026,125,150000000,'Star Wars-äventyr som tar serien till bioduken.'),
+                ('Tron: Ares','Ett sofistikerat datorprogram vid namn Ares skickas från den digitala världen in i den verkliga världen på ett farligt uppdrag.','Sci-Fi/Action',11,'https://lumiere-a.akamaihd.net/v1/images/image_255af947.jpeg?region=0,0,540,810','YShVEXb7-ic',7.8,'Jared Leto, Greta Lee, Evan Peters','Joachim Rønning',2025,130,200000000,'En stilren sci-fi film.'),
+                ('Mortal Kombat II','Turneringen fortsätter när nya kämpar från Outworld och Earthrealm möts i en blodig kamp om universums framtid.','Action/Fantasy',15,'https://m.media-amazon.com/images/M/MV5BNGZjZGUxYjMtNDBmYi00N2JmLTk5OTEtNDQzNDliMWMzZWUyXkEyXkFqcGc@._V1_.jpg','ZdC5mFHPldg',7.6,'Karl Urban, Lewis Tan, Jessica McNamee','Simon McQuoid',2025,115,120000000,'Brutal och actionfylld fortsättning.'),
+                ('Frankenstein','En modern tolkning av Mary Shelleys klassiska berättelse där den briljante men besatte vetenskapsmannen Victor Frankenstein väcker liv i en varelse skapad av död materia, med förödande konsekvenser.','Horror/Sci-Fi/Drama',15,'https://lancerfeed.press/wp-content/uploads/2025/11/img_5991_8.webp','8aulMPhE12g',8.0,'Oscar Isaac, Jacob Elordi, Mia Goth','Guillermo del Toro',2025,145,100000000,'En mörk och känslosam tolkning.');
                 ";
             command.CommandText = moviesData;
             command.ExecuteNonQuery();

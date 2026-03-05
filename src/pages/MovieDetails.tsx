@@ -6,21 +6,36 @@ MovieDetails.route = {
     path: "/movie-details/:id",
     index: 2,
 };
-
+interface Screenings {
+    id: number;
+    movieId: number;
+    theaterId: number;
+    startTime: string;
+    endTime: string;
+}
 interface Movie {
     id: number;
     Title: string;
     Description: string;
     Genre: string;
     Cover: string;
-    AgeRating: number;
     trailer: string;
+    rating: string;
+    actors: string;
+    director: string;
+    review: string;
+    AgeRating: number;
+    release_year: number;
+    runtime: number;
+    budget: number;
 };
 
 export default function MovieDetails() {
     const { id } = useParams<{ id: string; }>();
     const [movie, setMovie] = useState<Movie | null>(null);
+    const [screenings, setScreenings] = useState<Screenings[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
     useEffect(() => {
         if (!id) return;
@@ -37,62 +52,170 @@ export default function MovieDetails() {
             .catch((err) => setError(err.message));
     }, [id]);
 
+    useEffect(() => {
+        if (!id) return;
+
+        fetch(`/api/screenings?movieId=${id}`)
+            .then(res => res.json())
+            .then(data => {
+                console.log("SCREENINGS DATA:", data);
+                setScreenings(data);
+            })
+            .catch(err => console.log(err));
+    }, [id]);
+
+
     if (error) return <p>{error}</p>;
     if (!movie) return <p>Laddar...</p>;
+    const movieScreenings = screenings.filter(
+        s => s.movieId === Number(id)
+    );
+    const dates = [...new Set(
+        movieScreenings.map(s => s.startTime.split("T")[0])
+    )];
+
 
     return (
-        <>
-            <div className="movie-details-page">
-                <h1>{movie.Title}</h1>
-                <h1></h1>
+        <div className="movie-details-page">
 
-                <div className="movie-box">
-                    <div className="movie-trailer">
-                        <iframe
-                            src={`https://www.youtube.com/embed/${movie.trailer}`}
-                            title="Movie trailer"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                        />
-                    </div>
-
-                    {movie.Cover && (
-                        <img className="movie-cover"
-                            src={movie.Cover}
-                            alt={`Cover for ${movie.Title}`}
-                        />
-                    )}
+            <div className="movie-box">
+                <div className="movie-trailer">
+                    <iframe
+                        src={`https://www.youtube.com/embed/${movie.trailer}`}
+                        title="Movie trailer"
+                        allowFullScreen
+                    />
                 </div>
-                <div className="details-container">
-                    <div className="movie-description">
-                        <h2>Beskrivning</h2>
-                        <p>{movie.Description}</p>
-                    </div>
 
-                    <div className="movie-details">
-                        <h2>Detaljer</h2>
-                        <div className="details-container-p">
-                            <p>Genre: {movie.Genre}</p>
-                            <p>Åldersgräns: {movie.AgeRating}</p>
+                {movie.Cover && (
+                    <img
+                        className="movie-cover"
+                        src={movie.Cover}
+                        alt={movie.Title}
+                    />
+                )}
+
+            </div >
+            <p className="details-title">{movie.Title}</p>
+            <div className="details-row">
+                <p>{movie.release_year}</p>
+                <span className="dot">•</span>
+                <p>{movie.runtime}m</p>
+                <span className="dot">•</span>
+                <p>{movie.Genre}</p>
+                <p className="details-rating-box">{movie.rating}</p>
+                <p className="details-age-rating-box">{movie.AgeRating}+</p>
+
+            </div>
+            <div className="details-container">
+
+                <div className="details-left">
+                    <h2>Beskrivning</h2>
+                    <p className="details-description-text">
+                        {movie.Description}
+                    </p>
+
+
+                    <div>
+                        <h3>Recenssioner</h3>
+                        <p>{movie.review}</p>
+                    </div>
+                </div>
+
+
+                <div className="details-right">
+
+                    <div className="details-block">
+                        <h3>Medverkande</h3>
+
+                        <div className="details-act">
+                            <p>Skådespelare:</p>
+                            <p>{movie.actors}</p>
+                        </div>
+
+                        <div className="details-act">
+                            <p>Regissör:</p>
+                            <p>{movie.director}</p>
                         </div>
                     </div>
-                </div>
-                <div className="time-slots">
-                    <div className="time-box">
-                        <Link to="/booking-page">Tillgänglig <br />10:00-12:00</Link>
-                        <Link to="/booking-page" className="unavailable">Fullbokad <br />12:00-14:00</Link>
-                        <Link to="/booking-page">Tillgänglig <br />14:00-16:00</Link>
-                        <Link to="/booking-page">Tillgänglig <br />16:00-18:00</Link>
-                        <Link to="/booking-page" className="unavailable">Fullbokad <br />18:00-20:00</Link>
-                        <Link to="/booking-page" className="unavailable">Fullbokad <br />20:00-22:00</Link>
-                        <Link to="/booking-page" className="unavailable">Fullbokad <br />20:00-22:00</Link>
-                        <Link to="/booking-page" className="unavailable">Fullbokad <br />20:00-22:00</Link>
+
+
+                    <div className="details-block">
+                        <h3>Budget</h3>
+                        <p>${movie.budget.toLocaleString()}</p>
                     </div>
+
+
+                </div>
+
+            </div>
+
+
+            <div className="details-tickets-card">
+                <h1>Biljetter</h1>
+                <div className="details-date-row">
+                    {dates.map(date => {
+                        const d = new Date(date);
+                        const dayName = d.toLocaleDateString("sv-SE", { weekday: "long" });
+                        const dayNum = d.toLocaleDateString("sv-SE", { day: "numeric", month: "long" });
+
+                        return (
+                            <button
+                                key={date}
+                                className={`date-button ${selectedDate === date ? "active" : ""}`}
+                                onClick={() => setSelectedDate(date)}
+                            >
+                                {dayName} <br /> {dayNum}
+                            </button>
+                        );
+                    })}
                 </div>
             </div>
-        </>
+
+
+            {selectedDate && (
+                <div className="details-times">
+                    <h1>Bio Borgen</h1>
+
+                    <div className="details-time-slots">
+                        {movieScreenings.map(screening => {
+
+                            if (screening.movieId !== Number(id)) return null;
+
+                            const dateKey = screening.startTime.split("T")[0];
+
+                            if (dateKey !== selectedDate) return null;
+
+                            const start = new Date(screening.startTime);
+                            const end = new Date(screening.endTime);
+
+                            const timeSpan =
+                                start.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) +
+                                " - " +
+                                end.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+                            return (
+                                <Link
+                                    key={screening.id}
+                                    to={`/booking-page/${screening.id}`}
+                                    className="details-time-button"
+                                >
+                                    <span className="details-salong">
+                                        Salong {screening.theaterId}
+                                    </span>
+                                    <span className="details-time">
+                                        {timeSpan}
+                                    </span>
+                                </Link>
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
+
+
+        </div>
     );
 }
-// ha en sortera datum på rad som är defualt inget, när man väljer datum
-// datum kommer tider för just den dagen i samma box
+
 
