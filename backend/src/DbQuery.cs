@@ -123,6 +123,9 @@ public static class DbQuery
             screeningId INT NOT NULL,
             bookingNumber VARCHAR(20) NOT NULL,
             totalPrice DECIMAL(10,2) NOT NULL,
+            created DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+            modified DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+
             UNIQUE KEY bookingNumber (bookingNumber),
             KEY userId (userId),
             KEY screeningId (screeningId),
