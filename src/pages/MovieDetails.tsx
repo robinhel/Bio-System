@@ -19,8 +19,15 @@ interface Movie {
     Description: string;
     Genre: string;
     Cover: string;
-    AgeRating: number;
     trailer: string;
+    rating: string;
+    actors: string;
+    director: string;
+    review: string;
+    AgeRating: number;
+    release_year: number;
+    runtime: number;
+    budget: number;
 };
 
 export default function MovieDetails() {
@@ -70,7 +77,6 @@ export default function MovieDetails() {
 
     return (
         <div className="movie-details-page">
-            <h1>{movie.Title}</h1>
 
             <div className="movie-box">
                 <div className="movie-trailer">
@@ -88,19 +94,60 @@ export default function MovieDetails() {
                         alt={movie.Title}
                     />
                 )}
+
+            </div >
+            <p className="details-title">{movie.Title}</p>
+            <div className="details-row">
+                <p>{movie.release_year}</p>
+                <span className="dot">•</span>
+                <p>{movie.runtime}m</p>
+                <span className="dot">•</span>
+                <p>{movie.Genre}</p>
+                <p className="details-rating-box">{movie.rating}</p>
+                <p className="details-age-rating-box">{movie.AgeRating}+</p>
+
             </div>
-
             <div className="details-container">
-                <div>
+
+                <div className="details-left">
                     <h2>Beskrivning</h2>
-                    <p>{movie.Description}</p>
+                    <p className="details-description-text">
+                        {movie.Description}
+                    </p>
+
+
+                    <div>
+                        <h3>Recenssioner</h3>
+                        <p>{movie.review}</p>
+                    </div>
                 </div>
 
-                <div>
-                    <h2>Detaljer</h2>
-                    <p>Genre: {movie.Genre}</p>
-                    <p>Åldersgräns: {movie.AgeRating}</p>
+
+                <div className="details-right">
+
+                    <div className="details-block">
+                        <h3>Medverkande</h3>
+
+                        <div className="details-act">
+                            <p>Skådespelare:</p>
+                            <p>{movie.actors}</p>
+                        </div>
+
+                        <div className="details-act">
+                            <p>Regissör:</p>
+                            <p>{movie.director}</p>
+                        </div>
+                    </div>
+
+
+                    <div className="details-block">
+                        <h3>Budget</h3>
+                        <p>${movie.budget.toLocaleString()}</p>
+                    </div>
+
+
                 </div>
+
             </div>
 
 

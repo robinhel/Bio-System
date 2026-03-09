@@ -1,3 +1,5 @@
+//-----------------------------------------------------------------------------------Page section-------------------------------------------------------
+
 .movie-details-page {
     width: 100%;
     max-width: 100%;
@@ -9,33 +11,18 @@ html {
     overflow-x: hidden;
 }
 
+
+//-----------------------------------------------------------------------------------Hero/movie section--------------------------------------------------
 .movie-box {
     display: flex;
     height: 50vh;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 10px;
-    padding: 10px;
+    //padding: 10px;
     justify-content: flex-end;
-    margin-bottom: 10px;
+
     //outline: 3px solid white;
 }
-
-.details-container {
-    background-color: #383838;
-    border-radius: 14px;
-    margin-bottom: 15px;
-    width: 100%;
-    padding: 25px;
-
-    h1,
-    h2,
-    h3,
-    h4,
-    p {
-        color: #F8F8F8;
-    }
-}
-
 
 .movie-trailer {
     flex: 1;
@@ -56,7 +43,122 @@ html {
     flex-shrink: 0;
 }
 
-//tider och datum
+
+
+//-----------------------------------------------------------------------------------Movie title section--------------------------------------------------------------
+.details-title {
+
+    margin-bottom: 0px;
+    text-decoration: wavy;
+    //margin-left: 25px;
+    font-weight: 700;
+    font-size: 40px;
+}
+
+.details-row {
+    width: fit-content;
+    display: flex;
+    gap: 6px;
+    margin-left: 15px;
+    align-items: center;
+    letter-spacing: 0.2px;
+    font-size: 15px;
+
+
+    p {
+        font-weight: 600;
+        margin-bottom: 0px;
+        font-size: 0.875rem;
+    }
+
+    .details-rating-box {
+        background: #f5c518;
+        height: 100%;
+        color: black;
+        padding: 1px 6px;
+        border-radius: 5px;
+        font-weight: bold;
+
+    }
+
+    .details-age-rating-box {
+        background-color: #1f2937;
+        color: rgb(255, 255, 255);
+        padding: 0px 5px;
+        border-left-width: 2px;
+        border-color: #afafaf;
+        border: 2px solid rgb(231, 231, 231);
+        border-radius: 5px;
+        font-weight: bold;
+        font-weight: 600;
+    }
+
+
+    .dot {
+        display: flex;
+        align-items: center;
+        color: #9ca3af;
+        font-size: 18px;
+    }
+}
+
+//-----------------------------------------------------------------------------------Details section--------------------------------------------------------------
+
+
+.details-container {
+    background-color: #383838;
+    border-radius: 14px;
+    margin-bottom: 15px;
+    margin-top: 10px;
+    width: 100%;
+    padding: 25px;
+
+    h1,
+    h2,
+    h3,
+    h4 {
+        color: #F8F8F8;
+        font-size: large;
+        font-weight: 700;
+
+    }
+
+    p {
+        color: #F8F8F8;
+        font-size: 15px;
+
+    }
+}
+
+.details-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+}
+
+.details-left {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.details-right {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.details-block {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.details-description-text {
+    line-height: 1.6;
+}
+
+//-----------------------------------------------------------------------------------times and dates section----------------------------------------------------
 .details-tickets-card {
     background-color: #383838;
     padding: 25px;
@@ -77,6 +179,7 @@ html {
 
 h1 {
     font-size: large;
+    //font-weight: 700;
     text-decoration: double;
     margin-bottom: 10px;
     color: #F8F8F8;
@@ -170,6 +273,8 @@ h1 {
         }
     }
 }
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
