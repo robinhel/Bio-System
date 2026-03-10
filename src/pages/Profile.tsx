@@ -2,7 +2,7 @@
 
 Profile.route = {
     path: '/Profile',
-    menuLabel: 'Profil',
+    menuLabel: 'Profile',
     index: 11,
 };
 
