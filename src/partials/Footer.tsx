@@ -41,7 +41,7 @@ export default function Footer() {
       <Container fluid>
         <Row>
           <Col className="footer-copyright-row">
-            © {new Date().getFullYear()} Grupp 2 | All Rights Reserved
+            © {new Date().getFullYear()} Bio Borgen | All Rights Reserved
           </Col>
         </Row>
       </Container>

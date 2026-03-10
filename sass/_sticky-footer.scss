@@ -3,6 +3,8 @@
   $film-gradient: linear-gradient(90deg, rgba(32, 16, 16, 0.756) 0%, rgba(13, 6, 56, 0.874) 100%);
   $enable-negative-margins: true;
   border-style: solid;
+  display: flex;
+  flex-direction: column;
 
 
 
@@ -58,7 +60,10 @@
 
   }
 
-  main {}
+  main {
+    flex: 1;
+    min-height: 75vh;
+  }
 }
 
 
