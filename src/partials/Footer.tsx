@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
-    <footer>
+    <footer className='footer'>
       <Container>
-        <Row className="justify-content-center mb-3">
+        <Row className="footer-logo-row">
           <Col xs="auto">
             <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
               <IonIcon icon={logoFacebook} />
@@ -31,7 +31,7 @@ export default function Footer() {
         </Row>
       </Container>
       <Container>
-        <Row className="justify-content-center mb-3">
+        <Row className="footer-link-row">
           <Col xs="auto"><Link to="/">Hem</Link></Col>
           <Col xs="auto"><Link to="/about-us">Om Oss</Link></Col>
           <Col xs="auto"><Link to="/team">Teamet</Link></Col>
@@ -40,7 +40,7 @@ export default function Footer() {
       </Container>
       <Container fluid>
         <Row>
-          <Col className="text-center py-3 text-bg-primary">
+          <Col className="footer-copyright-row">
             © {new Date().getFullYear()} Grupp 2 | All Rights Reserved
           </Col>
         </Row>
