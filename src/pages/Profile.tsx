@@ -1,8 +1,9 @@
+import { Link } from "react-router-dom";
 
 
 Profile.route = {
     path: '/Profile',
-    menuLabel: 'Profile',
+    menuLabel: 'Profil',
     index: 11,
 };
 
@@ -16,7 +17,9 @@ export default function Profile() {
 
 
 
-            <button className="cancelbooking-btn">Se dina bokningar</button>
+
+
+
 
 
 
