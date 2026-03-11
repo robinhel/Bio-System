@@ -124,6 +124,7 @@ public static class DbQuery
             bookingNumber VARCHAR(20) NOT NULL,
             totalPrice DECIMAL(10,2) NOT NULL,
             created DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+            isAvailable BOOLEAN DEFAULT TRUE,
             UNIQUE KEY bookingNumber (bookingNumber),
             KEY userId (userId),
             KEY screeningId (screeningId),

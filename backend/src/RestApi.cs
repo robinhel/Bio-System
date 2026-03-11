@@ -4,6 +4,43 @@ public static class RestApi
 {
     public static void Start()
     {
+
+        //------------------------------------------------------------custom endpoints---------------------------------------------------------------
+
+        App.MapGet("/api/bookings/{bookingNumber}", (
+            HttpContext context, string bookingNumber
+        ) =>
+            RestResult.Parse(context, SQLQueryOne(
+                $"SELECT * FROM bookings WHERE bookingNumber = @bookingNumber",
+            new { bookingNumber },
+                context
+            ))
+        );
+
+        App.MapPut("/api/bookings/{bookingNumber}/cancel", (
+            HttpContext context, string bookingNumber
+        ) =>
+        {
+            SQLQueryOne(
+        "UPDATE bookings SET isAvailable = 0 WHERE bookingNumber = @bookingNumber",
+        new { bookingNumber },
+        context
+    );
+
+            SQLQueryOne(
+        @"DELETE FROM bookingSeats
+          WHERE bookingId = (
+              SELECT id FROM bookings
+              WHERE bookingNumber = @bookingNumber
+          )",
+        new { bookingNumber },
+        context);
+
+            return RestResult.Parse(context, Obj(new { success = true }));
+        });
+
+        //----------------------------------------------------------Färdiga endpoints-----------------------------------------------------------------
+
         App.MapPost("/api/{table}", (
             HttpContext context, string table, JsonElement bodyJson
         ) =>
@@ -71,5 +108,8 @@ public static class RestApi
                 context
             ))
         );
+
+
+
     }
 }
