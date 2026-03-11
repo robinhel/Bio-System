@@ -107,7 +107,7 @@ export default function BookingPage() {
         setSelectedSeats([]);
     };
     const handleConfirm = async () => {
-        console.log("Säten som skickas:", selectedSeats);
+        // console.log("Säten som skickas:", selectedSeats);
         const bookingData = {
             userId: 1, 
             screeningId: parseInt(screeningId || "0"),
@@ -171,6 +171,7 @@ export default function BookingPage() {
 
     return (
         <>
+            
             <div className="booking-page">
                 <h1>Bokning för {movie?.Title}</h1>
                 <div className="bookingdetail">
@@ -328,17 +329,17 @@ export default function BookingPage() {
                         <p>📍 {selectedSeats.length > 0 ? ` Valda platser: ${selectedSeats.join(", ")} ` : "Inga valda platser."}</p>
                         <p> {totalPrice > 0 && `💵 ${totalPrice}kr`} (betalning sker på plats) </p>
 
-{screening && (
-    <>
-        <p>📅 {screening.startTime.split("T")[0]}</p>
-        <p>
-            🕒 {new Date(screening.startTime).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit"
-            })}
-        </p>
-    </>
-)}
+                            {screening && (
+                                <>
+                                    <p>📅 {screening.startTime.split("T")[0]}</p>
+                                    <p>
+                                        🕒 {new Date(screening.startTime).toLocaleTimeString([], {
+                                            hour: "2-digit",
+                                            minute: "2-digit"
+                                        })}
+                                    </p>
+                                </>
+                            )}
                         <hr />
                         <div className="d-flex justify-content-end">
 

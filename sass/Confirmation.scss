@@ -12,9 +12,9 @@
   border-radius: 20px; // Runt avslut
 }
 .image-container {
-  width: 100%;           /* Hela bredden på din biljett */
-  height: 250px;         /* Justera denna för att se mer/mindre av toppen */
-  overflow: hidden;      /* Klipper allt som sticker ut */
+  width: 100%;           // Hela bredden på biljetten 
+  height: 250px;         // Justera denna för att se mer/mindre av toppen 
+  overflow: hidden;      // Klipper allt som sticker ut 
   border-radius: 15px 15px 0 0; 
 }
 
@@ -82,3 +82,4 @@
 .totalsumma{
   font-size: medium;
 }
+
