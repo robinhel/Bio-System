@@ -25,17 +25,21 @@ $enable-negative-margins: true;
   margin-top: 20px;
   margin-left: 22px;
   margin-right: 22px;
+
 }
+
 .navbar-nav {
-  width: 100%; 
+  width: 100%;
   display: flex;
 }
+
 .nav-link[href="/login-page"] {
-  margin-left: auto !important; 
+  margin-left: auto !important;
   padding-left: 20px;
   order: 1;
   font-weight: bold;
-  &:hover{
+
+  &:hover {
     color: rgb(94, 2, 2);
   }
 }
@@ -67,4 +71,3 @@ p {
   background-color: rgb(85, 7, 7);
   color: black
 }
-
