@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../utils/AuthContext';
 
 LoginPage.route = {
     path: '/login-page',
@@ -12,6 +13,7 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const { setUser } = useAuth();
 
     const errorMessages: Record<string, string> = {
         'No such user.': 'Det finns inget konto med den e-postadressen.',
@@ -33,6 +35,7 @@ export default function LoginPage() {
         const data = await response.json();
 
         if (response.ok && !data.error) {
+            setUser(data);
             navigate('/');
         } else {
             const msg = data?.error;
