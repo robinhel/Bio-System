@@ -23,6 +23,7 @@ public static class RestApi
                        FROM {table} ORDER BY id DESC LIMIT 1"
                 ).__insertId;
             }
+           
             return RestResult.Parse(context, result);
         });
 

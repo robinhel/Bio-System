@@ -114,47 +114,61 @@ export default function BookingPage() {
         setPensioner(0);
         setSelectedSeats([]);
     };
-    const handleConfirm = async () => {
-        console.log("Säten som skickas:", selectedSeats);
-        const bookingData = {
-            userId: 1, 
-            screeningId: parseInt(screeningId || "0"),
-            totalPrice: totalPrice,
-            /* email: email, */
-            bookingNumber: "BKG-" + Math.random().toString(36).substring(7).toUpperCase()
-        };
+   const handleConfirm = async () => {
+    const ticketsToAssign = [ // så att vi kan spara rätt typ och pris för olika biljetttyper beroende på vilken man valt
+        ...Array(adult).fill({ type: 'adult', price: 140 }),
+        ...Array(pensioner).fill({ type: 'senior', price: 100 }),
+        ...Array(kid).fill({ type: 'child', price: 60 })
+    ];
 
-        const res = await fetch('/api/bookings', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(bookingData)
-        });
-
-        if (res.ok) {
-            const savedBooking = await res.json();
-            const newId = savedBooking.id || savedBooking.Id;
-           
-                for (const seatId of selectedSeats) {
-                    await fetch('/api/bookingSeats', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            bookingId: newId,
-                            seatId: parseInt(seatId)
-                        })
-                    });
-                }
-                navigate(`/bookingconfirmation/${newId}`, {
-                    state: {
-                        selectedSeats: selectedSeats,
-                        selectedDate: selectedDate
-                    }
-                });
-            
-        } else {
-            alert("Kunde inte spara bokningen.");
-        }
+    const bookingData = {
+        userId: 1, 
+        screeningId: parseInt(screeningId || "0"),
+        totalPrice: totalPrice,
+        email: email,
+        bookingNumber: "BKG-" + Math.random().toString(36).substring(7).toUpperCase(), 
     };
+
+    const res = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bookingData)
+    });
+
+    if (res.ok) {
+        const savedBooking = await res.json();
+        
+        const newId = savedBooking.id; 
+
+        if (!newId) {
+            alert("ID saknas");
+            return;
+        }
+
+        for (let i = 0; i < selectedSeats.length; i++) {
+            await fetch('/api/bookingSeats', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    bookingId: newId,
+                    seatId: parseInt(selectedSeats[i]),
+                    ticketType: ticketsToAssign[i].type,
+                    price: ticketsToAssign[i].price  
+                })
+            });
+        }
+
+        navigate(`/bookingconfirmation/${newId}`, {
+            state: {
+                selectedSeats: selectedSeats,
+                selectedDate: selectedDate
+            }
+        });
+    
+    } else {
+        alert("Kunde inte spara bokningen.");
+    }
+};
 
 
 
@@ -177,18 +191,19 @@ export default function BookingPage() {
 
 
     useEffect(() =>  {
-        async function loadSeats(){
+        async function loadSeats() {
+            setOccupiedSeatsIds([]); // nullar gamla sätes id:en
+           
             const screeningRes = await fetch(`/api/screenings/${screeningId}`);
             const screeningData = await screeningRes.json();
-
             const chosenTheaterid = screeningData.theaterId;
 
             const res1 = await fetch(`/api/seats?theaterId=${chosenTheaterid}`);
             setAllSeats(await res1.json());
 
-            const res2 = await fetch(`/api/bookingSeats?booking.screeningId=${screeningId}`);
-            const bookings = await res2.json();
-            setOccupiedSeatsIds(bookings.map((b: any) => b.seatId));         
+            const res2 = await fetch(`/api/occupiedSeats/${screeningId}`);
+            const data = await res2.json();
+            setOccupiedSeatsIds(data.map((item: any) => item.seatId));         
         }
         if (screeningId) loadSeats();
     }, [screeningId])
