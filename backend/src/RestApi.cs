@@ -7,7 +7,7 @@ public static class RestApi
 
         //------------------------------------------------------------custom endpoints---------------------------------------------------------------
 
-        App.MapGet("/api/bookings/{bookingNumber}", (
+        App.MapGet("/api/bookings/bnum/{bookingNumber}", (
             HttpContext context, string bookingNumber
         ) =>
             RestResult.Parse(context, SQLQueryOne(
@@ -17,7 +17,7 @@ public static class RestApi
             ))
         );
 
-        App.MapPut("/api/bookings/{bookingNumber}/cancel", (
+        App.MapPut("/api/bookings/bnum/{bookingNumber}/cancel", (
             HttpContext context, string bookingNumber
         ) =>
         {
@@ -60,7 +60,7 @@ public static class RestApi
                        FROM {table} ORDER BY id DESC LIMIT 1"
                 ).__insertId;
             }
-           
+
             return RestResult.Parse(context, result);
         });
 

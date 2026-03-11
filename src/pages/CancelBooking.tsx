@@ -29,7 +29,7 @@ export default function CancelBookingPage() {
 
     const getBooking = async () => {
         try {
-            const res = await fetch(`/api/bookings/${bookingNumber}`);
+            const res = await fetch(`/api/bookings/bnum/${bookingNumber}`);
             const data = await res.json();
             setBooking(data);
         } catch (error) {
@@ -38,7 +38,7 @@ export default function CancelBookingPage() {
     };
     const canceltBooking = async () => {
         try {
-            const res = await fetch(`/api/bookings/${bookingNumber}/cancel`, {
+            const res = await fetch(`/api/bookings/bnum/${bookingNumber}/cancel`, {
                 method: "PUT"
             });
             const data = await res.json();
