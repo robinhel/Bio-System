@@ -23,13 +23,14 @@ interface Movie {
 
 interface Screening {
     id: number;
-    startTime: string;
-    movie: Movie;
+    movieId: number;
     theaterId: number;
+    startTime: string;
+    endTime: string;
 }
 
-interface users{
- email: string;
+interface users {
+    email: string;
 }
 
 
@@ -57,18 +58,16 @@ export default function BookingPage() {
     const [email, setEmail] = useState("");
 
     const addAdult = () => {
-     if(adult + pensioner + kid < 8){
-        setAdult(adult + 1);
-     }
-     else{
-        alert("Max 8 biljetter per bokning.");
-     }
+        if (adult + pensioner + kid < 8) {
+            setAdult(adult + 1);
+        }
+        else {
+            alert("Max 8 biljetter per bokning.");
+        }
 
 
     }
-    const dates = [...new Set(
-        screenings.map(s => s.startTime.split("T")[0])
-    )];
+
 
     const subAdult = () => {
         if (adult > 0) {
@@ -77,13 +76,13 @@ export default function BookingPage() {
     }
 
     const addPensioner = () => {
-      if(adult + pensioner + kid < 8){
-         setPensioner(pensioner + 1);
-     }
-     else{
-        alert("Max 8 biljetter per bokning.");
-     }
-        
+        if (adult + pensioner + kid < 8) {
+            setPensioner(pensioner + 1);
+        }
+        else {
+            alert("Max 8 biljetter per bokning.");
+        }
+
     }
     const subPensioner = () => {
         if (pensioner > 0) {
@@ -91,21 +90,21 @@ export default function BookingPage() {
         }
     }
 
-    const addKid = () =>  {
-      if(adult + pensioner + kid < 8){
-         setKid(kid + 1);
-     }
-     else{
-        alert("Max 8 biljetter per bokning.");
-     }
-        
+    const addKid = () => {
+        if (adult + pensioner + kid < 8) {
+            setKid(kid + 1);
+        }
+        else {
+            alert("Max 8 biljetter per bokning.");
+        }
+
     }
     const subKid = () => {
         if (kid > 0) {
             setKid(kid - 1);
         }
     }
-        const isMaxReached = (adult + pensioner + kid) >= 8;
+    const isMaxReached = (adult + pensioner + kid) >= 8;
 
 
     const resetTickets = () => {
@@ -114,87 +113,86 @@ export default function BookingPage() {
         setPensioner(0);
         setSelectedSeats([]);
     };
-    
-   const handleConfirm = async () => {
-    const ticketsToAssign = [ // så att vi kan spara rätt typ och pris för olika biljetttyper beroende på vilken man valt
-        ...Array(adult).fill({ type: 'adult', price: 140 }),
-        ...Array(pensioner).fill({ type: 'senior', price: 120 }),
-        ...Array(kid).fill({ type: 'child', price: 80 })
-    ];
+    const handleConfirm = async () => {
+        const ticketsToAssign = [ // så att vi kan spara rätt typ och pris för olika biljetttyper beroende på vilken man valt
+            ...Array(adult).fill({ type: 'adult', price: 140 }),
+            ...Array(pensioner).fill({ type: 'senior', price: 100 }),
+            ...Array(kid).fill({ type: 'child', price: 60 })
+        ];
 
-    const bookingData = {
-        userId: 1, 
-        screeningId: parseInt(screeningId || "0"),
-        totalPrice: totalPrice,
-        email: email,
-        bookingNumber: "BKG-" + Math.random().toString(36).substring(7).toUpperCase(), 
-    };
+        const bookingData = {
+            userId: 1,
+            screeningId: parseInt(screeningId || "0"),
+            totalPrice: totalPrice,
+            email: email,
+            bookingNumber: "BKG-" + Math.random().toString(36).substring(7).toUpperCase(),
+        };
 
-    const res = await fetch('/api/bookings', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(bookingData)
-    });
-
-    if (res.ok) {
-        const savedBooking = await res.json();
-        
-        const newId = savedBooking.id; 
-
-        if (!newId) {
-            alert("ID saknas");
-            return;
-        }
-
-        for (let i = 0; i < selectedSeats.length; i++) {
-            await fetch('/api/bookingSeats', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    bookingId: newId,
-                    seatId: parseInt(selectedSeats[i]),
-                    ticketType: ticketsToAssign[i].type,
-                    price: ticketsToAssign[i].price  
-                })
-            });
-        }
-
-        navigate(`/bookingconfirmation/${newId}`, {
-            state: {
-                selectedSeats: selectedSeats,
-                selectedDate: selectedDate
-            }
+        const res = await fetch('/api/bookings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(bookingData)
         });
-    
-    } else {
-        alert("Kunde inte spara bokningen.");
-    }
-};
+
+        if (res.ok) {
+            const savedBooking = await res.json();
+
+            const newId = savedBooking.id;
+
+            if (!newId) {
+                alert("ID saknas");
+                return;
+            }
+
+            for (let i = 0; i < selectedSeats.length; i++) {
+                await fetch('/api/bookingSeats', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        bookingId: newId,
+                        seatId: parseInt(selectedSeats[i]),
+                        ticketType: ticketsToAssign[i].type,
+                        price: ticketsToAssign[i].price
+                    })
+                });
+            }
+
+            navigate(`/bookingconfirmation/${newId}`, {
+                state: {
+                    selectedSeats: selectedSeats,
+                    selectedDate: selectedDate
+                }
+            });
+
+        } else {
+            alert("Kunde inte spara bokningen.");
+        }
+    };
 
 
 
     useEffect(() => {
-    if (!screeningId) return;
+        if (!screeningId) return;
 
-    fetch(`/api/screenings/${screeningId}`)
-        .then(res => res.json())
-        .then(screeningData => {
-            console.log("Hämtad screening:", screeningData);
-            setScreening(screeningData); 
-            setSelectedDate(screeningData.startTime.split('T')[0]);
-            fetch(`/api/movies/${screeningData.movieId}`)
-                .then(res => res.json())
-                .then(movieData => {
-                    setMovie(movieData);
-                });
-        });
-}, [screeningId]);
+        fetch(`/api/screenings/${screeningId}`)
+            .then(res => res.json())
+            .then(screeningData => {
+                console.log("Hämtad screening:", screeningData);
+                setScreening(screeningData);
+                setSelectedDate(screeningData.startTime.split('T')[0]);
+                fetch(`/api/movies/${screeningData.movieId}`)
+                    .then(res => res.json())
+                    .then(movieData => {
+                        setMovie(movieData);
+                    });
+            });
+    }, [screeningId]);
 
 
-    useEffect(() =>  {
+    useEffect(() => {
         async function loadSeats() {
             setOccupiedSeatsIds([]); // nullar gamla sätes id:en
-           
+
             const screeningRes = await fetch(`/api/screenings/${screeningId}`);
             const screeningData = await screeningRes.json();
             const chosenTheaterid = screeningData.theaterId;
@@ -204,12 +202,25 @@ export default function BookingPage() {
 
             const res2 = await fetch(`/api/occupiedSeats/${screeningId}`);
             const data = await res2.json();
-            setOccupiedSeatsIds(data.map((item: any) => item.seatId));         
+            setOccupiedSeatsIds(data.map((item: any) => item.seatId));
         }
         if (screeningId) loadSeats();
     }, [screeningId])
 
+    useEffect(() => {
+        if (movie?.id) {
+            fetch(`/api/screenings/movie/${movie.id}`)
 
+                .then(res => res.json())
+
+                .then(data => {
+                    //console.log("SCREENINGS DATA:", data);
+                    setScreenings(data);
+                })
+
+        }
+    }, [movie?.id])
+    const [selectedTime, setSelectedTime] = useState<string[]>([]);
     const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
     const totalTickets = adult + pensioner + kid;
 
@@ -225,6 +236,20 @@ export default function BookingPage() {
         }
     }
 
+
+
+    const movieScreenings = screenings.filter(
+        s => s.movieId === Number(movie?.id)
+    );
+    const dates = [...new Set(
+        movieScreenings.map(s => s.startTime.split("T")[0])
+    )];
+
+
+
+
+
+
     return (
         <>
             <div className="booking-page">
@@ -235,48 +260,107 @@ export default function BookingPage() {
                             <p>SKÄRMEN</p>
                         </div>
                         <form className="seating-grid">
-  {(() => {
-    let offset = 0;
-    return seatsPerRow.map((numSeats, rowIndex) => {
-      const rowSeats = allSeats.slice(offset, offset + numSeats);
-      offset += numSeats;
+                            {(() => {
+                                let offset = 0;
+                                return seatsPerRow.map((numSeats, rowIndex) => {
+                                    const rowSeats = allSeats.slice(offset, offset + numSeats);
+                                    offset += numSeats;
 
-      return (
-        <div key={`row-${rowIndex}`} className="seat-row">
-          {rowSeats.map((seat: any) => {
-            const isOccupied = occupiedSeatsIds.includes(seat.id);
-            const isSelected = selectedSeats.includes(seat.id.toString());
+                                    return (
+                                        <div key={`row-${rowIndex}`} className="seat-row">
+                                            {rowSeats.map((seat: any) => {
+                                                const isOccupied = occupiedSeatsIds.includes(seat.id);
+                                                const isSelected = selectedSeats.includes(seat.id.toString());
 
-            return (
-              <label key={seat.id} className={`seats ${isOccupied ? 'occupied' : ''}`}>
-                <input
-                  type="checkbox"
-                  className="Visually-hidden"
-                  checked={isSelected}
-                  onChange={() => handleSeatClick(seat.id.toString())}
-                  disabled={totalTickets === 0 || isOccupied}
-                />
-                <span>
-                  <i className="bi bi-person-check check-icon fs-4"></i>
-                  <i className="bi bi-person-fill-x remove-icon fs-4"></i>
-                </span>
-              </label>
-            );
-          })}
-        </div>
-      );
-    });
-  })()}
-</form>
+                                                return (
+                                                    <label key={seat.id} className={`seats ${isOccupied ? 'occupied' : ''}`}>
+                                                        <input
+                                                            type="checkbox"
+                                                            className="Visually-hidden"
+                                                            checked={isSelected}
+                                                            onChange={() => handleSeatClick(seat.id.toString())}
+                                                            disabled={totalTickets === 0 || isOccupied}
+                                                        />
+                                                        <span>
+                                                            <i className="bi bi-person-check check-icon fs-4"></i>
+                                                            <i className="bi bi-person-fill-x remove-icon fs-4"></i>
+                                                        </span>
+                                                    </label>
+                                                );
+                                            })}
+                                        </div>
+                                    );
+                                });
+                            })()}
+                        </form>
 
                     </div>
                     <img src={movie?.Cover} alt={movie?.Title} className="booking-poster" />
                 </div>
 
-                {<div className="time-box">
 
-                   
-                    <div className="date-row">
+
+                <div className="details-tickets-card">
+                    <h1>Datum</h1>
+                    <div className="details-date-row">
+                        {dates.map(date => {
+                            const d = new Date(date);
+                            const dayName = d.toLocaleDateString("sv-SE", { weekday: "long" });
+                            const dayNum = d.toLocaleDateString("sv-SE", { day: "numeric", month: "long" });
+
+                            return (
+                                <button
+                                    key={date}
+                                    className={`date-button ${selectedDate === date ? "active" : ""}`}
+                                    onClick={() => setSelectedDate(date)}
+                                >
+                                    {dayName} <br /> {dayNum}
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
+                {selectedDate && (
+                    <div className="details-times">
+                        <h1>Tider</h1>
+
+                        <div className="details-time-slots">
+                            {movieScreenings.map(screening => {
+
+                                if (screening.movieId !== Number(movie?.id)) return null;
+
+                                const dateKey = screening.startTime.split("T")[0];
+
+                                if (dateKey !== selectedDate) return null;
+
+                                const start = new Date(screening.startTime);
+                                const end = new Date(screening.endTime);
+
+                                const timeSpan =
+                                    start.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) +
+                                    " - " +
+                                    end.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+                    return (
+                        <Link
+                            key={screening.id}
+                            to={`/booking-page/${screening.id}`}
+                            className={`details-time-button ${parseInt(screeningId || "0") === screening.id ? "active" : ""}`}
+                        >
+                            <span className="details-salong">
+                                Salong {screening.theaterId}
+                            </span>
+                            <span className="details-time">
+                                {timeSpan}
+                            </span>
+                        </Link>
+                    );
+                            })}
+                        </div>
+                    </div>
+
+                )}
+                {/* <div className="date-row">
                         {dates.map(date => (
                             <button
                                 key={date}
@@ -286,38 +370,11 @@ export default function BookingPage() {
                                 {date}
                             </button>
                         ))}
-                    </div>
+                    </div> */}
 
-                   
-                    {selectedDate && (
-                        <div className="times">
-                            {screenings.map(s => {
 
-                                const dateKey = s.startTime.split("T")[0];
-                                if (dateKey !== selectedDate) return null;
 
-                                const start = new Date(s.startTime);
-                                const time = start.toLocaleTimeString([], {
-                                    hour: "2-digit",
-                                    minute: "2-digit"
-                                });
 
-                                return (
-                                    <button
-                                        key={s.id}
-                                        className={`time-slot ${screening?.id === s.id ? "active" : ""}`}
-                                        onClick={() => {
-                                            setScreening(s);
-                                            setSelectedSeats([]);
-                                        }}
-                                    >
-                                        {time}
-                                    </button>
-                                );
-                            })}
-                        </div>
-                    )}
-                </div>}
 
                 <div className="ticket-selector">
                     <h1>Välj biljetter</h1>
@@ -369,11 +426,11 @@ export default function BookingPage() {
                         <Form>
                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                 <Form.Label>Email address</Form.Label>
-                                <Form.Control className="inputmail" 
-                                type="email"
-                                 placeholder="Ange emailadress..."
-                                 value={email}
-                                 onChange={(e) => setEmail(e.target.value)} />
+                                <Form.Control className="inputmail"
+                                    type="email"
+                                    placeholder="Ange emailadress..."
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)} />
                                 <Form.Text className="text-muted biljettermail">
                                     Vi skickar biljetterna till denna mail.
                                 </Form.Text>
@@ -393,17 +450,17 @@ export default function BookingPage() {
                         <p>📍 {selectedSeats.length > 0 ? ` Valda platser: ${selectedSeats.join(", ")} ` : "Inga valda platser."}</p>
                         <p> {totalPrice > 0 && `💵 ${totalPrice}kr`} (betalning sker på plats) </p>
 
-                                {screening && (
-                                    <>
-                                        <p>📅 {screening.startTime.split("T")[0]}</p>
-                                        <p>
-                                            🕒 {new Date(screening.startTime).toLocaleTimeString([], {
-                                                hour: "2-digit",
-                                                minute: "2-digit"
-                                            })}
-                                        </p>
-                                    </>
-                                )}
+                        {screening && (
+                            <>
+                                <p>📅 {screening.startTime.split("T")[0]}</p>
+                                <p>
+                                    🕒 {new Date(screening.startTime).toLocaleTimeString([], {
+                                        hour: "2-digit",
+                                        minute: "2-digit"
+                                    })}
+                                </p>
+                            </>
+                        )}
                         <hr />
                         <div className="d-flex justify-content-end">
 
@@ -412,14 +469,14 @@ export default function BookingPage() {
                     {!show && <Button onClick={() => setShow(true)}>Öppna mig</Button>}
                 </div>
                 <div className="confirm-booking">
-                    <Button 
-                        variant="primary" 
-                        size="lg" 
+                    <Button
+                        variant="primary"
+                        size="lg"
                         onClick={handleConfirm}
-                        
+
                         disabled={selectedSeats.length !== totalTickets || totalTickets === 0}>
                         Bekräfta bokning
-                    </Button> 
+                    </Button>
                 </div>
             </div>
         </>
