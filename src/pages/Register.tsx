@@ -9,16 +9,18 @@ RegisterPage.route = {
 export default function RegisterPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const navigate = useNavigate();
 
     async function handleRegister(e: React.FormEvent) {
         e.preventDefault();
 
-        const response = await fetch('/api/auth/register', {
+        const response = await fetch('/api/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
-            body: JSON.stringify({ email, password }),
+            body: JSON.stringify({ email, password, firstName, lastName }),
         });
 
         if (response.ok) {
@@ -44,6 +46,22 @@ export default function RegisterPage() {
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
+
+                <p className="auth-label">Förnamn</p>
+                <input
+                    type="text"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    required
+                />
+
+                <p className="auth-label">Efternamn</p>
+                <input
+                    type="text"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
                     required
                 />
 

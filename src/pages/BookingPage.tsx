@@ -50,7 +50,7 @@ export default function BookingPage() {
     const [adult, setAdult] = useState(1);
     const [pensioner, setPensioner] = useState(0);
     const [kid, setKid] = useState(0);
-    const totalPrice = (adult * 140) + (pensioner * 100) + (kid * 60);
+    const totalPrice = (adult * 140) + (pensioner * 120) + (kid * 80);
 
     const [occupiedSeatsIds, setOccupiedSeatsIds] = useState<any[]>([]); // alla stolar i salongen
     const [allSeats, setAllSeats] = useState<any[]>([]); // id på stolar som är bokade
