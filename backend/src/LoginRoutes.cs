@@ -80,5 +80,30 @@ public static class LoginRoutes
         {
             return Password.Encrypt("123");
         });
+
+        App.MapPost("/api/register", (HttpContext context, JsonElement bodyJson) =>
+        {
+            var body = JSON.Parse(bodyJson.ToString());
+
+            // Check if email is already taken
+            var existing = SQLQueryOne(
+                "SELECT id FROM users WHERE email = @email",
+                new { body.email }
+            );
+            if (existing != null)
+            {
+                return RestResult.Parse(context, new { error = "Email already in use." });
+            }
+
+            // Hash the password before storing
+            var hashed = Password.Encrypt((string)body.password);
+
+            var result = SQLQueryOne(
+                "INSERT INTO users (email, password, firstName, lastName) VALUES (@email, @password, @firstName, @lastName)",
+                new { body.email, password = hashed, body.firstName, body.lastName }
+            );
+
+            return RestResult.Parse(context, result);
+        });
     }
 }
