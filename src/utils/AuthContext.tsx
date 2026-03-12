@@ -2,7 +2,9 @@ import { createContext, useContext, useState, useEffect, type ReactNode } from '
 
 interface UserType {
     email: string;
-    // Lägg till fler fält om du vill (t.ex. namn)
+    firstName: string;
+    lastName: string;
+    role: string;
 }
 interface AuthContextType {
     user: UserType | null;
@@ -15,10 +17,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<UserType | null>(null);
 
     useEffect(() => {
-        fetch('/api/session', { credentials: 'include' })
+        fetch('/api/login', { credentials: 'include' })
             .then(res => res.json())
             .then(data => {
                 if (data?.email) setUser(data);
+                else setUser(null);
             })
             .catch(() => setUser(null));
     }, []);

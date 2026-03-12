@@ -25,6 +25,11 @@ interface Screening {
     id: number;
     startTime: string;
     movie: Movie;
+    theaterId: number;
+}
+
+interface users{
+ email: string;
 }
 
 
@@ -46,7 +51,10 @@ export default function BookingPage() {
     const [kid, setKid] = useState(0);
     const totalPrice = (adult * 140) + (pensioner * 100) + (kid * 60);
 
-    const [occupiedSeats] = useState<string[]>(["Rad 1 Stol 3", "Rad 1 Stol 4", "Rad 2 Stol 1", "Rad 2 Stol 2"])  //// NEW
+    const [occupiedSeatsIds, setOccupiedSeatsIds] = useState<any[]>([]); // alla stolar i salongen
+    const [allSeats, setAllSeats] = useState<any[]>([]); // id på stolar som är bokade
+    const seatsPerRow = [8, 9, 10, 10, 10, 10, 12, 12];
+    const [email, setEmail] = useState("");
 
     const addAdult = () => {
      if(adult + pensioner + kid < 8){
@@ -106,34 +114,63 @@ export default function BookingPage() {
         setPensioner(0);
         setSelectedSeats([]);
     };
-    const handleConfirm = async () => {
-        // console.log("Säten som skickas:", selectedSeats);
-        const bookingData = {
-            userId: 1, 
-            screeningId: parseInt(screeningId || "0"),
-            totalPrice: totalPrice,
-            bookingNumber: "BKG-" + Math.random().toString(36).substring(7).toUpperCase()
-        };
+   const handleConfirm = async () => {
+    const ticketsToAssign = [ // så att vi kan spara rätt typ och pris för olika biljetttyper beroende på vilken man valt
+        ...Array(adult).fill({ type: 'adult', price: 140 }),
+        ...Array(pensioner).fill({ type: 'senior', price: 100 }),
+        ...Array(kid).fill({ type: 'child', price: 60 })
+    ];
 
-        const res = await fetch('/api/bookings', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(bookingData)
-        });
-
-        if (res.ok) {
-            const savedBooking = await res.json();
-            const newId = savedBooking.id || savedBooking.Id;
-            navigate(`/bookingconfirmation/${newId}`, { 
-                state: { 
-                    selectedSeats: selectedSeats, 
-                    selectedDate: selectedDate 
-                    } 
-            });
-        } else {
-            alert("Kunde inte spara bokningen.");
-        }
+    const bookingData = {
+        userId: 1, 
+        screeningId: parseInt(screeningId || "0"),
+        totalPrice: totalPrice,
+        email: email,
+        bookingNumber: "BKG-" + Math.random().toString(36).substring(7).toUpperCase(), 
     };
+
+    const res = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bookingData)
+    });
+
+    if (res.ok) {
+        const savedBooking = await res.json();
+        
+        const newId = savedBooking.id; 
+
+        if (!newId) {
+            alert("ID saknas");
+            return;
+        }
+
+        for (let i = 0; i < selectedSeats.length; i++) {
+            await fetch('/api/bookingSeats', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    bookingId: newId,
+                    seatId: parseInt(selectedSeats[i]),
+                    ticketType: ticketsToAssign[i].type,
+                    price: ticketsToAssign[i].price  
+                })
+            });
+        }
+
+        navigate(`/bookingconfirmation/${newId}`, {
+            state: {
+                selectedSeats: selectedSeats,
+                selectedDate: selectedDate
+            }
+        });
+    
+    } else {
+        alert("Kunde inte spara bokningen.");
+    }
+};
+
+
 
     useEffect(() => {
     if (!screeningId) return;
@@ -152,7 +189,25 @@ export default function BookingPage() {
         });
 }, [screeningId]);
 
-    const seatsPerRow = [8, 9, 10, 10, 10, 10, 12, 12];
+
+    useEffect(() =>  {
+        async function loadSeats() {
+            setOccupiedSeatsIds([]); // nullar gamla sätes id:en
+           
+            const screeningRes = await fetch(`/api/screenings/${screeningId}`);
+            const screeningData = await screeningRes.json();
+            const chosenTheaterid = screeningData.theaterId;
+
+            const res1 = await fetch(`/api/seats?theaterId=${chosenTheaterid}`);
+            setAllSeats(await res1.json());
+
+            const res2 = await fetch(`/api/occupiedSeats/${screeningId}`);
+            const data = await res2.json();
+            setOccupiedSeatsIds(data.map((item: any) => item.seatId));         
+        }
+        if (screeningId) loadSeats();
+    }, [screeningId])
+
 
     const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
     const totalTickets = adult + pensioner + kid;
@@ -180,35 +235,40 @@ export default function BookingPage() {
                             <p>SKÄRMEN</p>
                         </div>
                         <form className="seating-grid">
-                            {seatsPerRow.map((numSeats, rowIndex) => (
-                                <div key={`row-${rowIndex}`} className="seat-row">
-                                    {Array.from({ length: numSeats }).map((_, seatIndex) => {
-                                        const seatId = `Rad ${rowIndex + 1} Stol ${seatIndex + 1}`;
-                                        const isOccupied = occupiedSeats.includes(seatId); //////////// NEW
-                                        return (
-                                            <label 
-                                            key={seatId}
-                                            className={`seats ${isOccupied ? "occupied" : ""}`} ///////// NEW CLASSNAME
-                                            >
-                                                <input
-                                                    name="seats"
-                                                    type="checkbox"
-                                                    value={seatId}
-                                                    className="Visually-hidden"
-                                                    checked={selectedSeats.includes(seatId)}
-                                                    onChange={() => handleSeatClick(seatId)}
-                                                    disabled={totalTickets === 0 || isOccupied === true} ///////////// NEW 'ISOCCUPIED'
-                                                />
-                                                <span>
-                                                    <i className="bi bi-person-check check-icon fs-4"></i> {/* // gröna rutor hover */}
-                                                    <i className="bi bi-person-fill-x remove-icon fs-4"></i> {/* // röda rutor hover */}
-                                                </span>
-                                            </label>
-                                        );
-                                    })}
-                                </div>
-                            ))}
-                        </form>
+  {(() => {
+    let offset = 0;
+    return seatsPerRow.map((numSeats, rowIndex) => {
+      const rowSeats = allSeats.slice(offset, offset + numSeats);
+      offset += numSeats;
+
+      return (
+        <div key={`row-${rowIndex}`} className="seat-row">
+          {rowSeats.map((seat: any) => {
+            const isOccupied = occupiedSeatsIds.includes(seat.id);
+            const isSelected = selectedSeats.includes(seat.id.toString());
+
+            return (
+              <label key={seat.id} className={`seats ${isOccupied ? 'occupied' : ''}`}>
+                <input
+                  type="checkbox"
+                  className="Visually-hidden"
+                  checked={isSelected}
+                  onChange={() => handleSeatClick(seat.id.toString())}
+                  disabled={totalTickets === 0 || isOccupied}
+                />
+                <span>
+                  <i className="bi bi-person-check check-icon fs-4"></i>
+                  <i className="bi bi-person-fill-x remove-icon fs-4"></i>
+                </span>
+              </label>
+            );
+          })}
+        </div>
+      );
+    });
+  })()}
+</form>
+
                     </div>
                     <img src={movie?.Cover} alt={movie?.Title} className="booking-poster" />
                 </div>
@@ -309,7 +369,11 @@ export default function BookingPage() {
                         <Form>
                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                 <Form.Label>Email address</Form.Label>
-                                <Form.Control className="inputmail" type="email" placeholder="Ange emailadress..." />
+                                <Form.Control className="inputmail" 
+                                type="email"
+                                 placeholder="Ange emailadress..."
+                                 value={email}
+                                 onChange={(e) => setEmail(e.target.value)} />
                                 <Form.Text className="text-muted biljettermail">
                                     Vi skickar biljetterna till denna mail.
                                 </Form.Text>
@@ -329,17 +393,17 @@ export default function BookingPage() {
                         <p>📍 {selectedSeats.length > 0 ? ` Valda platser: ${selectedSeats.join(", ")} ` : "Inga valda platser."}</p>
                         <p> {totalPrice > 0 && `💵 ${totalPrice}kr`} (betalning sker på plats) </p>
 
-                            {screening && (
-                                <>
-                                    <p>📅 {screening.startTime.split("T")[0]}</p>
-                                    <p>
-                                        🕒 {new Date(screening.startTime).toLocaleTimeString([], {
-                                            hour: "2-digit",
-                                            minute: "2-digit"
-                                        })}
-                                    </p>
-                                </>
-                            )}
+                                {screening && (
+                                    <>
+                                        <p>📅 {screening.startTime.split("T")[0]}</p>
+                                        <p>
+                                            🕒 {new Date(screening.startTime).toLocaleTimeString([], {
+                                                hour: "2-digit",
+                                                minute: "2-digit"
+                                            })}
+                                        </p>
+                                    </>
+                                )}
                         <hr />
                         <div className="d-flex justify-content-end">
 
