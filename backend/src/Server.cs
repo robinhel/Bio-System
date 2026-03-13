@@ -12,6 +12,7 @@ public static class Server
         FileServer.Start();
         LoginRoutes.Start();
         OccupiedSeats.Start();
+        getScreeningDates.Start();
         RestApi.Start();
         Session.Start();
         // Start the server on port 3001

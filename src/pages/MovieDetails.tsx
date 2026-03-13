@@ -58,7 +58,7 @@ export default function MovieDetails() {
         fetch(`/api/screenings?movieId=${id}`)
             .then(res => res.json())
             .then(data => {
-                console.log("SCREENINGS DATA:", data);
+                //console.log("SCREENINGS DATA:", data);
                 setScreenings(data);
             })
             .catch(err => console.log(err));
@@ -199,7 +199,7 @@ export default function MovieDetails() {
                                 <Link
                                     key={screening.id}
                                     to={`/booking-page/${screening.id}`}
-                                    className="details-time-button"
+                                    className="details-time-button "
                                 >
                                     <span className="details-salong">
                                         Salong {screening.theaterId}
