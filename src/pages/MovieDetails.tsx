@@ -71,8 +71,9 @@ export default function MovieDetails() {
         s => s.movieId === Number(id)
     );
     const dates = [...new Set(
-        movieScreenings.map(s => s.startTime.split("T")[0])
+        movieScreenings.map(s => s.startTime.split(" ")[0])
     )];
+    console.log(dates)
 
 
     return (
@@ -182,7 +183,7 @@ export default function MovieDetails() {
 
                             if (screening.movieId !== Number(id)) return null;
 
-                            const dateKey = screening.startTime.split("T")[0];
+                            const dateKey = screening.startTime.split(" ")[0];
 
                             if (dateKey !== selectedDate) return null;
 
