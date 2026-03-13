@@ -54,7 +54,8 @@ export default function BookingPage() {
 
     const [occupiedSeatsIds, setOccupiedSeatsIds] = useState<any[]>([]); // alla stolar i salongen
     const [allSeats, setAllSeats] = useState<any[]>([]); // id på stolar som är bokade
-    const seatsPerRow = [8, 9, 10, 10, 10, 10, 12, 12];
+    const bigTheater = [8, 9, 10, 10, 10, 10, 12, 12]; // Stora
+    const smallTheater = [6, 8, 9, 10, 10, 12];
     const [email, setEmail] = useState("");
 
     const addAdult = () => {
@@ -150,7 +151,7 @@ export default function BookingPage() {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         bookingId: newId,
-                        seatId: parseInt(selectedSeats[i]),
+                        seatId: (selectedSeats[i]),
                         ticketType: ticketsToAssign[i].type,
                         price: ticketsToAssign[i].price
                     })
@@ -221,10 +222,10 @@ export default function BookingPage() {
         }
     }, [movie?.id])
     const [selectedTime, setSelectedTime] = useState<string[]>([]);
-    const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
+    const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
     const totalTickets = adult + pensioner + kid;
 
-    const handleSeatClick = (seatId: string) => {
+    const handleSeatClick = (seatId: number) => {
         if (selectedSeats.includes(seatId)) {
             setSelectedSeats(selectedSeats.filter(id => id !== seatId))
         }
@@ -259,10 +260,11 @@ export default function BookingPage() {
                         <div className="theater-screen">
                             <p>SKÄRMEN</p>
                         </div>
-                        <form className="seating-grid">
+                        <div className="seating-grid">
                             {(() => {
                                 let offset = 0;
-                                return seatsPerRow.map((numSeats, rowIndex) => {
+                                 const seatsPerRow = screening?.theaterId === 2 ? smallTheater : bigTheater; // om theaterid är 2 kör smallTheater variablen om inte 2 kör bigTheater
+                                    return seatsPerRow.map((numSeats, rowIndex) => {
                                     const rowSeats = allSeats.slice(offset, offset + numSeats);
                                     offset += numSeats;
 
@@ -270,7 +272,7 @@ export default function BookingPage() {
                                         <div key={`row-${rowIndex}`} className="seat-row">
                                             {rowSeats.map((seat: any) => {
                                                 const isOccupied = occupiedSeatsIds.includes(seat.id);
-                                                const isSelected = selectedSeats.includes(seat.id.toString());
+                                                const isSelected = selectedSeats.includes(seat.id);
 
                                                 return (
                                                     <label key={seat.id} className={`seats ${isOccupied ? 'occupied' : ''}`}>
@@ -292,7 +294,7 @@ export default function BookingPage() {
                                     );
                                 });
                             })()}
-                        </form>
+                        </div>
 
                     </div>
                     <img src={movie?.Cover} alt={movie?.Title} className="booking-poster" />
