@@ -82,8 +82,9 @@ export default function MovieDetails() {
                 <div className="movie-trailer">
                     <iframe
                         src={`https://www.youtube.com/embed/${movie.trailer}`}
+                        referrerPolicy="strict-origin-when-cross-origin"
                         title="Movie trailer"
-                        allowFullScreen
+                        allowFullScreen 
                     />
                 </div>
 

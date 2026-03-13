@@ -136,6 +136,7 @@ export default function BookingPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(bookingData)
     });
+       
 
     if (res.ok) {
         const savedBooking = await res.json();
@@ -170,9 +171,8 @@ export default function BookingPage() {
     } else {
         alert("Kunde inte spara bokningen.");
     }
-};
-
-
+    };
+    
 
     useEffect(() => {
     if (!screeningId) return;
@@ -203,7 +203,7 @@ export default function BookingPage() {
             const res1 = await fetch(`/api/seats?theaterId=${chosenTheaterid}`);
             setAllSeats(await res1.json());
 
-            const res2 = await fetch(`/api/occupiedSeats/${screeningId}`);
+            const res2 = await fetch(`/api/occupiedSeats/${screeningId}`)
             const data = await res2.json();
             setOccupiedSeatsIds(data.map((item: any) => item.seatId));         
         }
@@ -226,6 +226,7 @@ export default function BookingPage() {
         }
     }
 
+
     return (
         <>
             
@@ -246,19 +247,22 @@ export default function BookingPage() {
       const rowSeats = allSeats.slice(offset, offset + numSeats);
       offset += numSeats;
 
-      return (
+        return (
+          
         <div key={`row-${rowIndex}`} className="seat-row">
           {rowSeats.map((seat: any) => {
             const isOccupied = occupiedSeatsIds.includes(seat.id);
-            const isSelected = selectedSeats.includes(seat.id());
+            const isSelected = selectedSeats.includes(seat.id);
 
-            return (
-              <label key={seat.id} className={`seats ${isOccupied ? 'occupied' : ''}`}>
+              return (
+                
+                  <label key={seat.id} className={`seats ${isOccupied ? 'occupied' : ''}`}>
+                      
                 <input
                   type="checkbox"
                   className="Visually-hidden"
                   checked={isSelected}
-                  onChange={() => handleSeatClick(seat.id.toString())}
+                  onChange={() => handleSeatClick(seat.id)}
                   disabled={totalTickets === 0 || isOccupied}
                 />
                 <span>
