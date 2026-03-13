@@ -1,16 +1,15 @@
-// Auth / Login / Register
+
 .auth-page {
     border-radius: 10px;
     min-height: 70vh;
     display: flexbox;
     place-items: center;
     text-align: center;
-    background: linear-gradient(180deg, #410000 0%, #010820 100%);
+    background: radial-gradient(circle at top, #410000 0%, #010820 100%);
     max-width: 500px;
     margin: auto;
 
 }
-
 .auth-title {
     padding: 40px;
     font-size: 2.5rem;
@@ -30,15 +29,15 @@
     margin-top: 100px;
     border-radius: 5px;
     color: #ffffff;
-    background-color: #0052aa;
+    background-color: #610202;
     padding: 5px 100px 5px 100px;
     cursor: pointer;
 }
 
 .auth-link {
     border-radius: 5px;
-    display: flex; // Aktiverar flexbox
-    justify-content: center; // Centrerar horisontellt
+    display: flex; 
+    justify-content: center; 
     color: #ffffff;
     margin-top: 50px;
     margin: auto;

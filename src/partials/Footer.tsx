@@ -11,24 +11,26 @@ export default function Footer() {
         
         <Row className="justify-content-start footer-socials">
 
-          <Col xs={12} md="auto" className="footer-section text-center">
-            <h5 className="footer-title">Sociala medier</h5>
-            <div className="social-stack">
-              <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
-                <IonIcon icon={logoFacebook} size="large" />
-              </a>
-              <a href="https://x.com/" target="_blank" rel="noopener noreferrer">
+          <Col xs={12} md="auto" className="footer-section text-start">
+            <div className="social-heading-and-icons">
+              <h5 className="footer-title">Sociala medier</h5>
+              <div className="social-stack text-start">
+                <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
+                  <IonIcon icon={logoFacebook} size="large" />
+                </a>
+                <a href="https://x.com/" target="_blank" rel="noopener noreferrer">
 
-                <IonIcon icon={logoX} size="large" />
-              </a>
-              <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
+                  <IonIcon icon={logoX} size="large" />
+                </a>
+                <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
 
-                <IonIcon icon={logoInstagram} size="large" />
-              </a>
-              <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">
+                  <IonIcon icon={logoInstagram} size="large" />
+                </a>
+                <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">
 
-                <IonIcon icon={logoLinkedin} size="large" />
-              </a>
+                  <IonIcon icon={logoLinkedin} size="large" />
+                </a>
+              </div>
             </div>
           </Col>
 
@@ -51,6 +53,12 @@ export default function Footer() {
               <Link to="">Föreningsbiljetten</Link>
             </div>
           </Col>
+          
+          <Col xs={12} md="auto" className="footer-section">
+            <h5 className="footer-title"></h5> 
+
+          </Col>
+
 
         </Row>
 

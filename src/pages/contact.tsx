@@ -29,7 +29,7 @@ export default function ContactPage() {
           </Col>
           <Col xs="auto">
             <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
-              <IonIcon icon={logoInstagram} style={{ fontsize: '52px', color: '#9900ff' }}/>
+              <IonIcon icon={logoInstagram} style={{ fontsize: '32px', color: '#08fd00' }}/>
             </a>
           </Col>
           <Col xs="auto">
